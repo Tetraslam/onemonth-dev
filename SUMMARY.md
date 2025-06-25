@@ -121,4 +121,33 @@ The AI agent (`CurriculumAgent` in `backend/app/agents/curriculum_agent.py`) is 
     3.  **"Mark Complete" Button & Basic Progress Display**: Backend endpoint `POST /api/curricula/{cid}/days/{did}/complete` is created. Frontend `CurriculumPage.tsx` fetches progress. `ContentView.tsx` needs to call the endpoint and trigger UI updates via `onDayCompletionUpdate` prop.
     4.  **Saving & Loading Chat History**: Currently, chat history is not persisted for streamed chats, and not loaded into the panel.
 
-Phew! This version is much beefier. Hope this covers the bases much better! Let me know if anything critical is still missing. 
+Phew! This version is much beefier. Hope this covers the bases much better! Let me know if anything critical is still missing.
+
+## Recent Development Session: Logbook Polish, Progress Enhancements & Email Supercharge!
+
+This session saw significant strides in user engagement features and backend robustness:
+
+*   **Logbook Enhancements & Fixes**:
+    *   **Search Functionality**: Resolved issues with logbook search, implementing a working ILIKE-based search for entries.
+    *   **Critical Edit/Save Bug Squashed**: Fixed a crucial bug where edits to logbook entries (specifically updating the `curriculum_id`) were not being saved. This was vital as it impacted the accuracy of data for features like the weekly email recaps.
+
+*   **Progress Tracking Upgrades**:
+    *   **Visual Timelines**: Implemented visual progress bars on curriculum cards within the `DashboardPage.tsx`, giving users an at-a-glance overview of their `completed_days` vs. `total_days`.
+    *   **Robust Streak System**:
+        *   Backend logic in `logbook.py` was enhanced to accurately calculate both the active `current_streak` (requiring recent activity) and the all-time `longest_streak`.
+        *   The frontend `LogbookStats.tsx` component now displays both these streak metrics.
+
+*   **Transactional Email Integration (Resend)**:
+    *   **Full Integration**: Successfully added the Resend Python SDK, configured API keys, and created a reusable `EmailService` (`backend/app/services/email_service.py`) for dispatching emails.
+    *   **Test Email Functionality**: Implemented and verified a test email endpoint (`POST /api/notifications/test-email`) to confirm the Resend setup.
+    *   **Weekly Progress Recap Email**:
+        *   **Data Aggregation**: Developed `RecapService` (`backend/app/services/recap_service.py`) to gather comprehensive data for weekly recaps, including user details, curriculum title, progress this week, total progress, hours logged, dominant mood, current/longest streaks, and the next suggested day.
+        *   **"Fun" HTML Template**: Designed and implemented an engaging, neobrutalist-styled HTML email template for the recap, incorporating the user's preference for emoticons over emojis.
+        *   **API Endpoint**: Created `POST /api/notifications/weekly-recap/{curriculum_id}` to generate and send the recap email.
+
+*   **Epic Debugging Adventures**:
+    *   Successfully navigated Resend API errors, which led to identifying and resolving the need for domain verification with Resend.
+    *   Diagnosed and fixed the `curriculum_id` not saving in logbook entries, which was the root cause of inaccurate data in the initial weekly recap tests.
+    *   Addressed various `AttributeError` issues related to Pydantic model access versus dictionary access for user objects in API endpoints.
+
+With these features and fixes, the platform is much more engaging and the groundwork for automated user communication is firmly in place! Next up: scheduling these awesome recap emails. 

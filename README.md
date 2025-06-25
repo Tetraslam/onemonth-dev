@@ -45,9 +45,9 @@ The AI agent has access to:
 * Curriculum creation from prompt + preferences
 * Curriculum CRUD (create, read, update, delete)
 * AI chat with full access to curriculum, logbook, and prefs
-* Weekly project tracking + journaling in the **Logbook**
-* Scheduled email reminders (via Resend) with progress recaps and next steps
-* Progress tracking: (DONE ✅), visual timeline, and streak reminders
+* Weekly project tracking + journaling in the **Logbook** (Search fixed ✅)
+* Email reminders (via Resend) with progress recaps and next steps (Recap email implemented ✅, scheduling next)
+* Progress tracking: per-day completion checkmarks (DONE ✅), visual timeline (Dashboard progress bars ✅), and robust streak reminders (Current & Longest streaks implemented ✅)
 * AI-generated **explanatory videos** using Remotion
 * Search across logbook entries (Typesense)
 * Resource quality filters: upvote/downvote AI picks, manual edit mode, summary blurbs
@@ -102,7 +102,7 @@ The AI agent has access to:
 * **Frameworks**: FastAPI, UVicorn, Pydantic
 * **Database/Auth**: Supabase (cloud-hosted; RLS, auth, file storage)
 * **Graph/Agent Runtime**: LangGraph
-* **Transactional Emails**: Resend
+* **Transactional Emails**: Resend (Integrated & Sending ✅)
 * **Vector Search**: Qdrant (cloud-hosted)
 * **AI Provider**: Gemini 2.5 Pro via OpenRouter (OpenAI-compatible endpoint)
 * **Linting**: Ruff
@@ -120,7 +120,7 @@ The AI agent can call:
 * **Wolfram Alpha** – math/logic queries
 * **Wikipedia** – general reference
 * **Code interpreter** – Python REPL
-* **Scheduled emails** – weekly reminders, follow-ups (via Resend)
+* **Scheduled emails** – weekly reminders, follow-ups (via Resend) (Recap email implemented ✅, scheduling next)
 
 ---
 
