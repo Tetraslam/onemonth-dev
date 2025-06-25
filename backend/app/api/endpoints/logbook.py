@@ -47,6 +47,8 @@ class UpdateLogbookEntryRequest(BaseModel):
     mood: Optional[str] = Field(None, pattern="^(excited|confident|neutral|frustrated|stuck)$")
     tags: Optional[List[str]] = None
     hours_spent: Optional[float] = None
+    curriculum_id: Optional[UUID] = None
+    day_id: Optional[UUID] = None
 
 
 class LogbookEntryResponse(BaseModel):
@@ -214,25 +216,52 @@ async def update_logbook_entry(
     """Update a logbook entry."""
     supabase = get_supabase_client()
     
-    # Build update data
-    update_data = {}
-    if request.title is not None:
+    update_data: Dict[str, Any] = {}
+
+    # Iterate over fields in the request model that were actually set by the client
+    # Pydantic v2: request.model_fields_set contains names of fields explicitly set by client
+    if not request.model_fields_set:
+        raise HTTPException(status_code=400, detail="No fields provided in the request payload.")
+
+    if "title" in request.model_fields_set:
         update_data["title"] = request.title
-    if request.content is not None:
-        update_data["content"] = request.content
-        # Also update content_text
-        update_data["content_text"] = request.content_text or extract_text_from_content(request.content)
-    if request.entry_type is not None:
-        update_data["entry_type"] = request.entry_type
-    if request.mood is not None:
-        update_data["mood"] = request.mood
-    if request.tags is not None:
-        update_data["tags"] = request.tags
-    if request.hours_spent is not None:
-        update_data["hours_spent"] = request.hours_spent
     
+    if "content" in request.model_fields_set:
+        update_data["content"] = request.content
+        # If content is being set, always update content_text accordingly
+        update_data["content_text"] = request.content_text or extract_text_from_content(request.content)
+    elif "content_text" in request.model_fields_set: # Only if content itself isn't being updated
+        update_data["content_text"] = request.content_text
+
+    if "entry_type" in request.model_fields_set:
+        update_data["entry_type"] = request.entry_type
+    
+    if "mood" in request.model_fields_set:
+        update_data["mood"] = request.mood
+    
+    if "tags" in request.model_fields_set:
+        update_data["tags"] = request.tags
+    
+    if "hours_spent" in request.model_fields_set:
+        update_data["hours_spent"] = request.hours_spent
+
+    if "curriculum_id" in request.model_fields_set:
+        update_data["curriculum_id"] = str(request.curriculum_id) if request.curriculum_id else None
+    
+    if "day_id" in request.model_fields_set:
+        update_data["day_id"] = str(request.day_id) if request.day_id else None
+    
+    # After attempting to populate, if update_data is still empty, 
+    # it means the client sent fields that are not part of our UpdateLogbookEntryRequest model 
+    # or all were handled such that no actual database update is needed (e.g. only unknown fields).
+    # Pydantic would have stripped unknown fields. So if model_fields_set was not empty, 
+    # but update_data is, it implies an issue or only non-updatable fields were sent.
+    # However, our logic above ensures that if a known field is in model_fields_set, it goes into update_data.
+    # So, this check primarily catches if only unknown fields were sent (which Pydantic strips).
     if not update_data:
-        raise HTTPException(status_code=400, detail="No fields to update")
+         raise HTTPException(status_code=400, detail="No updatable fields provided in the request or fields were invalid.")
+
+    print(f"[LOGBOOK UPDATE DEBUG] Updating entry {entry_id} with data: {update_data}")
     
     try:
         response = (
@@ -246,10 +275,17 @@ async def update_logbook_entry(
         if response.data:
             return LogbookEntryResponse(entry=LogbookEntry(**response.data[0]))
         else:
-            raise HTTPException(status_code=404, detail="Logbook entry not found")
+            # This could be due to the entry_id not found for that user, or other update issue
+            # Supabase update usually returns data if successful, even if no rows matched (empty list).
+            # If data is empty list and no error, means no row matched the .eq() conditions.
+            # If error occurred during update, Supabase client should raise an exception.
+            print(f"[LOGBOOK UPDATE DEBUG] Update for entry {entry_id} returned no data. Response: {response}")
+            raise HTTPException(status_code=404, detail="Logbook entry not found or update failed.")
             
     except Exception as e:
-        print(f"Error updating logbook entry: {e}")
+        print(f"Error updating logbook entry {entry_id}: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
