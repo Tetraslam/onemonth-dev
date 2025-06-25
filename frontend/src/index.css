@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 40% 96%; /* Warm off-white like Anthropic */
+    --foreground: 0 0% 15%; /* Dark gray, not black */
+    --card: 0 0% 100%; /* Pure white for cards to pop */
+    --card-foreground: 0 0% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 15%;
+    --primary: 45 100% 51%; /* Rich yellow */
+    --primary-foreground: 0 0% 0%;
+    --secondary: 251 91% 67%; /* Rich blue */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 30 20% 94%; /* Slightly darker than background */
+    --muted-foreground: 0 0% 40%;
+    --accent: 340 82% 59%; /* Rich pink */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 15%; /* Dark borders for contrast */
+    --input: 0 0% 15%;
+    --ring: 45 100% 51%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      sans-serif;
+  }
+  
+  /* Neobrutalist defaults */
+  button {
+    @apply font-bold transition-all;
+  }
+  
+  input, textarea {
+    @apply font-medium bg-white border-2 border-foreground;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-foreground/30 border-2 border-background;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-foreground/40;
+  }
+}
+
+/* Neobrutalist components */
+@layer components {
+  .neo-brutal-shadow {
+    box-shadow: 4px 4px 0 0 rgb(0 0 0 / 0.9);
+  }
+  
+  .neo-brutal-shadow-sm {
+    box-shadow: 2px 2px 0 0 rgb(0 0 0 / 0.9);
+  }
+  
+  .neo-brutal-shadow-lg {
+    box-shadow: 6px 6px 0 0 rgb(0 0 0 / 0.9);
+  }
+  
+  .neo-gradient-pink {
+    background: linear-gradient(135deg, #ff6b9d 0%, #ffc4d6 100%);
+  }
+  
+  .neo-gradient-blue {
+    background: linear-gradient(135deg, #4c6ef5 0%, #849eed 100%);
+  }
+  
+  .neo-gradient-yellow {
+    background: linear-gradient(135deg, #ffd93d 0%, #ffed4e 100%);
+  }
+}

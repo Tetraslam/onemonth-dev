@@ -1,0 +1,62 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp>=3.12.13",
+    "anthropic>=0.55.0",
+    "fastapi>=0.115.13",
+    "httpx>=0.28.1",
+    "langchain>=0.3.26",
+    "langchain-community>=0.3.26",
+    "langchain-core>=0.3.66",
+    "langgraph>=0.4.8",
+    "openai>=1.91.0",
+    "passlib[bcrypt]>=1.7.4",
+    "pydantic[email]>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "python-dotenv>=1.1.1",
+    "python-jose[cryptography]>=3.5.0",
+    "python-multipart>=0.0.20",
+    "qdrant-client>=1.14.3",
+    "redis>=6.2.0",
+    "resend>=2.10.0",
+    "sentry-sdk>=2.31.0",
+    "supabase>=2.16.0",
+    "uvicorn>=0.34.3",
+    "youtube-search>=2.1.2",
+    "arxiv>=2.2.0",
+    "wikipedia-api>=0.8.1",
+    "posthog>=5.4.0",
+    "typesense>=1.1.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.2.0",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.4.0",
+    "mypy>=1.10.0",
+    "httpx>=0.27.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+select = ["E", "F", "I", "N", "UP", "B", "A", "C4", "PIE", "PT", "SIM", "RUF"]
+ignore = ["E501", "B008", "B904", "UP007"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
