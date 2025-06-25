@@ -140,12 +140,12 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
               <p className="text-sm font-bold text-foreground/80 mb-3">
                 Ask me anything about your lesson or try these:
               </p>
-              <div className="flex flex-wrap gap-2 justify-center items-stretch">
+              <div className="flex flex-col gap-2 items-center px-4">
                 <Button 
                   variant="secondary"
                   size="sm"
                   onClick={() => handleSuggestionClick('Explain this concept in simple terms')}
-                  className="font-black flex-grow sm:flex-grow-0"
+                  className="font-black w-full max-w-sm"
                 >
                   Explain this concept
                 </Button>
@@ -153,7 +153,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                   variant="secondary" 
                   size="sm"
                   onClick={() => handleSuggestionClick('Give me an example of this')}
-                  className="font-black flex-grow sm:flex-grow-0"
+                  className="font-black w-full max-w-sm"
                 >
                   Give me an example
                 </Button>
@@ -161,7 +161,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                   variant="secondary" 
                   size="sm"
                   onClick={() => handleSuggestionClick('Create a practice problem for me')}
-                  className="font-black flex-grow sm:flex-grow-0"
+                  className="font-black w-full max-w-sm"
                 >
                   Practice problem
                 </Button>

@@ -125,7 +125,7 @@ export function CurriculumPage() {
           />
         </div>
 
-        <div className="w-[380px] bg-card border-l-4 border-foreground flex-shrink-0 flex flex-col overflow-hidden">
+        <div className="w-[380px] min-w-[380px] bg-card border-l-4 border-foreground flex-shrink-0 flex flex-col overflow-hidden">
           <ChatPanel 
             curriculum={curriculum}
             currentDay={selectedDay}
