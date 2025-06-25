@@ -144,7 +144,7 @@ async def send_weekly_recap_email(
     """Generates and sends a weekly recap email for the given curriculum to the authenticated user."""
     
     recap_data = await RecapService.generate_weekly_recap_data(
-        user_id=current_user.id, 
+        current_user_obj=current_user,
         curriculum_id=curriculum_id,
         frontend_url=settings.frontend_url
     )
@@ -168,7 +168,7 @@ async def send_weekly_recap_email(
         return RecapEmailResponse(
             message="Weekly recap email sent successfully.",
             email_sent_to=recap_data.user_email,
-            recap_data_summary=recap_data.model_dump(exclude_none=True) # Pydantic v2
+            recap_data_summary=recap_data.model_dump(exclude_none=True)
         )
     else:
         raise HTTPException(
