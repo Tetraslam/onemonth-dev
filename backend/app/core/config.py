@@ -1,6 +1,6 @@
-from typing import Optional
+from typing import Any, List, Optional
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     supabase_jwt_secret: Optional[str] = Field(None, env="SUPABASE_JWT_SECRET")
     
     # API Keys
-    openrouter_api_key: str = Field(..., env="OPENROUTER_API_KEY")
+    openrouter_api_key: Optional[str] = Field(None, env="OPENROUTER_API_KEY")
     perplexity_api_key: Optional[str] = Field(None, env="PERPLEXITY_API_KEY")
     firecrawl_api_key: Optional[str] = Field(None, env="FIRECRAWL_API_KEY")
     exa_api_key: Optional[str] = Field(None, env="EXA_API_KEY")
@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     resend_from_email: str = Field("noreply@onemonth.dev", env="RESEND_FROM_EMAIL")
     
     # Redis
-    redis_url: str = Field("redis://localhost:6379", env="REDIS_URL")
+    redis_url: str = Field("redis://localhost:6379/0", env="REDIS_URL")
     
     # Frontend
     frontend_url: str = Field("http://localhost:5173", env="FRONTEND_URL")
@@ -60,10 +60,30 @@ class Settings(BaseSettings):
     # LLM Providers
     gemini_api_key: Optional[str] = Field(None, env="GEMINI_API_KEY")
     
-    # CORS
-    cors_origins: str = Field("http://localhost:5173,http://localhost:3000", env="CORS_ORIGINS")
-    
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    # CORS - store as string from env, parse into list
+    cors_origins_env_str: str = Field("http://localhost:5173,http://127.0.0.1:5173", alias="CORS_ORIGINS")
+    cors_origins_list: List[str] = []
+
+    @field_validator("cors_origins_list", mode="before")
+    @classmethod
+    def assemble_cors_origins(cls, v: Any, values) -> List[str]:
+        # Access the aliased field correctly from values.data
+        cors_str = values.data.get('cors_origins_env_str') # Use the new name here
+        if isinstance(cors_str, str):
+            return [origin.strip() for origin in cors_str.split(",") if origin.strip()]
+        # Fallback if cors_origins_env_str wasn't in .env or was invalid type
+        # This uses the default value of cors_origins_env_str if it was not overridden by env
+        default_cors_str = cls.model_fields['cors_origins_env_str'].default
+        if isinstance(default_cors_str, str):
+             return [origin.strip() for origin in default_cors_str.split(",") if origin.strip()]
+        return ["http://localhost:5173", "http://127.0.0.1:5173"] # Absolute fallback
+
+    model_config = SettingsConfigDict(
+        env_file=".env", 
+        env_file_encoding="utf-8", 
+        extra="ignore",
+        populate_by_name=True # Important for alias to work with environment variables
+    )
 
 
 settings = Settings() 

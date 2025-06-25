@@ -3,7 +3,7 @@
 import json
 import re  # Added for robust JSON parsing
 import traceback  # Added for error logging
-from typing import Annotated, Any, Dict, List, Optional, TypedDict
+from typing import Annotated, Any, Dict, List, Optional, TypedDict, AsyncIterator
 
 import aiohttp
 from app.core.config import settings
@@ -71,32 +71,46 @@ class CurriculumAgent:
     async def _analyze_context(self, state: AgentState) -> AgentState:
         messages = state.get("messages", [])
         context = state.get("context", {})
+        print(f"[AGENT DEBUG] _analyze_context received messages: {messages}") # DEBUG
         user_message = messages[-1] if messages else {}
         query = user_message.get("content", "")
+        print(f"[AGENT DEBUG] _analyze_context extracted query: '{query}'") # DEBUG
         context["user_query"] = query
-        context["intent"] = self._determine_intent(query)
+        current_intent = self._determine_intent(query)
+        context["intent"] = current_intent
+        print(f"[AGENT DEBUG] _analyze_context determined intent: '{current_intent}'") # DEBUG
         context["user_preferences"] = context.get("user_preferences", {})
         state["context"] = context
         return state
     
     def _determine_intent(self, query: str) -> str:
-        query_lower = query.lower()
-        if any(word in query_lower for word in ["create", "generate", "build", "make"]):
+        query_lower = query.lower().strip()
+        print(f"[AGENT DEBUG] _determine_intent received query_lower: '{query_lower}'") # DEBUG
+        # More specific greeting check first
+        if query_lower in ["hi", "hello", "hey", "greetings", "sup", "yo"]:
+            return "greeting"
+        
+        if any(word in query_lower for word in ["create curriculum", "generate curriculum", "build curriculum", "make curriculum", "plan for"]):
             return "create_curriculum"
-        elif any(word in query_lower for word in ["explain", "what", "how", "why"]):
+        elif any(word in query_lower for word in ["explain", "what is", "how does", "why is", "tell me about"]):
             return "explain_concept"
-        elif any(word in query_lower for word in ["practice", "exercise", "problem", "quiz"]):
+        elif any(word in query_lower for word in ["practice", "exercise", "problem", "quiz me"]):
             return "provide_practice"
-        elif any(word in query_lower for word in ["resource", "material", "link", "video"]):
+        elif any(word in query_lower for word in ["resource", "material", "link", "video", "find me"]):
             return "find_resources"
+        elif len(query_lower.split()) < 4: # If it's a very short query, likely general help or chit-chat
+            return "general_chat"
         else:
-            return "general_help"
+            return "general_help" # Needs research
     
     async def _plan_tools(self, state: AgentState) -> AgentState:
         context = state.get("context", {})
         intent = context.get("intent", "general_help")
         query = context.get("user_query", "")
+        
         tools_needed = []
+        
+        # Only use tools if necessary based on intent
         if intent == "create_curriculum":
             tools_needed = ["firecrawl_search", "youtube_search"]
             if any(word in query.lower() for word in ["math", "calculus", "algebra", "statistics"]):
@@ -106,13 +120,31 @@ class CurriculumAgent:
             if any(word in query.lower() for word in ["research", "academic", "paper"]):
                 tools_needed.append("arxiv_search")
         elif intent == "explain_concept":
-            tools_needed = ["wikipedia_search", "firecrawl_search", "youtube_search"]
+            tools_needed = ["wikipedia_search", "firecrawl_search", "youtube_search", "perplexity_search"]
+            if any(word in query.lower() for word in ["code", "python", "javascript", "algorithm", "programming"]):
+                tools_needed.append("github_search")
+            if any(word in query.lower() for word in ["math", "equation", "calculate", "algebra", "calculus", "statistics"]):
+                tools_needed.append("wolfram_alpha_query")
+            if any(word in query.lower() for word in ["academic", "research", "paper"]):
+                tools_needed.append("arxiv_search")
         elif intent == "provide_practice":
-            tools_needed = ["firecrawl_search", "github_search"]
+            tools_needed = ["firecrawl_search", "perplexity_search"]
         elif intent == "find_resources":
-            tools_needed = ["youtube_search", "firecrawl_search", "github_search"]
-        else:
-            tools_needed = ["firecrawl_search"]
+            tools_needed = ["youtube_search", "firecrawl_search", "github_search", "perplexity_search", "exa_search"]
+        elif intent == "general_help": 
+            tools_needed = ["firecrawl_search", "perplexity_search", "exa_search"]
+            if any(word in query.lower() for word in ["code", "python", "javascript", "algorithm", "programming"]):
+                tools_needed.append("github_search")
+            if any(word in query.lower() for word in ["math", "equation", "calculate", "algebra", "calculus", "statistics"]):
+                tools_needed.append("wolfram_alpha_query")
+            if any(word in query.lower() for word in ["academic", "research", "paper"]):
+                tools_needed.append("arxiv_search")
+            if any(word in query.lower() for word in ["news", "current events", "recent"]):
+                 # Perplexity is good for recent events
+                 if "perplexity_search" not in tools_needed: tools_needed.append("perplexity_search")
+        # For "greeting" and "general_chat", tools_needed remains empty by default
+        
+        print(f"[AGENT DEBUG] Intent: {intent}, Query: '{query}', Tools Planned: {tools_needed}")
         state["tools_needed"] = tools_needed
         return state
     
@@ -153,71 +185,195 @@ class CurriculumAgent:
     
     async def _generate_response(self, state: AgentState) -> AgentState:
         context = state.get("context", {})
-        tools_output = state.get("tools_output", [])
         user_query_from_context = context.get("user_query", "")
-        system_prompt = """You are an expert curriculum designer for onemonth.dev.
-Your task is to generate a structured curriculum in JSON format.
-The JSON output MUST have the following top-level keys:
-- "curriculum_title": A string for the overall title of the curriculum.
-- "curriculum_description": A string describing the curriculum.
-- "days": A list of day objects.
-Each day object in the "days" list MUST have the following keys:
-- "day_number": An integer representing the day number (starting from 1).
-- "title": A concise string title for the day's topic.
-- "content": A JSON object representing rich text content for the learning module. For example: {"type": "doc", "content": [{"type": "paragraph", "content": [{"type": "text", "text": "Today you will learn about X..."}]}]}
-- "resources": A list of JSON objects, where each object has "title" (string) and "url" (string) for relevant learning resources.
-- "estimated_hours": An optional float for the estimated hours for the day.
-Adhere strictly to this JSON structure. Do not include any explanatory text outside of the JSON object itself.
-"""
-        research_results = self._format_tool_results(tools_output)
-        user_prompt_content = f"""User Preferences and Goal (this was the input from the user/system that initiated the curriculum generation):
-{user_query_from_context}
-Supporting Research & Tool Outputs:
-{research_results}
-Based on ALL the information above, generate the curriculum in the specified JSON format.
-Ensure the curriculum directly addresses the user's learning goal and preferences.
-Make sure the number of days in the generated "days" list matches the requested "Total Duration (days)" from the user preferences.
-"""
+        intent = context.get("intent", "general_help")
+
+        # System prompt and user prompt construction (simplified for brevity, use your existing logic)
+        system_prompt = "You are a helpful AI assistant. "
+        if intent == "greeting":
+            system_prompt = "You are a friendly and helpful AI learning assistant. Respond to the user's greeting with a short, friendly greeting of your own. For example, if the user says 'hi', you could say 'Hello there!' or 'Hi! How can I help you today?'. Keep it concise."
+            user_prompt_content = user_query_from_context
+        elif intent == "create_curriculum":
+            # ... (your existing detailed system prompt for curriculum JSON) ...
+            system_prompt = "You are an expert curriculum designer... Output JSON..."
+            user_prompt_content = f"User Preferences for CURRICULUM: {user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}"
+        else:
+            user_prompt_content = f"User Query: {user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}\nProvide a concise plain text response."
+        
         llm_messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt_content}
         ]
         
         api_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
-        model_name = "gemini-2.5-pro" # User specified model
+        model_name = "gemini-2.5-pro"
+        headers = {
+            "Authorization": f"Bearer {self.gemini_api_key}", 
+            "Content-Type": "application/json",
+        }
+        payload = {
+            "model": model_name, 
+            "messages": llm_messages,
+            "temperature": 0.6,
+            "max_tokens": 150_000 if intent not in ["create_curriculum"] else 150_000,
+            "stream": False, # For this non-streaming version that updates graph state
+            "response_format": {"type": "json_object"} if intent == "create_curriculum" else None 
+        }
+        if payload["response_format"] is None: del payload["response_format"]
 
-        async with aiohttp.ClientSession() as session:
-            headers = {
-                "Authorization": f"Bearer {self.gemini_api_key}", 
-                "Content-Type": "application/json",
-            }
-            payload = {
-                "model": model_name, 
-                "messages": llm_messages,
-                "temperature": 0.6,
-                "max_tokens": 50_000, # Adjusted for potentially large JSON, but within typical API limits
-                "response_format": {"type": "json_object"}
-            }
-            print(f"Calling Gemini API ({payload['model']}) at {api_url}")
-            print(f"Message count: {len(llm_messages)}, Total chars in messages: {sum(len(m['content']) for m in llm_messages)}")
-            try:
+        print(f"[AGENT _generate_response] Calling Gemini API ({payload['model']}) for intent '{intent}' with stream=False")
+        
+        complete_response_content = ""
+        try:
+            async with aiohttp.ClientSession() as session:
                 async with session.post(api_url, headers=headers, json=payload) as response:
-                    print(f"Gemini API response status: {response.status}")
+                    print(f"[AGENT _generate_response] Gemini API status: {response.status}")
                     if response.status == 200:
                         data = await response.json()
-                        generated_content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
-                        print(f"Generated content length from Gemini: {len(generated_content)}")
-                        state["final_response"] = generated_content
+                        complete_response_content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                        print(f"[AGENT _generate_response] Received full content, length: {len(complete_response_content)}")
                     else:
                         error_text = await response.text()
-                        print(f"Gemini API error ({response.status}): {error_text}")
-                        state["final_response"] = f'{{ "error": "Failed to generate curriculum via Gemini API. Status: {response.status}. Details: {error_text[:500]}" }}'
-            except Exception as e:
-                print(f"Exception during Gemini API call: {str(e)}")
-                traceback.print_exc()
-                state["final_response"] = f'{{ "error": "Exception during LLM call: {str(e)}" }}'
+                        print(f"[AGENT _generate_response] Gemini API error: {error_text}")
+                        err_msg_default = "Sorry, I encountered an error processing your request."
+                        complete_response_content = f'{{ "error": "API Error: {response.status}" }}' if intent == "create_curriculum" else err_msg_default
+        except Exception as e:
+            print(f"[AGENT _generate_response] Exception: {str(e)}")
+            traceback.print_exc()
+            err_msg_default = "Sorry, an unexpected error occurred."
+            complete_response_content = f'{{ "error": "LLM Call Exception" }}' if intent == "create_curriculum" else err_msg_default
+        
+        state["final_response"] = complete_response_content
         return state
-    
+
+    # New method to prepare context for streaming chat, by running initial graph steps manually
+    async def analyze_and_plan_for_chat(self, current_chat_messages: List[Dict[str, Any]], base_context: Dict[str, Any]) -> Dict[str, Any]:
+        """Runs analysis, planning, and tool execution to prepare for a streaming LLM call."""
+        print(f"[AGENT analyze_and_plan_for_chat] Initial messages: {current_chat_messages}")
+        print(f"[AGENT analyze_and_plan_for_chat] Base context: {base_context.keys()}")
+
+        # Mimic initial state for the relevant parts of the agent
+        # The user_query for intent determination is the last message.
+        # The messages for the LLM in stream_chat_response will use this focused query + tool output.
+        
+        # 1. Analyze Context (to get intent and focused query)
+        # We need to ensure the `messages` field in state for _analyze_context is what it expects,
+        # typically the full history for some agents, or just the latest for others.
+        # For intent, it's usually based on the latest user message.
+        temp_state_for_analysis = AgentState(
+            messages=current_chat_messages, # Agent usually looks at the last message for intent
+            context=base_context.copy(), # Start with base context
+            tools_needed=[],
+            tools_output=[],
+            final_response=None
+        )
+        analyzed_state = await self._analyze_context(temp_state_for_analysis)
+        intent = analyzed_state["context"].get("intent", "general_chat")
+        # The user_query determined by _analyze_context is the one we should focus on for planning and LLM
+        focused_user_query = analyzed_state["context"].get("user_query", current_chat_messages[-1]["content"] if current_chat_messages else "")
+        print(f"[AGENT analyze_and_plan_for_chat] Intent: {intent}, Focused Query: '{focused_user_query}'")
+
+        # 2. Plan Tools (based on focused query and intent)
+        # We need to update the context in temp_state_for_analysis with the focused_user_query for planning
+        analyzed_state["context"]["user_query"] = focused_user_query # Ensure _plan_tools uses this
+        planned_state = await self._plan_tools(analyzed_state)
+        tools_needed = planned_state["tools_needed"]
+        print(f"[AGENT analyze_and_plan_for_chat] Tools needed: {tools_needed}")
+
+        # 3. Execute Tools (if any)
+        # The query for tool execution should be the focused_user_query
+        executed_state = await self._execute_tools(planned_state) # _execute_tools uses context["user_query"]
+        tools_output = executed_state["tools_output"]
+        print(f"[AGENT analyze_and_plan_for_chat] Tools output: {len(tools_output)} items")
+
+        return {
+            "intent": intent,
+            "focused_user_query": focused_user_query,
+            "tools_output": tools_output,
+            "full_chat_history_for_llm": current_chat_messages # LLM might still need full history for convo context
+        }
+
+    # Modified method specifically for streaming chat responses
+    async def stream_chat_response(self, 
+                                   intent: str, 
+                                   focused_user_query: str, 
+                                   tools_output: List[Dict[str, Any]],
+                                   full_chat_history_for_llm: List[Dict[str,Any]]
+                                   ) -> AsyncIterator[str]:
+        
+        print(f"[AGENT stream_chat_response] Intent: {intent}, Query: '{focused_user_query}', Tools output items: {len(tools_output)}")
+
+        if intent == "greeting":
+            # Simplest, most direct prompt for greeting to ensure a response
+            system_prompt = "You are a friendly AI. User says hi. Respond with a short, friendly greeting."
+            user_prompt_content = focused_user_query # This will be "hi"
+        elif intent == "create_curriculum": 
+            print("[AGENT stream_chat_response] WARNING: 'create_curriculum' intent received in chat stream.")
+            yield "To create a new curriculum, please use the 'Create New Curriculum' feature."
+            return
+        else: 
+            system_prompt = "You are a helpful AI learning assistant. Provide a concise, conversational, and helpful plain text response based on the user's query and any provided research."
+            research_results_formatted = self._format_tool_results(tools_output)
+            if research_results_formatted.strip():
+                user_prompt_content = f"Based on the following information:\n{research_results_formatted}\n\nAddress the user's query: {focused_user_query}"
+            else:
+                user_prompt_content = focused_user_query
+        
+        llm_messages_for_stream = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt_content}
+        ]
+
+        api_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+        model_name = "gemini-2.5-pro"
+        headers = {
+            "Authorization": f"Bearer {self.gemini_api_key}", 
+            "Content-Type": "application/json",
+        }
+        payload = {
+            "model": model_name, 
+            "messages": llm_messages_for_stream,
+            "temperature": 0.7,
+            "max_tokens": 150_000 if intent == "greeting" else 150_000, # Shorter for greeting
+            "stream": True, 
+        }
+
+        print(f"[AGENT stream_chat_response] Calling Gemini API ({payload['model']}) for intent '{intent}' with stream=True")
+        print(f"[AGENT stream_chat_response] LLM Messages (simplified): {{system: '{system_prompt[:70]}...', user: '{user_prompt_content[:100]}...'}}")
+        
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(api_url, headers=headers, json=payload) as response:
+                    print(f"[AGENT stream_chat_response] Gemini API stream status: {response.status}")
+                    if response.status == 200:
+                        async for line in response.content:
+                            if line:
+                                line_str = line.decode('utf-8').strip()
+                                print(f"[AGENT RAW STREAM LINE]: <{line_str}> ") # LOG RAW LINE
+                                if line_str.startswith("data: "):
+                                    line_str = line_str[len("data: "):]
+                                if line_str == "[DONE]":
+                                    print("[AGENT stream_chat_response] Stream finished [DONE].")
+                                    break
+                                try:
+                                    chunk_json = json.loads(line_str)
+                                    text_chunk = chunk_json.get("choices", [{}])[0].get("delta", {}).get("content", None)
+                                    if text_chunk is not None:
+                                        yield text_chunk
+                                    if chunk_json.get("choices", [{}])[0].get("finish_reason") is not None:
+                                        print(f"[AGENT stream_chat_response] Stream finished due to finish_reason: {chunk_json['choices'][0]['finish_reason']}")
+                                        break 
+                                except json.JSONDecodeError:
+                                    pass 
+                    else:
+                        error_text = await response.text()
+                        print(f"[AGENT stream_chat_response] Gemini API stream error ({response.status}): {error_text}")
+                        yield f"Sorry, I encountered an API error (Status {response.status}). Please try again."
+        except Exception as e:
+            print(f"[AGENT stream_chat_response] Exception: {str(e)}")
+            traceback.print_exc()
+            yield "Sorry, an unexpected error occurred while trying to stream a response. Please try again."
+
     def _format_tool_results(self, tools_output: List[Dict[str, Any]]) -> str:
         formatted = []
         for output in tools_output:

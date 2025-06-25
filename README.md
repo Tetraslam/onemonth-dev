@@ -17,7 +17,7 @@ The interface:
 The AI agent has access to:
 
 * The full curriculum
-* The user’s logbook (progress + reflections)
+* The user's logbook (progress + reflections)
 * User prefs (goal, time, difficulty, etc.)
 * Toolchain (search, scrape, solve, generate)
 
@@ -47,7 +47,7 @@ The AI agent has access to:
 * AI chat with full access to curriculum, logbook, and prefs
 * Weekly project tracking + journaling in the **Logbook**
 * Scheduled email reminders (via Resend) with progress recaps and next steps
-* Progress tracking: per-day completion checkmarks, visual timeline, and streak reminders
+* Progress tracking: (DONE ✅), visual timeline, and streak reminders
 * AI-generated **explanatory videos** using Remotion
 * Search across logbook entries (Typesense)
 * Resource quality filters: upvote/downvote AI picks, manual edit mode, summary blurbs

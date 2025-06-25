@@ -32,4 +32,13 @@ class UserProfileUpdate(BaseModel):
     full_name: Optional[str] = None
     avatar_url: Optional[str] = None
     bio: Optional[str] = None
-    preferences: Optional[Dict[str, Any]] = None 
+    preferences: Optional[Dict[str, Any]] = None
+
+
+class AuthenticatedUser(BaseModel):
+    id: UUID
+    email: EmailStr
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+    class Config:
+        from_attributes = True 

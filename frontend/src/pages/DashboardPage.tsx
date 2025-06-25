@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { supabase } from '@/lib/supabase'
-import { Plus, BookOpen, Clock, Zap, ArrowRight } from 'lucide-react'
+import { Plus, BookOpen, Clock, Zap, ArrowRight, Book } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 interface Curriculum {
@@ -38,18 +38,66 @@ export function DashboardPage() {
       }
 
       // Load user's curricula
-      // Simplified select to remove the problematic progress join for now
-      const { data, error } = await supabase
+      const { data: curriculaData, error: curriculaError } = await supabase
         .from('curricula')
-        .select('*') // Select all basic curriculum fields
+        .select('*') 
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
 
-      if (error) throw error
+      if (curriculaError) throw curriculaError;
+      if (!curriculaData) {
+        setCurricula([]);
+        setLoading(false);
+        return;
+      }
 
-      // We will need to fetch/calculate progress separately if needed on this page
-      // For now, curricula will not have the progress field directly populated here
-      setCurricula(data || []) 
+      // Fetch progress for each curriculum
+      const curriculaWithProgress = await Promise.all(
+        curriculaData.map(async (curriculum) => {
+          // Fetch days for the curriculum
+          const { data: daysData, error: daysError } = await supabase
+            .from('curriculum_days')
+            .select('id, curriculum_id') // Only need id and curriculum_id
+            .eq('curriculum_id', curriculum.id);
+
+          if (daysError) {
+            console.error(`Error fetching days for curriculum ${curriculum.id}:`, daysError);
+            return { ...curriculum, progress: { completed_days: 0 } }; // Default to 0 progress on error
+          }
+          if (!daysData || daysData.length === 0) {
+             // If a curriculum has no days, its total_days should be 0 or reflect that
+            return { ...curriculum, total_days: 0, progress: { completed_days: 0 } };
+          }
+          
+          const dayIds = daysData.map(d => d.id);
+
+          // Fetch progress for these days
+          const { data: progressData, error: progressError } = await supabase
+            .from('progress')
+            .select('day_id, completed_at')
+            .eq('user_id', user.id)
+            .eq('curriculum_id', curriculum.id)
+            .in('day_id', dayIds);
+
+          if (progressError) {
+            console.error(`Error fetching progress for curriculum ${curriculum.id}:`, progressError);
+            return { ...curriculum, total_days: daysData.length, progress: { completed_days: 0 } };
+          }
+
+          const completed_days = progressData?.length || 0;
+          
+          return {
+            ...curriculum,
+            total_days: daysData.length, // Ensure total_days is accurate based on actual days
+            progress: {
+              completed_days: completed_days,
+              // last_accessed could be added later if needed
+            }
+          };
+        })
+      );
+      
+      setCurricula(curriculaWithProgress);
     } catch (error) {
       console.error('Error loading curricula:', error)
       toast.error('Failed to load curricula')
@@ -78,6 +126,14 @@ export function DashboardPage() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-black">onemonth.dev</h1>
           <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/logbook')}
+              className="font-black bg-card"
+            >
+              <Book className="mr-2 h-4 w-4" />
+              Logbook
+            </Button>
             <Button
               variant="outline"
               onClick={handleSignOut}
@@ -149,6 +205,27 @@ export function DashboardPage() {
                     {curriculum.description}
                   </p>
                   
+                  {/* Progress Bar */}
+                  {curriculum.total_days > 0 && curriculum.progress && (
+                    <div className="mb-4">
+                      <div className="flex justify-between text-xs font-bold text-foreground/70 mb-1">
+                        <span>Progress</span>
+                        <span>{curriculum.progress.completed_days} / {curriculum.total_days} days</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-sm h-4 border-2 border-foreground neo-brutal-shadow-sm p-0.5">
+                        <div 
+                          className="bg-primary h-full rounded-sm transition-all duration-500 ease-out"
+                          style={{ width: `${(curriculum.progress.completed_days / curriculum.total_days) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {curriculum.total_days === 0 && (
+                     <div className="mb-4 text-xs font-bold text-foreground/70">
+                        No days defined for this curriculum yet.
+                     </div>
+                  )}
+
                   <div className="flex items-center justify-between text-sm font-bold">
                     <div className="flex items-center gap-2 text-foreground/60">
                       <Clock className="h-4 w-4" />

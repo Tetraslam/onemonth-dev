@@ -2,7 +2,8 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 import redis.asyncio as redis
-from app.api.endpoints import auth, chat, curricula, logbook, users
+from app.api.endpoints import (auth, chat, curricula, logbook, notifications,
+                               users)
 from app.core.config import settings
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -42,13 +43,21 @@ app = FastAPI(
 )
 
 # Configure CORS
+# Ensure this uses the parsed list from settings
+allowed_origins = settings.cors_origins_list
+if not allowed_origins: # Fallback if the list is somehow empty after parsing
+    print("Warning: CORS origins list is empty, falling back to default localhost:5173")
+    allowed_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url, "http://localhost:5173"],
+    allow_origins=allowed_origins, # Use the parsed list
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],  # Important for streaming
+    allow_methods=["*"], # Allows all methods
+    allow_headers=["*"], # Allows all headers
+    # expose_headers=["*"], # Exposing all headers might be too permissive for production
+                               # For streaming, specific headers like 'Content-Type' are usually enough
+                               # if needed. Often not required if allow_origins is correct.
 )
 
 # Include routers
@@ -57,6 +66,7 @@ app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(curricula.router, prefix="/api/curricula", tags=["curricula"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(logbook.router, prefix="/api/logbook", tags=["logbook"])
+app.include_router(notifications.router, prefix="/api/notifications", tags=["notifications"])
 
 
 @app.get("/api/health")

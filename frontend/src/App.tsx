@@ -6,6 +6,7 @@ import { LandingPage } from '@/pages/LandingPage'
 import { AuthPage } from '@/pages/AuthPage'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { CurriculumPage } from '@/pages/CurriculumPage'
+import { LogbookPage } from '@/pages/LogbookPage'
 import './App.css'
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/auth" element={!session ? <AuthPage /> : <Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={session ? <DashboardPage /> : <Navigate to="/auth" />} />
         <Route path="/curriculum/:id" element={session ? <CurriculumPage /> : <Navigate to="/auth" />} />
+        <Route path="/logbook" element={session ? <LogbookPage /> : <Navigate to="/auth" />} />
       </Routes>
     </Router>
   )

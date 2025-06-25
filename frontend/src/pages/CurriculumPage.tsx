@@ -9,54 +9,118 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 
+// Define interfaces for better type safety
+interface Day {
+  id: string;
+  day_number: number;
+  title: string;
+  content: any; // Or a more specific type for rich text JSON
+  resources: any[];
+  estimated_hours?: number;
+  completed?: boolean; // Added for progress tracking
+  // curriculum_id is implicitly known by its association
+}
+
+interface Curriculum {
+  id: string;
+  title: string;
+  difficulty_level?: string;
+  learning_goal?: string; // Added from backend model
+  // Add other curriculum fields as needed from your Pydantic model
+}
+
 export function CurriculumPage() {
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>() // Typed useParams
   const navigate = useNavigate()
-  const [curriculum, setCurriculum] = useState<any>(null)
-  const [days, setDays] = useState<any[]>([])
-  const [selectedDay, setSelectedDay] = useState<any>(null)
+  const [curriculum, setCurriculum] = useState<Curriculum | null>(null)
+  const [days, setDays] = useState<Day[]>([])
+  const [selectedDay, setSelectedDay] = useState<Day | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (id && id !== 'new') {
-      fetchCurriculum()
+      fetchCurriculumAndProgress()
     } else if (id === 'new') {
       setLoading(false)
     }
   }, [id])
 
-  const fetchCurriculum = async () => {
-    setLoading(true) // Ensure loading is true at the start
+  const fetchCurriculumAndProgress = async () => {
+    setLoading(true)
+    if (!id) return; // Should not happen if id !== 'new'
+
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("User not authenticated.");
+        navigate("/auth");
+        return;
+      }
+
+      // Fetch curriculum details
       const { data: curriculumData, error: curriculumError } = await supabase
         .from('curricula')
         .select('*')
         .eq('id', id)
+        .eq('user_id', user.id) // Ensure user owns this curriculum
         .single()
 
-      if (curriculumError) throw curriculumError
-      setCurriculum(curriculumData)
+      if (curriculumError) throw curriculumError;
+      if (!curriculumData) throw new Error("Curriculum not found or not authorized.");
+      setCurriculum(curriculumData);
 
+      // Fetch days for the curriculum
       const { data: daysData, error: daysError } = await supabase
         .from('curriculum_days')
         .select('*')
         .eq('curriculum_id', id)
-        .order('day_number')
+        .order('day_number');
 
-      if (daysError) throw daysError
-      setDays(daysData || [])
+      if (daysError) throw daysError;
+      if (!daysData) throw new Error("No days found for this curriculum.");
+
+      // Fetch progress for these days for the current user
+      const dayIds = daysData.map(d => d.id);
+      const { data: progressData, error: progressError } = await supabase
+        .from('progress')
+        .select('day_id, completed_at')
+        .eq('user_id', user.id)
+        .eq('curriculum_id', id)
+        .in('day_id', dayIds);
       
-      if (daysData && daysData.length > 0) {
-        setSelectedDay(daysData[0])
+      if (progressError) throw progressError;
+
+      const completedDayIds = new Set(progressData?.map(p => p.day_id) || []);
+
+      const daysWithProgress = daysData.map(day => ({
+        ...day,
+        completed: completedDayIds.has(day.id)
+      }));
+
+      setDays(daysWithProgress);
+      
+      if (daysWithProgress.length > 0) {
+        setSelectedDay(daysWithProgress[0]);
       }
+
     } catch (error: any) {
-      toast.error('Failed to fetch curriculum details.')
-      console.error("Fetch curriculum error:", error)
-      navigate('/dashboard')
+      toast.error(error.message || 'Failed to fetch curriculum details.');
+      console.error("Fetch curriculum error:", error);
+      navigate('/dashboard');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  // Callback function to update a day's completion status
+  const handleDayCompletionUpdate = (dayId: string, isCompleted: boolean) => {
+    setDays(prevDays => prevDays.map(day => 
+      day.id === dayId ? { ...day, completed: isCompleted } : day
+    ));
+    if (selectedDay && selectedDay.id === dayId) {
+      setSelectedDay(prev => prev ? { ...prev, completed: isCompleted } : null);
+    }
+  };
 
   if (loading) {
     return (
@@ -111,7 +175,7 @@ export function CurriculumPage() {
       <div className="flex-1 flex overflow-hidden">
         <div className="w-[280px] bg-card border-r-4 border-foreground flex-shrink-0 overflow-y-auto">
           <FileTree 
-            days={days} 
+            days={days} // Now days include 'completed' status
             selectedDay={selectedDay}
             onSelectDay={setSelectedDay}
             curriculumTitle={curriculum?.title}
@@ -120,8 +184,9 @@ export function CurriculumPage() {
 
         <div className="flex-1 bg-background overflow-y-auto min-w-0">
           <ContentView 
-            day={selectedDay}
+            day={selectedDay} // selectedDay now includes 'completed' status
             curriculum={curriculum}
+            onDayCompletionUpdate={handleDayCompletionUpdate} // Pass callback
           />
         </div>
 

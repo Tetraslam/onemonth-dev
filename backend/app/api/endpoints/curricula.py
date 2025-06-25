@@ -1,24 +1,34 @@
 import json
+import traceback
+from datetime import datetime
 from typing import Any, Dict, List
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from app.agents.curriculum_agent import curriculum_agent
 from app.core.auth import get_current_user
 from app.db.supabase_client import supabase
 from app.models.curriculum import (Curriculum, CurriculumCreate, CurriculumDay,
                                    CurriculumDayCreate)
-from fastapi import APIRouter, Depends, HTTPException
+from app.models.user import AuthenticatedUser
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 
 router = APIRouter()
 
+class ProgressRecord(BaseModel):
+    id: UUID
+    user_id: UUID
+    curriculum_id: UUID
+    day_id: UUID
+    completed_at: datetime
 
 @router.post("/", response_model=Curriculum)
 async def create_curriculum(
     curriculum_data: CurriculumCreate,
-    current_user: Dict[str, Any] = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(get_current_user)
 ):
     """Create a new curriculum for the current user."""
-    user_id = current_user.get("id")
+    user_id = current_user.id
     if not user_id:
         raise HTTPException(status_code=403, detail="User ID not found in token")
 
@@ -228,33 +238,135 @@ async def create_curriculum(
     except Exception as e:
         # Log the full error for debugging
         print(f"Unexpected error creating curriculum: {str(e)}")
-        import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
 
 @router.get("/", response_model=List[Curriculum])
-async def list_curricula(current_user: Dict[str, Any] = Depends(get_current_user)):
+async def list_curricula(current_user: AuthenticatedUser = Depends(get_current_user)):
     """List all curricula for the current user."""
-    user_id = current_user.get("id")
+    user_id = current_user.id
     if not user_id:
         raise HTTPException(status_code=403, detail="User ID not found in token")
 
-    response = supabase.table("curricula").select("*").eq("user_id", user_id).order("created_at", desc=True).execute()
+    response = supabase.table("curricula").select("*").eq("user_id", str(user_id)).order("created_at", desc=True).execute()
+    
     if response.data:
-        return response.data
+        processed_curricula = []
+        for item in response.data:
+            # Map database fields to Pydantic model fields
+            item["learning_goal"] = item.get("topic") or item.get("goal")
+            
+            metadata_from_db = item.get("metadata", {})
+            item["prerequisites"] = metadata_from_db.get("prerequisites")
+            item["daily_time_commitment_minutes"] = metadata_from_db.get("daily_time_commitment_minutes")
+            item["learning_style"] = metadata_from_db.get("learning_style")
+            
+            try:
+                processed_curricula.append(Curriculum(**item))
+            except Exception as e:
+                print(f"Error validating curriculum data for ID {item.get('id')}: {str(e)}")
+                traceback.print_exc()
+                # Optionally, skip this item or raise an error if strict validation is required
+                # For now, we'll skip problematic items to avoid breaking the whole list
+                continue
+        return processed_curricula
     return []
 
 # Placeholder for GET /curriculum/{id}
 @router.get("/{curriculum_id}", response_model=Curriculum)
 async def get_curriculum(
     curriculum_id: str,
-    current_user: Dict[str, Any] = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(get_current_user)
 ):
-    user_id = current_user.get("id")
-    response = supabase.table("curricula").select("*").eq("id", curriculum_id).eq("user_id", user_id).maybe_single().execute()
+    user_id = current_user.id
+    response = supabase.table("curricula").select("*").eq("id", curriculum_id).eq("user_id", str(user_id)).maybe_single().execute()
     if response.data:
         return response.data
     raise HTTPException(status_code=404, detail="Curriculum not found")
+
+# New endpoint to mark a day as complete
+@router.post("/{curriculum_id}/days/{day_id}/complete", status_code=status.HTTP_201_CREATED, response_model=ProgressRecord)
+async def mark_day_complete(
+    curriculum_id: UUID,
+    day_id: UUID,
+    current_user: AuthenticatedUser = Depends(get_current_user)
+):
+    user_id_str = str(current_user.id)
+    if not user_id_str:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User ID not found in token")
+
+    s_curriculum_id = str(curriculum_id)
+    s_day_id = str(day_id)
+
+    # Validate day belongs to curriculum
+    day_check_response = (
+        supabase.table("curriculum_days")
+        .select("id", count='exact') # Using count='exact' for existence check
+        .eq("id", s_day_id)
+        .eq("curriculum_id", s_curriculum_id)
+        .execute()
+    )
+    # Check if count is 0 or data is empty (PostgREST v1+ might return count in response)
+    # A more robust check for PostgREST v0.x (older Supabase client libs) is just to check if data is empty.
+    if not (day_check_response.data and len(day_check_response.data) > 0):
+        # If count attribute is available and reliable (depends on Supabase client version & PostgREST version):
+        # if hasattr(day_check_response, 'count') and (day_check_response.count is None or day_check_response.count == 0):
+        #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Day not found in this curriculum (count check)")
+        # elif not day_check_response.data: # Fallback for older clients or if count is not definitive
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Day not found in this curriculum (data check)")
+
+    # Check if progress record already exists
+    existing_progress_response = (
+        supabase.table("progress")
+        .select("*")  # Fetch all columns to match ProgressRecord model
+        .eq("user_id", user_id_str)
+        .eq("curriculum_id", s_curriculum_id)
+        .eq("day_id", s_day_id)
+        .maybe_single() # Use maybe_single to get one or None
+        .execute()
+    )
+
+    if existing_progress_response and existing_progress_response.data: # .data will be a dict if row exists, or None if no row with maybe_single()
+        print(f"[PROGRESS DEBUG] Day '{s_day_id}' for curriculum '{s_curriculum_id}' already marked complete. Returning existing.")
+        return ProgressRecord(**existing_progress_response.data)
+
+    # Create new progress record
+    new_progress_id = uuid4()
+    progress_data_to_insert = {
+        "id": str(new_progress_id),
+        "user_id": user_id_str,
+        "curriculum_id": s_curriculum_id,
+        "day_id": s_day_id,
+        "completed_at": datetime.utcnow().isoformat() + "+00:00"
+    }
+
+    try:
+        print(f"[PROGRESS DEBUG] Inserting new progress record: {progress_data_to_insert}")
+        insert_response = (
+            supabase.table("progress")
+            .insert(progress_data_to_insert)
+            .execute()
+        )
+        
+        if insert_response.data and len(insert_response.data) > 0:
+            print(f"[PROGRESS DEBUG] Insert successful: {insert_response.data[0]}")
+            return ProgressRecord(**insert_response.data[0])
+        else:
+            error_detail = "Failed to mark day as complete."
+            # Error handling for Supabase client v1.x might involve checking insert_response.error
+            if hasattr(insert_response, 'error') and insert_response.error:
+                 error_msg = getattr(insert_response.error, 'message', str(insert_response.error))
+                 error_detail += f" DB Error: {error_msg}"
+            # For Supabase client v2.x (postgrest-py v0.11+), errors are usually raised as exceptions
+            print(f"[PROGRESS DEBUG] Failed to insert progress. Supabase response was not as expected or contained an error if v1.x client: {insert_response}")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=error_detail)
+            
+    except HTTPException: 
+        raise
+    except Exception as e: # Catch other potential errors (e.g., direct exceptions from Supabase client v2+)
+        print(f"[PROGRESS DEBUG] Exception marking day complete: {type(e).__name__} - {str(e)}")
+        traceback.print_exc()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error marking day as complete: {str(e)}")
 
 # We will also need PUT and DELETE later 
