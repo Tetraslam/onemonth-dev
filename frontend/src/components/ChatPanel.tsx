@@ -1,16 +1,25 @@
-import { useChat, type Message } from '@ai-sdk/react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Send, Loader2, Bot, User, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { supabase } from '@/lib/supabase'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface ChatPanelProps {
   curriculum: any
   currentDay: any
+}
+
+// Define a local Message type
+interface LocalMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  createdAt?: Date;
 }
 
 export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
@@ -18,128 +27,24 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
   const [showSuggestions, setShowSuggestions] = useState(true)
   const [chatApiUrl, setChatApiUrl] = useState<string | undefined>(undefined)
   const [isChatReady, setIsChatReady] = useState(false)
-  const [fetchedMessages, setFetchedMessages] = useState<Message[] | undefined>(undefined)
+  
+  // Local state for messages, input, and loading status
+  const [messages, setMessages] = useState<LocalMessage[]>([])
+  const [draft, setDraft] = useState<string>('') // User's current input
+  const [isLoading, setIsLoading] = useState(false) // For AI response loading
+  const [toolStatusMessage, setToolStatusMessage] = useState<string | null>(null) // New state for tool status
+
   const [isLoadingHistory, setIsLoadingHistory] = useState(false)
   const prevCurriculumIdRef = useRef<string | null | undefined>(null)
-  const messagesRef = useRef<Message[]>([])
-
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, error } = useChat({
-    api: chatApiUrl,
-    initialMessages: fetchedMessages,
-    headers: async () => {
-      const session = await supabase.auth.getSession()
-      return {
-        Authorization: `Bearer ${session.data.session?.access_token || ''}`,
-      }
-    },
-    body: {
-      curriculum_id: curriculum?.id,
-      current_day_title: currentDay?.title,
-      current_day_number: currentDay?.day_number,
-      curriculum_title: curriculum?.title,
-      learning_goal: curriculum?.learning_goal,
-      difficulty_level: curriculum?.difficulty_level
-    },
-    onFinish: async (assistantMessage) => {
-      setShowSuggestions(false)
-
-      const currentMessages = messagesRef.current; 
-      console.log("[ChatPanel onFinish] Triggered. Assistant message (from arg) ID:", assistantMessage.id, "Content:", assistantMessage.content.substring(0,50)+"...");
-      console.log("[ChatPanel onFinish] messagesRef.current at time of onFinish (length " + currentMessages.length + ") Last 2:", JSON.stringify(currentMessages.slice(-2)));
-
-      if (!curriculum?.id) {
-        console.warn("[ChatPanel onFinish] No curriculum ID, cannot save chat turn.");
-        return;
-      }
-      
-      const assistantMessageInStateIndex = currentMessages.findIndex(m => m.id === assistantMessage.id);
-      console.log("[ChatPanel onFinish] Index of assistantMessage (from arg) in messagesRef.current:", assistantMessageInStateIndex);
-
-      if (assistantMessageInStateIndex === -1) {
-        console.warn("[ChatPanel onFinish] Assistant message (from arg) not found in current messagesRef. Cannot reliably save turn.");
-        return;
-      }
-
-      let userMessageForThisTurn: Message | null = null;
-      // Search backwards from the position *before* the assistant message in the state
-      for (let i = assistantMessageInStateIndex - 1; i >= 0; i--) {
-        if (currentMessages[i]?.role === 'user') {
-          userMessageForThisTurn = currentMessages[i];
-          break;
-        }
-      }
-      
-      // The assistant message from state should be the one we found by index
-      const assistantMessageFromState = currentMessages[assistantMessageInStateIndex];
-
-      if (userMessageForThisTurn && assistantMessageFromState) {
-        console.log("[ChatPanel onFinish] Found User Message (searching backwards):", JSON.stringify(userMessageForThisTurn));
-        console.log("[ChatPanel onFinish] Pairing with Assistant Message (from state at index):", JSON.stringify(assistantMessageFromState));
-        
-        // Final check: ensure the assistant message from state (at the found index) matches the one from onFinish argument
-        if (assistantMessageFromState.id !== assistantMessage.id) {
-            console.error("[ChatPanel onFinish] CRITICAL: Mismatch between assistantMessage from arg and from state after findIndex. This should not happen.",
-                { argId: assistantMessage.id, stateId: assistantMessageFromState.id });
-            return; // Don't save if there's a critical mismatch
-        }
-
-        try {
-          const session = await supabase.auth.getSession();
-          const token = session.data.session?.access_token;
-          if (!token) {
-            toast.error("Auth error saving chat turn.");
-            return;
-          }
-
-          const appendTurnApiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/chat/append_turn`;
-          
-          const response = await fetch(appendTurnApiUrl, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              curriculum_id: curriculum.id,
-              user_message: { role: 'user', content: userMessageForThisTurn.content },
-              // Use the content from assistantMessage (arg) as it's the definitive one for this onFinish event
-              assistant_message: { role: 'assistant', content: assistantMessage.content }, 
-            }),
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ detail: "Failed to save chat turn" }));
-            throw new Error(errorData.detail || `HTTP error ${response.status}`);
-          }
-          const saveData = await response.json();
-          console.log("[ChatPanel onFinish] Chat turn saved successfully.", saveData);
-        } catch (error: any) {
-          console.error("[ChatPanel onFinish] Error saving chat turn:", error);
-          toast.error(`Could not save chat: ${error.message}`);
-        }
-      } else {
-        console.warn("[ChatPanel onFinish] Could not find a preceding user message for the assistant response, or assistant message anomaly.", {
-          foundUserMsg: !!userMessageForThisTurn,
-          assistantMessageFromStateExists: !!assistantMessageFromState
-        });
-      }
-    },
-    onError: (error) => {
-      console.error('Chat error:', error)
-      toast.error(`Chat error: ${error.message}`)
-    },
-  })
-
-  useEffect(() => {
-    messagesRef.current = messages;
-  }, [messages]);
+  const historyLoadedForCurriculumIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     const currentCurriculumId = curriculum?.id
     if (prevCurriculumIdRef.current !== currentCurriculumId) {
-      console.log("ChatPanel: Curriculum ID changed. Resetting fetchedMessages.")
-      setFetchedMessages(undefined)
-      setIsLoadingHistory(false)
+      console.log("ChatPanel: Curriculum ID changed. Resetting history loaded flag and messages.")
+      historyLoadedForCurriculumIdRef.current = null;
+      setMessages([]); 
+      setIsLoadingHistory(false);
     }
     prevCurriculumIdRef.current = currentCurriculumId
 
@@ -149,9 +54,10 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
         const token = session.data.session?.access_token
         if (token) {
           const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-          setChatApiUrl(`${baseUrl}/api/chat/stream?token=${encodeURIComponent(token)}`)
+          // Ensure this points to the LangChain stream endpoint
+          setChatApiUrl(`${baseUrl}/api/chat/lc_stream?token=${encodeURIComponent(token)}`)
           setIsChatReady(true)
-          console.log("ChatPanel: Stream API URL with token configured.")
+          console.log("ChatPanel: Stream API URL configured for LANGCHAIN endpoint (/lc_stream).")
         } else {
           console.error("ChatPanel: No auth token found for chat stream. Chat will be disabled.")
           setIsChatReady(false)
@@ -162,11 +68,11 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
       }
     }
     initializeChat()
-  }, [curriculum?.id])
+  }, [curriculum?.id, setMessages]);
   
   useEffect(() => {
     const fetchChatHistory = async () => {
-      if (!isChatReady || !curriculum?.id || isLoadingHistory || fetchedMessages !== undefined) {
+      if (!isChatReady || !curriculum?.id || isLoadingHistory || historyLoadedForCurriculumIdRef.current === curriculum.id) {
         return;
       }
 
@@ -178,7 +84,6 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
         if (!token) {
           toast.error("Auth error fetching chat history.");
           setIsLoadingHistory(false);
-          setFetchedMessages([]);
           return;
         }
 
@@ -198,26 +103,27 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
 
         const historyData = await response.json();
         
-        const mappedMessages: Message[] = (historyData.messages || []).map((msg: any, index: number) => ({
+        const mappedMessages: LocalMessage[] = (historyData.messages || []).map((msg: any, index: number) => ({
           id: `hist-${curriculum.id}-${index}-${new Date().getTime()}`,
           role: msg.role === 'user' ? 'user' : 'assistant',
           content: msg.content,
+          createdAt: msg.created_at ? new Date(msg.created_at) : new Date() // Assuming created_at from DB
         }));
         
-        setFetchedMessages(mappedMessages);
-        console.log(`ChatPanel: Fetched ${mappedMessages.length} messages from history.`);
+        setMessages(mappedMessages); // Use local setMessages
+        historyLoadedForCurriculumIdRef.current = curriculum.id;
+        console.log(`ChatPanel: Fetched and set ${mappedMessages.length} messages from history for ${curriculum.id}.`);
 
       } catch (error: any) {
         console.error("ChatPanel: Error fetching chat history:", error);
         toast.error(`Could not load chat history: ${error.message}`);
-        setFetchedMessages([]);
       } finally {
         setIsLoadingHistory(false);
       }
     };
 
     fetchChatHistory();
-  }, [isChatReady, curriculum?.id, fetchedMessages, isLoadingHistory]);
+  }, [isChatReady, curriculum?.id, setMessages]); // setMessages from useState is stable
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -225,7 +131,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
     }
   }, [messages])
 
-  const formatTime = (timestamp?: number | Date) => {
+  const formatTime = (timestamp?: Date) => { // Updated to accept Date
     if (!timestamp) return ''
     return new Date(timestamp).toLocaleTimeString('en-US', { 
       hour: 'numeric', 
@@ -235,8 +141,8 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
   }
 
   const handleSuggestionClick = (suggestion: string) => {
-    if (!isChatReady) return;
-    setInput(suggestion)
+    if (!isChatReady || isLoading) return;
+    setDraft(suggestion); 
   }
 
   useEffect(() => {
@@ -246,6 +152,182 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
       setShowSuggestions(false)
     }
   }, [messages])
+
+  const handleDraftChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDraft(e.target.value)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!draft.trim() || isLoading || !isChatReady || !chatApiUrl) return;
+
+    const userMessage: LocalMessage = {
+        id: `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        role: 'user',
+        content: draft,
+        createdAt: new Date(),
+    };
+
+    // Add user message to UI immediately
+    setMessages(prevMessages => [...prevMessages, userMessage]);
+    const currentDraftForApi = draft; // Capture draft before clearing for this request
+    setDraft(''); 
+    setIsLoading(true);
+    setToolStatusMessage(null); // Reset tool status at the beginning of a new submission
+    setShowSuggestions(false);
+
+    let assistantResponseContent = "";
+    const assistantIdForThisStream = `assistant-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    let tempAssistantMessageAdded = false;
+    
+    // let fullRawStreamedTextDebug = ""; // Keep for targeted debugging if needed
+
+    try {
+        const response = await fetch(chatApiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
+                curriculum_id: curriculum?.id,
+                current_day_title: currentDay?.title,
+                current_day_number: currentDay?.day_number,
+                curriculum_title: curriculum?.title,
+                learning_goal: curriculum?.learning_goal,
+                difficulty_level: curriculum?.difficulty_level,
+            }),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ detail: "Chat API request failed with no JSON body" }));
+            throw new Error(errorData.detail || `HTTP error ${response.status}`);
+        }
+        if (!response.body) {
+            throw new Error("Response body is null");
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let accumulatedData = '';
+        let logicalStreamEnd = false;
+
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                console.log("[ChatPanel Stream] Reader done.");
+                if (accumulatedData.trim().length > 0 && !accumulatedData.includes("__END_OF_AI_STREAM__")) {
+                    console.warn("[ChatPanel Stream] Ended with unprocessed data:", JSON.stringify(accumulatedData));
+                    assistantResponseContent += accumulatedData.trim(); 
+                    setToolStatusMessage(null);
+                }
+                break; 
+            }
+
+            accumulatedData += decoder.decode(value, { stream: true });
+            // fullRawStreamedTextDebug += decoder.decode(value, {stream: false}); 
+            
+            const linesFromChunk = accumulatedData.split('\n');
+            if (linesFromChunk.length > 0) {
+                accumulatedData = linesFromChunk.pop() || ''; 
+            }
+
+            for (const line of linesFromChunk) { 
+                const trimmedLine = line.trim();
+                if (!trimmedLine) continue;
+
+                console.log("[ChatPanel STREAM PROCESSED LINE]:", JSON.stringify(trimmedLine));
+
+                if (trimmedLine.startsWith("__TOOL_START__!")) {
+                    try {
+                        const payload = JSON.parse(trimmedLine.substring("__TOOL_START__!".length));
+                        const inputSummary = typeof payload.input === 'string' ? payload.input : JSON.stringify(payload.input);
+                        setToolStatusMessage(`Using ${payload.name} for: '${inputSummary.substring(0, 40)}...'`);
+                        console.log("[ChatPanel Tool Start]:", payload.name, payload.input);
+                        assistantResponseContent = ""; // Clear any intermediate LLM thoughts if tool starts
+                        if (tempAssistantMessageAdded) {
+                            setMessages(prev => prev.map(m => m.id === assistantIdForThisStream ? { ...m, content: "" } : m));
+                        }
+                    } catch (e) { console.error("Error parsing TOOL_START JSON", e); setToolStatusMessage("Processing tool..."); }
+                } else if (trimmedLine.startsWith("__TOOL_END__!")) {
+                    try {
+                        const payload = JSON.parse(trimmedLine.substring("__TOOL_END__!".length));
+                        setToolStatusMessage(`${payload.name} finished. Synthesizing answer...`);
+                        console.log("[ChatPanel Tool End]:", payload.name);
+                    } catch (e) { console.error("Error parsing TOOL_END JSON", e); setToolStatusMessage("Tool finished...");}
+                } else if (trimmedLine === "__END_OF_AI_STREAM__") {
+                    console.log("[ChatPanel PlainText Stream] Exact End signal __END_OF_AI_STREAM__ received.");
+                    setToolStatusMessage(null); 
+                    logicalStreamEnd = true;
+                    break; 
+                } else {
+                    setToolStatusMessage(null); // AI is generating text, clear tool status
+                    assistantResponseContent += trimmedLine + "\n"; 
+                    
+                    // console.log("[ChatPanel DEBUG] Accumulating content: ", JSON.stringify(assistantResponseContent.substring(0,100)));
+
+                    if (!tempAssistantMessageAdded) {
+                        setMessages(prev => [...prev, { id: assistantIdForThisStream, role: 'assistant', content: assistantResponseContent.trimEnd(), createdAt: new Date() }]);
+                        tempAssistantMessageAdded = true;
+                    } else {
+                        setMessages(prev => prev.map(m => 
+                            m.id === assistantIdForThisStream ? { ...m, content: assistantResponseContent.trimEnd() } : m
+                        ));
+                    }
+                }
+            }
+            if (logicalStreamEnd) break; 
+        }
+        // --- End of stream reading loop ---
+        if (assistantResponseContent.includes("__END_OF_AI_STREAM__")) {
+             assistantResponseContent = assistantResponseContent.replace(/__END_OF_AI_STREAM__/g, "").trim();
+        }
+        if (tempAssistantMessageAdded) {
+            setMessages(prev => prev.map(m => m.id === assistantIdForThisStream ? { ...m, content: assistantResponseContent.trim() } : m));
+        } else if (assistantResponseContent.trim() !== "") {
+             setMessages(prev => [...prev, { id: assistantIdForThisStream, role: 'assistant', content: assistantResponseContent.trim(), createdAt: new Date() }]);
+        }
+        // console.log("[ChatPanel ACCUMULATED RAW FOR DEBUG]:", JSON.stringify(fullRawStreamedTextDebug));
+        console.log("[ChatPanel FINAL assistantResponseContent FOR SAVE]:", JSON.stringify(assistantResponseContent.trim()));
+        
+        // Save the turn 
+        if (curriculum?.id && assistantResponseContent.trim()) {
+            try {
+                const session = await supabase.auth.getSession();
+                const token = session.data.session?.access_token;
+                if (!token) throw new Error("Auth token not found for saving turn.");
+
+                const appendTurnApiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/chat/append_turn`;
+                const saveResponse = await fetch(appendTurnApiUrl, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        curriculum_id: curriculum.id,
+                        user_message: { role: 'user', content: userMessage.content }, 
+                        assistant_message: { role: 'assistant', content: assistantResponseContent.trim() }, 
+                    }),
+                });
+                if (!saveResponse.ok) {
+                    const errorData = await saveResponse.json().catch(() => ({ detail: "Failed to save chat turn" }));
+                    throw new Error(errorData.detail || `HTTP error ${saveResponse.status}`);
+                }
+                console.log("[ChatPanel Save Turn] Chat turn saved successfully.");
+            } catch (saveError: any) {
+                console.error("[ChatPanel Save Turn] Error saving chat turn:", saveError);
+                toast.error(`Could not save chat: ${saveError.message}`);
+            }
+        } else if (curriculum?.id) {
+            console.log("[ChatPanel Save Turn] No assistant content to save for turn.");
+        }
+
+    } catch (err: any) {
+        console.error("Chat fetch/stream error:", err);
+        toast.error(`Chat error: ${err.message}`);
+        setMessages(prevMessages => prevMessages.filter(msg => msg.id !== userMessage.id));
+    } finally {
+        setIsLoading(false);
+        setToolStatusMessage(null); // Ensure tool status is cleared on finish/error
+    }
+  }
 
   return (
     <div className="h-full w-full min-w-0 flex flex-col bg-card text-foreground overflow-hidden">
@@ -266,7 +348,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
           {messages.map((message) => (
             <div key={message.id} className={cn(
               "flex items-start gap-3",
-              message.role === 'user' ? "justify-end" : ""
+              message.role === 'user' ? "justify-end" : "justify-start"
             )}>
               {message.role !== 'user' && (
                 <div className="w-8 h-8 rounded-md border-2 border-foreground bg-secondary flex items-center justify-center flex-shrink-0 neo-brutal-shadow-sm">
@@ -284,12 +366,20 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                     {message.role === 'user' ? 'You' : 'AI Tutor'}
                   </span>
                   <span className="text-xs text-current/70 font-medium">
-                    {formatTime(message.createdAt)}
+                    {formatTime(message.createdAt)} 
                   </span>
                 </div>
-                <div className="text-sm whitespace-pre-wrap break-words">
-                  {message.content}
-                </div>
+                {message.role === 'user' ? (
+                  <div className="text-sm whitespace-pre-wrap break-words">
+                    {message.content}
+                  </div>
+                ) : (
+                  <div className="text-sm prose prose-sm max-w-none dark:prose-invert prose-p:my-1 prose-li:my-0.5">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {message.content}
+                    </ReactMarkdown>
+                  </div>
+                )}
               </div>
               {message.role === 'user' && (
                  <div className="w-8 h-8 rounded-md border-2 border-foreground bg-accent flex items-center justify-center flex-shrink-0 neo-brutal-shadow-sm">
@@ -299,22 +389,36 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
             </div>
           ))}
           
-          {isLoading && messages[messages.length -1]?.role === 'user' && (
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-md border-2 border-foreground bg-secondary flex items-center justify-center flex-shrink-0 neo-brutal-shadow-sm">
-                <Bot className="w-4 h-4 text-secondary-foreground" strokeWidth={2.5} />
+          {/* Display Tool Status */} 
+          {toolStatusMessage && (
+              <div className="flex items-start gap-3 px-4 py-1 justify-start">
+                   <div className="w-8 h-8 rounded-md border-2 border-foreground bg-secondary flex items-center justify-center flex-shrink-0 neo-brutal-shadow-sm">
+                      <Bot className="w-4 h-4 text-secondary-foreground" strokeWidth={2.5}/>
+                  </div>
+                  <div className="max-w-[80%] p-2.5 rounded-lg border-2 border-foreground/30 bg-card text-foreground/80 neo-brutal-shadow-sm italic flex items-center gap-2 text-xs">
+                      <Loader2 className="w-3.5 h-3.5 animate-spin flex-shrink-0" /> 
+                      <span>{toolStatusMessage}</span>
+                  </div>
               </div>
-              <div className="bg-card text-foreground p-3 rounded-lg border-2 border-foreground neo-brutal-shadow-sm">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 bg-foreground/70 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-foreground/70 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 bg-foreground/70 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              </div>
-            </div>
           )}
 
-          {showSuggestions && isChatReady && (
+          {/* Main loading indicator (dots for AI "typing" final answer) */} 
+          {isLoading && !toolStatusMessage && messages.length > 0 && messages[messages.length -1]?.role === 'user' && (
+              <div className="flex items-start gap-3"> 
+                  <div className="w-8 h-8 rounded-md border-2 border-foreground bg-secondary flex items-center justify-center flex-shrink-0 neo-brutal-shadow-sm">
+                      <Bot className="w-4 h-4 text-secondary-foreground" strokeWidth={2.5} />
+                  </div>
+                  <div className="bg-card text-foreground p-3 rounded-lg border-2 border-foreground neo-brutal-shadow-sm">
+                      <div className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 bg-foreground/70 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <div className="w-2 h-2 bg-foreground/70 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <div className="w-2 h-2 bg-foreground/70 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                  </div>
+              </div>
+          )}
+
+          {showSuggestions && !isLoading && !toolStatusMessage && (messages.length === 0 || messages.every(m => m.role !== 'user')) && (
             <div className="pt-4 text-center">
               <Sparkles className="w-10 h-10 mx-auto mb-3 text-primary" strokeWidth={1.5}/>
               <p className="text-sm font-bold text-foreground/80 mb-3">
@@ -351,7 +455,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
               </div>
             </div>
           )}
-          {!isChatReady && (
+          {!isChatReady && !isLoading && !toolStatusMessage && (
             <div className="pt-4 text-center">
                 <Loader2 className="w-10 h-10 mx-auto mb-3 text-primary animate-spin"/>
                 <p className="text-sm font-bold text-foreground/80 mb-3">
@@ -365,8 +469,8 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
       {/* Input */}
       <form onSubmit={handleSubmit} className="p-3 border-t-2 border-foreground flex gap-2 items-center flex-shrink-0">
         <Input
-          value={input}
-          onChange={handleInputChange}
+          value={draft}
+          onChange={handleDraftChange}
           placeholder={isChatReady ? "Ask a question..." : "Connecting to AI..."}
           className="flex-1 h-10 bg-card text-foreground placeholder:text-foreground/60 focus-visible:ring-primary"
           disabled={!isChatReady || isLoading}
@@ -374,7 +478,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
         <Button 
           type="submit" 
           size="icon" 
-          disabled={!isChatReady || isLoading || !input.trim()}
+          disabled={!isChatReady || isLoading || !draft.trim()}
           className="h-10 w-10 shrink-0"
           title={!isChatReady ? "Chat is not ready" : "Send message"}
         >

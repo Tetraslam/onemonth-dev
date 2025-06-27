@@ -52,13 +52,20 @@ async def create_curriculum(
             and a list of 'days'. Each day object in the list should have:
             - 'day_number' (int)
             - 'title' (str, concise title for the day)
-            - 'content' (dict, rich text content for the learning module, e.g., {{"type": "paragraph", "children": [{{"text": "..."}}]}})
+            - 'content' (dict, TipTap/ProseMirror JSON object for the learning module. This object MUST have a root 'type': 'doc' and a 'content' array. This array should contain a sequence of nodes representing the day's lesson. Structure each day's lesson content with the following sections, using appropriate TipTap/ProseMirror nodes (like 'heading' with levels 1-3, 'paragraph', 'bulletList', 'orderedList', 'listItem', 'codeBlock' where appropriate, and 'text' nodes with marks for 'bold', 'italic', 'link'):
+                1.  "Introduction": (Required) A brief overview of the day's topic (e.g., a 'heading' node with level 2, followed by one or two 'paragraph' nodes).
+                2.  "Learning Objectives": (Required) 2-4 clear, actionable objectives for the day (e.g., a 'heading' node with level 3, followed by a 'bulletList' node, where each 'listItem' contains a 'paragraph' with the objective).
+                3.  "Key Concepts": (Required) Detailed explanations of the core concepts for the day. This should be the most substantial part. Use multiple 'heading' nodes (level 3) for sub-topics if needed, followed by detailed 'paragraph' nodes. Incorporate information from the 'Supporting Research' (which will be provided to you) to make these explanations comprehensive. If code examples or mathematical formulas are relevant and found in research, represent them accurately, perhaps within 'paragraph' nodes or using 'codeBlock' if appropriate.
+                4.  "Examples": (Optional, but highly encouraged) 1-2 worked examples or illustrative scenarios related to the key concepts (e.g., a 'heading' node with level 3, followed by 'paragraph' or 'orderedList' nodes explaining the example step-by-step).
+                5.  "Summary": (Required) A concise recap of the day's main points (e.g., a 'heading' node with level 3, followed by a 'bulletList' node).
+                Ensure all text content is well-written, clear, and engaging.
             - 'resources' (list of dicts, each with 'title' and 'url')
             - 'estimated_hours' (float, optional)
             
             Focus on creating practical, actionable content for each day.
             Ensure the curriculum spans the specified number of days.
             Provide diverse resources (articles, videos, interactive exercises if possible).
+            When generating the 'content' for each day, utilize the 'Supporting Research' (which will be provided to you along with these preferences) to make the explanations and concepts as detailed and accurate as possible.
             """
         }
     ]
@@ -78,9 +85,6 @@ async def create_curriculum(
         print(f"Agent response length: {len(raw_agent_response) if raw_agent_response else 0}")
         print(f"Agent response preview: {raw_agent_response[:500] if raw_agent_response else 'None'}...")
         
-        # --- Placeholder for parsing agent response --- 
-        # This is CRITICAL and needs to be robust.
-        # Assuming agent returns a JSON string as described in the prompt.
         try:
             # First try to extract JSON from the response in case it's wrapped in markdown or other text
             import re
@@ -92,18 +96,13 @@ async def create_curriculum(
                 json_str = raw_agent_response
                 print("Using raw response as JSON")
             
-            # Try to fix common JSON mistakes from LLMs
-            # Fix "key":="value" to "key": "value"
-            json_str = re.sub(r'(".*?"):\s*=\s*(".*?")', r'\1: \2', json_str)
+            # --- Robust JSON cleaning ---
+            # General fix for variations of "key" := "value", "key" :- "value", etc.
+            # This will replace `:-` or `:=` with just `:` when between a quote and another character.
+            json_str = re.sub(r'(?<=["\'])\s*:\s*[-=]\s*(?=["\'\d\[\{tfn])', ': ', json_str)
             
-            # Fix "key":='value' to "key": "value"
-            json_str = re.sub(r'(".*?"):\s*=\s*(\'.*?\')', lambda m: f'{m.group(1)}: "{m.group(2)[1:-1]}"', json_str)
-            
-            # Fix "key":a"value" to "key": "value" (missing space and colon)
-            json_str = re.sub(r'(".*?"):([a-zA-Z]+)(".*?")', r'\1: \3', json_str)
-            
-            # Fix "key":"value"} to "key": "value"} (missing space after colon)
-            json_str = re.sub(r'(".*?"):(".*?")', r'\1: \2', json_str)
+            # Fix for unquoted keys or keys with single quotes (less common but possible)
+            json_str = re.sub(r"([{,]\s*)'([^']*)'\s*:", r'\1"\2":', json_str)
             
             # Remove trailing commas before } or ]
             json_str = re.sub(r',\s*([}\]])', r'\1', json_str)
@@ -112,14 +111,7 @@ async def create_curriculum(
             json_str = re.sub(r',\s*,', ',', json_str)
             
             # Try to parse the cleaned JSON
-            try:
-                generated_curriculum = json.loads(json_str)
-            except json.JSONDecodeError as e:
-                # If it still fails, try to find and log the specific error location
-                error_line = json_str.split('\n')[e.lineno - 1] if e.lineno else "Unknown"
-                print(f"JSON error at line {e.lineno}, col {e.colno}: {error_line}")
-                print(f"Error context: {json_str[max(0, e.pos-100):e.pos+100] if e.pos else 'Unknown'}")
-                raise
+            generated_curriculum = json.loads(json_str)
                 
             curriculum_title = generated_curriculum.get("curriculum_title", curriculum_data.title or f"Learning {curriculum_data.learning_goal}")
             curriculum_description = generated_curriculum.get("curriculum_description", curriculum_data.description or curriculum_data.learning_goal)
@@ -130,29 +122,18 @@ async def create_curriculum(
             if not isinstance(generated_days_data, list):
                 raise ValueError("Agent did not return a list of days.")
         except (json.JSONDecodeError, ValueError) as e:
+            # If it still fails, try to find and log the specific error location
+            if isinstance(e, json.JSONDecodeError):
+                error_line = json_str.split('\n')[e.lineno - 1] if e.lineno else "Unknown"
+                print(f"JSON error at line {e.lineno}, col {e.colno}: {error_line}")
+                print(f"Error context: {json_str[max(0, e.pos-100):e.pos+100] if e.pos else 'Unknown'}")
+            
             print(f"JSON parsing error: {str(e)}")
             print(f"Raw response that failed to parse: {raw_agent_response[:1000]}...")
             
-            # As a last resort, try to fix the specific error we saw
-            if '"type":=' in raw_agent_response:
-                print("Detected 'type':= error, attempting to fix...")
-                fixed_response = raw_agent_response.replace('"type":=', '"type":')
-                try:
-                    json_match = re.search(r'\{.*\}', fixed_response, re.DOTALL)
-                    if json_match:
-                        generated_curriculum = json.loads(json_match.group(0))
-                        curriculum_title = generated_curriculum.get("curriculum_title", curriculum_data.title or f"Learning {curriculum_data.learning_goal}")
-                        curriculum_description = generated_curriculum.get("curriculum_description", curriculum_data.description or curriculum_data.learning_goal)
-                        generated_days_data = generated_curriculum.get("days", [])
-                        print(f"Successfully fixed and parsed curriculum with {len(generated_days_data)} days")
-                    else:
-                        raise ValueError("Could not extract JSON after fix")
-                except Exception as fix_error:
-                    print(f"Fix attempt failed: {str(fix_error)}")
-                    raise HTTPException(status_code=500, detail=f"Failed to parse agent response even after attempting fixes: {str(e)}. Original error at position {getattr(e, 'pos', 'unknown')}")
-            else:
-                raise HTTPException(status_code=500, detail=f"Failed to parse agent response: {str(e)}. Response preview: {raw_agent_response[:200] if raw_agent_response else 'None'}")
-        # --- End placeholder ---
+            # The old fix attempts are now less necessary due to the more robust initial regex.
+            # If it still fails, the error is likely more complex than simple replacements.
+            raise HTTPException(status_code=500, detail=f"Failed to parse agent response even after cleaning attempts: {str(e)}. Error near position {getattr(e, 'pos', 'unknown')}")
 
         # 1. Create the Curriculum entry in Supabase
         db_curriculum_data = curriculum_data.model_dump()
@@ -160,7 +141,7 @@ async def create_curriculum(
         # Map our model fields to database fields
         db_curriculum_data["title"] = curriculum_title # Use title from agent if provided, else fallback
         db_curriculum_data["description"] = curriculum_description # Use desc from agent
-        db_curriculum_data["user_id"] = user_id
+        db_curriculum_data["user_id"] = str(user_id) # Ensure UUID is stringified
         db_curriculum_data["id"] = str(uuid4()) # Generate UUID for the new curriculum - convert to string!
         
         # Map learning_goal to topic and goal (database schema)

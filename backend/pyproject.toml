@@ -31,6 +31,7 @@ dependencies = [
     "wikipedia-api>=0.8.1",
     "posthog>=5.4.0",
     "typesense>=1.1.1",
+    "langchain-google-genai>=2.1.5",
 ]
 
 [build-system]

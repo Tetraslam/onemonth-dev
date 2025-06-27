@@ -24,6 +24,12 @@
     --input: 0 0% 15%;
     --ring: 45 100% 51%;
     --radius: 0.5rem;
+    --brand: oklch(0.623 0.214 259.815);
+    --highlight: oklch(0.852 0.199 91.936);
+  }
+  .dark {
+    --brand: oklch(0.707 0.165 254.624);
+    --highlight: oklch(0.852 0.199 91.936);
   }
 }
 
@@ -90,5 +96,14 @@
   
   .neo-gradient-yellow {
     background: linear-gradient(135deg, #ffd93d 0%, #ffed4e 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

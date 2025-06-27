@@ -1,7 +1,7 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { CheckCircle2, Clock, ExternalLink, BookmarkPlus, BookOpenText, Sparkles, Loader2 } from 'lucide-react'
+import { CheckCircle2, Clock, ExternalLink, BookmarkPlus, BookOpenText, Sparkles, Loader2, Copy } from 'lucide-react'
 import React, { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import axios from 'axios'
@@ -29,6 +29,40 @@ interface ContentViewProps {
   onDayCompletionUpdate: (dayId: string, isCompleted: boolean) => void;
 }
 
+const CodeBlock: React.FC<{ language?: string; children: React.ReactNode }> = ({ language, children }) => {
+  const [isCopied, setIsCopied] = useState(false)
+  const textToCopy = React.Children.toArray(children).join('')
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setIsCopied(true)
+      toast.success("Copied to clipboard!")
+      setTimeout(() => setIsCopied(false), 2000)
+    }).catch(err => {
+      console.error('Failed to copy text: ', err)
+      toast.error("Failed to copy.")
+    });
+  };
+
+  return (
+    <div className="relative my-4 rounded-md border-2 border-foreground bg-muted font-mono text-sm neo-brutal-shadow-sm">
+      <div className="flex items-center justify-between px-4 py-1 border-b-2 border-foreground/10">
+        <span className="text-xs font-bold text-muted-foreground">{language || 'code'}</span>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7"
+          onClick={handleCopy}
+          title="Copy code"
+        >
+          <Copy className="h-4 w-4" />
+        </Button>
+      </div>
+      <pre className="p-4 overflow-x-auto"><code>{children}</code></pre>
+    </div>
+  )
+}
+
 // Enhanced Rich Text Renderer
 const renderNode = (node: any, key: string | number): React.ReactNode => {
   if (!node) return null;
@@ -51,10 +85,10 @@ const renderNode = (node: any, key: string | number): React.ReactNode => {
       return <p key={key} className="font-bold">{children}</p>; // Fallback for other levels
 
     case 'bulletList':
-      return <ul key={key} className="list-disc list-inside space-y-2 mb-4 pl-5 text-foreground/90">{children}</ul>;
+      return <ul key={key} className="list-disc list-inside space-y-2 mb-4 pl-6 text-foreground/90">{children}</ul>;
 
     case 'orderedList':
-      return <ol key={key} className="list-decimal list-inside space-y-2 mb-4 pl-5 text-foreground/90">{children}</ol>;
+      return <ol key={key} className="list-decimal list-inside space-y-2 mb-4 pl-6 text-foreground/90">{children}</ol>;
 
     case 'listItem':
       // listItem's children are usually block nodes (e.g., a paragraph)
@@ -79,16 +113,26 @@ const renderNode = (node: any, key: string | number): React.ReactNode => {
                 href={mark.attrs.href} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-primary hover:underline font-semibold"
+                className="text-primary hover:underline font-semibold inline-flex items-center gap-1"
               >
                 {textElement}
+                <ExternalLink className="w-3.5 h-3.5" />
               </a>
             );
           }
-          // Add more marks like code, underline, etc. if needed
+          if (mark.type === 'code') {
+            textElement = <code className="bg-muted text-foreground font-mono font-bold px-1.5 py-0.5 rounded-md border border-border">{textElement}</code>
+          }
+          // Add more marks like underline, etc. if needed
         });
       }
       return <React.Fragment key={key}>{textElement}</React.Fragment>; // Use Fragment for text nodes
+
+    case 'codeBlock':
+      return <CodeBlock key={key} language={node.attrs?.language}>{children}</CodeBlock>;
+      
+    case 'blockquote':
+      return <blockquote key={key} className="pl-4 border-l-4 border-primary bg-muted text-muted-foreground italic my-4">{children}</blockquote>
 
     default:
       console.warn("Unsupported rich text node type:", node.type);

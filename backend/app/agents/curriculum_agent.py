@@ -191,12 +191,11 @@ class CurriculumAgent:
         # System prompt and user prompt construction (simplified for brevity, use your existing logic)
         system_prompt = "You are a helpful AI assistant. "
         if intent == "greeting":
-            system_prompt = "You are a friendly and helpful AI learning assistant. Respond to the user's greeting with a short, friendly greeting of your own. For example, if the user says 'hi', you could say 'Hello there!' or 'Hi! How can I help you today?'. Keep it concise."
+            system_prompt = "You are a friendly and helpful AI learning assistant. Respond to the user\'s greeting with a short, friendly greeting of your own. For example, if the user says 'hi', you could say 'Hello there!' or 'Hi! How can I help you today?'. Keep it concise."
             user_prompt_content = user_query_from_context
         elif intent == "create_curriculum":
-            # ... (your existing detailed system prompt for curriculum JSON) ...
-            system_prompt = "You are an expert curriculum designer... Output JSON..."
-            user_prompt_content = f"User Preferences for CURRICULUM: {user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}"
+            system_prompt = "You are an expert curriculum designer. Your task is to generate a comprehensive, day-by-day learning plan based *strictly* on the user\'s detailed preferences and the provided supporting research. The user\'s message will outline the desired curriculum structure, including specific sections for each day (like Introduction, Learning Objectives, Key Concepts, Examples, Summary) and the required TipTap/ProseMirror JSON format for the 'content' field. Adhere meticulously to this structure and all formatting requirements. Ensure the output is a single, valid JSON object as specified."
+            user_prompt_content = f"User Preferences and Structure for CURRICULUM (MUST FOLLOW EXACTLY): {user_query_from_context}\nSupporting Research (USE THIS TO FILL IN DETAILS): {self._format_tool_results(state.get("tools_output", []))}"
         else:
             user_prompt_content = f"User Query: {user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}\nProvide a concise plain text response."
         
@@ -224,8 +223,10 @@ class CurriculumAgent:
         print(f"[AGENT _generate_response] Calling Gemini API ({payload['model']}) for intent '{intent}' with stream=False")
         
         complete_response_content = ""
+        # Increased timeout for potentially long curriculum generation
+        timeout = aiohttp.ClientTimeout(total=3000) # 5 minutes total timeout
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(timeout=timeout) as session:
                 async with session.post(api_url, headers=headers, json=payload) as response:
                     print(f"[AGENT _generate_response] Gemini API status: {response.status}")
                     if response.status == 200:
@@ -341,8 +342,10 @@ class CurriculumAgent:
         print(f"[AGENT stream_chat_response] Calling Gemini API ({payload['model']}) for intent '{intent}' with stream=True")
         print(f"[AGENT stream_chat_response] LLM Messages (simplified): {{system: '{system_prompt[:70]}...', user: '{user_prompt_content[:100]}...'}}")
         
+        # Increased timeout for chat streaming as well, though less likely to be an issue here
+        timeout = aiohttp.ClientTimeout(total=3000) # 5 minutes total timeout
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(timeout=timeout) as session:
                 async with session.post(api_url, headers=headers, json=payload) as response:
                     print(f"[AGENT stream_chat_response] Gemini API stream status: {response.status}")
                     if response.status == 200:

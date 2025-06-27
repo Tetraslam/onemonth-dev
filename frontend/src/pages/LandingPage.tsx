@@ -26,12 +26,11 @@ export function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-5xl lg:text-7xl font-black mb-6 leading-tight">
-                The Cursor for{' '}
-                <span className="text-primary underline decoration-8 decoration-foreground/20">AI-powered</span>{' '}
-                learning
+                Master Any Subject In Just
+                <span className="text-primary underline decoration-8 decoration-foreground/20"> 30 Days.</span>
               </h2>
               <p className="text-xl font-bold mb-8 text-foreground/80">
-                Generate personalized curricula from any learning goal. 
+                Generate a personalized, day-by-day learning plan for any goal. 
                 Your AI tutor adapts to your pace, style, and schedule.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">

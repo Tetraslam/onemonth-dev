@@ -8,7 +8,7 @@ export function AuthPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-5xl font-black mb-2 text-foreground">onemonth.dev</h1>
-          <p className="text-foreground/80 font-bold">The Cursor for AI-powered learning</p>
+          <p className="text-foreground/80 font-bold">Master any subject in 30 days.</p>
         </div>
         
         <div className="bg-card rounded-lg border-4 border-foreground p-8 neo-brutal-shadow-lg">

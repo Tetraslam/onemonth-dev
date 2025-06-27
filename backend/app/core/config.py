@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     supabase_anon_key: str = Field(..., env="SUPABASE_ANON_KEY")
     supabase_service_key: str = Field(..., env="SUPABASE_SERVICE_KEY")
     supabase_jwt_secret: Optional[str] = Field(None, env="SUPABASE_JWT_SECRET")
+    supabase_cron_secret: Optional[str] = Field(None, env="SUPABASE_CRON_SECRET")
     
     # API Keys
     openrouter_api_key: Optional[str] = Field(None, env="OPENROUTER_API_KEY")
