@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "from": "https://onemonth.dev/*", "to": "https://www.onemonth.dev/{uri}", "status": 308 }
+  ]
+}
