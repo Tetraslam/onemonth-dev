@@ -11,7 +11,7 @@ export default function SubscribeDialog({ open, onClose }: Props) {
 
   return (
     <Dialog open={open} onClose={onClose} className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+      <div className="fixed inset-0 bg-black/50" />
       <div className="bg-background rounded-lg border-4 border-foreground neo-brutal-shadow-xl max-w-md w-full p-6 relative z-50">
         <Dialog.Title className="text-2xl font-black mb-2">Subscribe to unlock AI features</Dialog.Title>
         <Dialog.Description className="text-foreground/70 mb-6">
