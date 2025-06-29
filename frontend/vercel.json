@@ -6,11 +6,11 @@
     {
       "source": "/api/(.*)",
       "destination": "https://api.onemonth.dev/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ],
   "redirects": [
     {
