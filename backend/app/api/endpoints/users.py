@@ -5,7 +5,6 @@ import httpx
 from app.core.auth import get_current_user
 from app.core.config import settings
 from app.db.supabase_client import supabase
-from app.models.user import User
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
