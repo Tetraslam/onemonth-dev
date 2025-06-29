@@ -385,6 +385,10 @@ async def langchain_chat_stream_generator(
     # The specific tool instructions are usually best left to the agent framework
     # based on the tool descriptions provided when defining the tools.
     
+    # Helper to escape braces for prompt templates
+    def _escape_braces(text: str) -> str:
+        return text.replace('{', '{{').replace('}', '}}')
+
     # --- Context Augmentation (as before) ---
     lesson_content_for_prompt = ""
     if curriculum_id and context_data.get("current_day_number") is not None:
@@ -434,12 +438,12 @@ async def langchain_chat_stream_generator(
         "Always strive to provide comprehensive and accurate information."
     )
     if context_data.get("curriculum_title"):
-        system_prompt_text += f"\nThe user is currently working on the curriculum: '{context_data["curriculum_title"]}'."
+        system_prompt_text += f"\nThe user is currently working on the curriculum: '{_escape_braces(str(context_data["curriculum_title"]))}'."
     if context_data.get("current_day_number") and context_data.get("current_day_title"):
-        system_prompt_text += f" Specifically, they are on Day {context_data["current_day_number"]}: '{context_data["current_day_title"]}'."
+        system_prompt_text += f" Specifically, they are on Day {context_data["current_day_number"]}: '{_escape_braces(str(context_data["current_day_title"]))}'."
     
     if lesson_content_for_prompt and lesson_content_for_prompt.strip() and lesson_content_for_prompt != "null":
-        system_prompt_text += f"\n\nHere is the content for today's lesson:\n---BEGIN LESSON CONTENT---\n{lesson_content_for_prompt}\n---END LESSON CONTENT---"
+        system_prompt_text += f"\n\nHere is the content for today's lesson:\n---BEGIN LESSON CONTENT---\n{_escape_braces(lesson_content_for_prompt)}\n---END LESSON CONTENT---"
     else:
         system_prompt_text += ("\nIt seems there is no specific lesson content loaded for today, or the content is empty. "
                                "Try to be helpful with general knowledge based on the curriculum and day title, or use your tools to find relevant information if appropriate, or ask the user for more details.")
@@ -448,12 +452,12 @@ async def langchain_chat_stream_generator(
         system_prompt_text += f"\n\nThe overall learning goal for this curriculum is: '{context_data["learning_goal"]}'."
 
     # Prompt for tool calling agent
-    # Based on LangChain examples, often uses `નારદ` (Narad) or similar character for placeholders if not directly supported by MessagesPlaceholder for agent_scratchpad.
+    # Based on LangChain examples, often uses `நாரદ` (Narad) or similar character for placeholders if not directly supported by MessagesPlaceholder for agent_scratchpad.
     # For Gemini with create_tool_calling_agent, the prompt structure is simpler usually.
     # The create_tool_calling_agent typically infers how to format tool calls and responses for the LLM.
     # Let's use a standard prompt structure that works well with tool calling agents.
     agent_prompt = ChatPromptTemplate.from_messages([
-        SystemMessagePromptTemplate.from_template(system_prompt_text),
+        ("system", system_prompt_text),  # Use tuple format for pre-formatted system message
         MessagesPlaceholder(variable_name="chat_history"),
         HumanMessagePromptTemplate.from_template("{input}"),
         MessagesPlaceholder(variable_name="agent_scratchpad") # Crucial for agent execution flow

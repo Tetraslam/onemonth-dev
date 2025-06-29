@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { supabase } from '@/lib/supabase'
 import { Plus, BookOpen, Clock, Zap, ArrowRight, Book } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 
 interface Curriculum {
   id: string
@@ -20,28 +20,46 @@ interface Curriculum {
   }
 }
 
-export function DashboardPage() {
+export default function DashboardPage() {
   const navigate = useNavigate()
+  const [user, setUser] = useState<any>(null)
   const [curricula, setCurricula] = useState<Curriculum[]>([])
   const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState({
+    totalCurricula: 0,
+    activeCurricula: 0,
+    completedDays: 0,
+    currentStreak: 0
+  })
 
   useEffect(() => {
-    loadCurricula()
+    checkUser()
+    fetchStats()
   }, [])
 
-  async function loadCurricula() {
+  async function checkUser() {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         navigate('/auth')
         return
       }
+      setUser(user)
+      // Fetch curricula only after user is confirmed
+      fetchCurricula(user.id)
+    } catch (error) {
+      console.error('Error checking user:', error)
+      toast.error('Failed to check user')
+    }
+  }
 
+  async function fetchCurricula(userId: string) {
+    try {
       // Load user's curricula
       const { data: curriculaData, error: curriculaError } = await supabase
         .from('curricula')
         .select('*') 
-        .eq('user_id', user.id)
+        .eq('user_id', userId) // Use the passed userId instead of user.id
         .order('created_at', { ascending: false })
 
       if (curriculaError) throw curriculaError;
@@ -75,7 +93,7 @@ export function DashboardPage() {
           const { data: progressData, error: progressError } = await supabase
             .from('progress')
             .select('day_id, completed_at')
-            .eq('user_id', user.id)
+            .eq('user_id', userId)
             .eq('curriculum_id', curriculum.id)
             .in('day_id', dayIds);
 
@@ -104,6 +122,10 @@ export function DashboardPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  async function fetchStats() {
+    // Implementation of fetchStats function
   }
 
   async function handleSignOut() {

@@ -90,7 +90,12 @@ class CurriculumAgent:
         if query_lower in ["hi", "hello", "hey", "greetings", "sup", "yo"]:
             return "greeting"
         
-        if any(word in query_lower for word in ["create curriculum", "generate curriculum", "build curriculum", "make curriculum", "plan for"]):
+        # Check for regenerate day intent
+        if "please regenerate this curriculum day" in query_lower:
+            return "regenerate_day"
+        
+        # Detect phrases indicating curriculum creation even with additional words in between
+        if "curriculum" in query_lower and any(verb in query_lower for verb in ["create", "generate", "build", "make", "plan"]):
             return "create_curriculum"
         elif any(word in query_lower for word in ["explain", "what is", "how does", "why is", "tell me about"]):
             return "explain_concept"
@@ -119,6 +124,9 @@ class CurriculumAgent:
                 tools_needed.append("github_search")
             if any(word in query.lower() for word in ["research", "academic", "paper"]):
                 tools_needed.append("arxiv_search")
+        elif intent == "regenerate_day":
+            # No tools needed for regeneration - we're just reformatting existing content
+            tools_needed = []
         elif intent == "explain_concept":
             tools_needed = ["wikipedia_search", "firecrawl_search", "youtube_search", "perplexity_search"]
             if any(word in query.lower() for word in ["code", "python", "javascript", "algorithm", "programming"]):
@@ -196,6 +204,9 @@ class CurriculumAgent:
         elif intent == "create_curriculum":
             system_prompt = "You are an expert curriculum designer. Your task is to generate a comprehensive, day-by-day learning plan based *strictly* on the user\'s detailed preferences and the provided supporting research. The user\'s message will outline the desired curriculum structure, including specific sections for each day (like Introduction, Learning Objectives, Key Concepts, Examples, Summary) and the required TipTap/ProseMirror JSON format for the 'content' field. Adhere meticulously to this structure and all formatting requirements. Ensure the output is a single, valid JSON object as specified."
             user_prompt_content = f"User Preferences and Structure for CURRICULUM (MUST FOLLOW EXACTLY): {user_query_from_context}\nSupporting Research (USE THIS TO FILL IN DETAILS): {self._format_tool_results(state.get("tools_output", []))}"
+        elif intent == "regenerate_day":
+            system_prompt = "You are an expert curriculum designer. Regenerate the curriculum day content based on the user's feedback and improvements. Return a JSON object with 'title', 'content' (in TipTap/ProseMirror JSON format), and 'resources' array fields."
+            user_prompt_content = f"{user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}"
         else:
             user_prompt_content = f"User Query: {user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}\nProvide a concise plain text response."
         
@@ -210,13 +221,14 @@ class CurriculumAgent:
             "Authorization": f"Bearer {self.gemini_api_key}", 
             "Content-Type": "application/json",
         }
+        
         payload = {
             "model": model_name, 
             "messages": llm_messages,
             "temperature": 0.6,
-            "max_tokens": 150_000 if intent not in ["create_curriculum"] else 150_000,
+            "max_tokens": 150_000 if intent not in ["create_curriculum", "regenerate_day"] else 150_000,
             "stream": False, # For this non-streaming version that updates graph state
-            "response_format": {"type": "json_object"} if intent == "create_curriculum" else None 
+            "response_format": {"type": "json_object"} if intent in ["create_curriculum", "regenerate_day"] else None 
         }
         if payload["response_format"] is None: del payload["response_format"]
 
@@ -423,6 +435,110 @@ class CurriculumAgent:
                     formatted.append(f"- [{paper.get('title', 'Unknown')}]({paper.get('url', '#')}) - {paper.get('summary', '')[:200]}...")
         return "\n".join(formatted)
     
+    async def generate_practice_problems(
+        self,
+        day_title: str,
+        day_content: str,
+        learning_goal: str,
+        difficulty_level: str,
+        num_problems: int = 3
+    ) -> Dict[str, Any]:
+        """Generate practice problems for a curriculum day"""
+        try:
+            prompt = f"""Based on the following curriculum day, generate {num_problems} practice problems.
+
+Day Title: {day_title}
+Learning Goal: {learning_goal}
+Difficulty Level: {difficulty_level}
+
+Day Content:
+{day_content}
+
+Generate diverse practice problems that test understanding of the key concepts covered in this day's content.
+
+Include a mix of problem types:
+- Multiple choice questions (with 4 choices)
+- Short answer questions
+- Code writing exercises (if applicable)
+- Concept explanation questions
+
+For each problem, identify:
+1. The specific concept being tested
+2. The difficulty level (easy, medium, or hard)
+3. A clear explanation of the correct answer
+
+Return the problems in this JSON format:
+{{
+    "problems": [
+        {{
+            "question": "The question text",
+            "type": "multiple_choice|short_answer|code|explanation",
+            "choices": ["A) ...", "B) ...", "C) ...", "D) ..."] (only for multiple_choice),
+            "answer": "The correct answer",
+            "explanation": "Why this is the correct answer and what concept it tests",
+            "concept": "The main concept being tested",
+            "difficulty": "easy|medium|hard"
+        }}
+    ]
+}}"""
+
+            # Use Gemini API directly for practice problems
+            api_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+            model_name = "gemini-2.5-pro"
+            headers = {
+                "Authorization": f"Bearer {self.gemini_api_key}",
+                "Content-Type": "application/json",
+            }
+            
+            payload = {
+                "model": model_name,
+                "messages": [
+                    {"role": "system", "content": "You are an expert educator creating practice problems for students."},
+                    {"role": "user", "content": prompt}
+                ],
+                "temperature": 0.8,
+                "max_tokens": 4000,
+                "response_format": {"type": "json_object"}
+            }
+            
+            timeout = aiohttp.ClientTimeout(total=60)
+            async with aiohttp.ClientSession(timeout=timeout) as session:
+                async with session.post(api_url, headers=headers, json=payload) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        result = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                        result_json = json.loads(result)
+                        
+                        # Validate the structure
+                        if "problems" not in result_json or not isinstance(result_json["problems"], list):
+                            raise ValueError("Invalid response format: missing problems array")
+                            
+                        # Ensure we have the requested number of problems
+                        if len(result_json["problems"]) < num_problems:
+                            print(f"Generated fewer problems than requested: {len(result_json['problems'])} < {num_problems}")
+                            
+                        return result_json
+                    else:
+                        error_text = await response.text()
+                        raise Exception(f"API error {response.status}: {error_text}")
+                        
+        except Exception as e:
+            print(f"Error generating practice problems: {str(e)}")
+            # Return a fallback problem set
+            return {
+                "problems": [
+                    {
+                        "question": f"Explain the main concept covered in '{day_title}'",
+                        "type": "explanation",
+                        "choices": None,
+                        "answer": "A comprehensive explanation should cover the key points from the lesson",
+                        "explanation": "This tests overall understanding of the day's material",
+                        "concept": "General comprehension",
+                        "difficulty": "medium"
+                    }
+                ]
+            }
+
     async def run(self, messages: List[Dict[str, Any]], context: Optional[Dict[str, Any]] = None) -> str:
         initial_state = {
             "messages": messages,

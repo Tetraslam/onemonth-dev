@@ -3,7 +3,7 @@ from typing import Optional
 
 import redis.asyncio as redis
 from app.api.endpoints import (auth, chat, curricula, logbook, notifications,
-                               users)
+                               practice, users)
 from app.core.config import settings
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -67,6 +67,7 @@ app.include_router(curricula.router, prefix="/api/curricula", tags=["curricula"]
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(logbook.router, prefix="/api/logbook", tags=["logbook"])
 app.include_router(notifications.router, prefix="/api/notifications", tags=["notifications"])
+app.include_router(practice.router, prefix="/api/practice", tags=["practice"])
 
 
 @app.get("/api/health")

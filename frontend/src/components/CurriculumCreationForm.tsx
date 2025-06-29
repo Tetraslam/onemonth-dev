@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -6,9 +6,9 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Card } from '@/components/ui/card'
-import { ArrowRight, ArrowLeft, Loader2, Sparkles, Clock, Target, BookOpen } from 'lucide-react'
+import { ArrowRight, ArrowLeft, Loader2, Sparkles, Clock, Target, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import axios from 'axios'
 
 interface CurriculumFormData {
@@ -20,12 +20,114 @@ interface CurriculumFormData {
   priorKnowledge: string
   timePerDay: string
   learningStyle: string
+  numProjects: number
+}
+
+interface PreviewModalProps {
+  formData: any
+  onGenerate: () => void
+  onBack: () => void
+  loading: boolean
+}
+
+function PreviewModal({ formData, onGenerate, onBack, loading }: PreviewModalProps) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center space-y-2">
+        <h2 className="text-3xl font-bold">Review Your Curriculum</h2>
+        <p className="text-muted-foreground">You're about to generate a personalized learning plan</p>
+      </div>
+
+      <Card className="p-6 border-4 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)] space-y-4">
+        <div>
+          <h3 className="font-bold text-lg mb-2">Learning Goal</h3>
+          <p className="text-foreground">{formData.learning_goal}</p>
+        </div>
+        
+        {formData.title && (
+          <div>
+            <h3 className="font-bold text-lg mb-2">Title</h3>
+            <p className="text-foreground">{formData.title}</p>
+          </div>
+        )}
+        
+        <div>
+          <h3 className="font-bold text-lg mb-2">Difficulty</h3>
+          <p className="text-foreground capitalize">{formData.difficulty_level}</p>
+        </div>
+        
+        <div>
+          <h3 className="font-bold text-lg mb-2">Duration</h3>
+          <p className="text-foreground">{formData.estimated_duration_days} days</p>
+        </div>
+
+        {formData.daily_time_commitment_minutes && (
+          <div>
+            <h3 className="font-bold text-lg mb-2">Daily Time Commitment</h3>
+            <p className="text-foreground">{formData.daily_time_commitment_minutes} minutes per day</p>
+          </div>
+        )}
+
+        {formData.learning_style && (
+          <div>
+            <h3 className="font-bold text-lg mb-2">Learning Style</h3>
+            <p className="text-foreground capitalize">{formData.learning_style}</p>
+          </div>
+        )}
+        
+        {formData.num_projects !== undefined && (
+          <div>
+            <h3 className="font-bold text-lg mb-2">Projects</h3>
+            <p className="text-foreground">{formData.num_projects} {formData.num_projects === 1 ? 'project' : 'projects'}</p>
+          </div>
+        )}
+      </Card>
+
+      <Card className="p-4 border-2 border-yellow-500 bg-yellow-50">
+        <p className="text-sm font-medium">
+          <Clock className="inline-block w-4 h-4 mr-2" />
+          Generation typically takes 3-5 minutes
+        </p>
+      </Card>
+
+      <div className="flex gap-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onBack}
+          disabled={loading}
+          className="flex-1 border-2 border-foreground shadow-[2px_2px_0_0_rgb(0,0,0)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0_0_rgb(0,0,0)]"
+        >
+          <ChevronLeft className="w-4 h-4 mr-2" />
+          Back
+        </Button>
+        <Button
+          onClick={onGenerate}
+          disabled={loading}
+          className="flex-1 bg-primary text-primary-foreground border-2 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_rgb(0,0,0)]"
+        >
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Generating...
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4 mr-2" />
+              Generate Curriculum
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 export function CurriculumCreationForm() {
   const navigate = useNavigate()
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [generatingCurriculumId, setGeneratingCurriculumId] = useState<string | null>(null)
   const [generationProgress, setGenerationProgress] = useState('')
   
   const [formData, setFormData] = useState<CurriculumFormData>({
@@ -36,10 +138,56 @@ export function CurriculumCreationForm() {
     difficulty: 'intermediate',
     priorKnowledge: '',
     timePerDay: '60',
-    learningStyle: 'balanced'
+    learningStyle: 'balanced',
+    numProjects: 1
   })
 
-  const totalSteps = 4
+  const totalSteps = 5
+
+  // Poll for generation status
+  useEffect(() => {
+    if (!generatingCurriculumId) return
+
+    const pollStatus = async () => {
+      try {
+        const session = await supabase.auth.getSession()
+        const token = session.data.session?.access_token
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${generatingCurriculumId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+
+        const curriculum = response.data
+        
+        if (curriculum.generation_status === 'completed') {
+          toast.success('Curriculum created successfully!')
+          navigate(`/curriculum/${generatingCurriculumId}`)
+        } else if (curriculum.generation_status === 'failed') {
+          toast.error('Failed to generate curriculum')
+          setLoading(false)
+          setGeneratingCurriculumId(null)
+        } else {
+          // Update progress message
+          setGenerationProgress(curriculum.generation_progress || 'Generating curriculum...')
+        }
+      } catch (error) {
+        console.error('Error polling status:', error)
+      }
+    }
+
+    // Poll every 2 seconds
+    const interval = setInterval(pollStatus, 2000)
+    
+    // Initial poll
+    pollStatus()
+
+    return () => clearInterval(interval)
+  }, [generatingCurriculumId, navigate])
 
   const updateFormData = (field: keyof CurriculumFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -73,28 +221,29 @@ export function CurriculumCreationForm() {
           prerequisites: formData.priorKnowledge,
           daily_time_commitment_minutes: parseInt(formData.timePerDay),
           learning_style: formData.learningStyle,
+          num_projects: formData.numProjects,
           is_public: false,
           is_prebuilt: false
         },
         {
           headers: {
             Authorization: `Bearer ${token}`
-          },
-          onUploadProgress: (progressEvent) => {
-            // Update progress
-            setGenerationProgress('Creating curriculum structure...')
           }
         }
       )
 
       if (response.data.id) {
-        toast.success('Curriculum created successfully!')
-        navigate(`/curriculum/${response.data.id}`)
+        // Start polling for generation status
+        setGeneratingCurriculumId(response.data.id)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating curriculum:', error)
-      toast.error('Failed to create curriculum')
-    } finally {
+      if (error.response?.status === 403) {
+        toast.error('Please subscribe to generate curricula')
+        // TODO: Redirect to payment page
+      } else {
+        toast.error('Failed to create curriculum')
+      }
       setLoading(false)
     }
   }
@@ -203,6 +352,32 @@ export function CurriculumCreationForm() {
                   </div>
                 </RadioGroup>
               </div>
+              
+              <div>
+                <Label htmlFor="numProjects">Number of Projects</Label>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      {formData.numProjects} {formData.numProjects === 1 ? 'project' : 'projects'}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      Max: {Math.floor(parseInt(formData.duration) / 7)} projects
+                    </span>
+                  </div>
+                  <Input
+                    id="numProjects"
+                    type="range"
+                    min="0"
+                    max={Math.floor(parseInt(formData.duration) / 7)}
+                    value={formData.numProjects}
+                    onChange={(e) => setFormData(prev => ({ ...prev, numProjects: parseInt(e.target.value) }))}
+                    className="w-full"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Projects will be evenly distributed throughout your curriculum
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         )
@@ -305,12 +480,33 @@ export function CurriculumCreationForm() {
             </div>
           </div>
         )
+
+      case 5:
+        // Map formData to the format expected by PreviewModal
+        const previewData = {
+          learning_goal: formData.learningGoal,
+          title: formData.title,
+          difficulty_level: formData.difficulty,
+          estimated_duration_days: formData.duration,
+          daily_time_commitment_minutes: formData.timePerDay,
+          learning_style: formData.learningStyle,
+          num_projects: formData.numProjects
+        }
+        
+        return (
+          <PreviewModal
+            formData={previewData}
+            onGenerate={handleSubmit}
+            onBack={prevStep}
+            loading={loading}
+          />
+        )
     }
   }
 
   return (
     <Card className="max-w-2xl mx-auto p-8">
-      {!loading ? (
+      {!loading || step < 5 ? (
         <>
           {/* Progress indicator */}
           <div className="mb-8">
@@ -332,29 +528,24 @@ export function CurriculumCreationForm() {
           {/* Form content */}
           {renderStep()}
 
-          {/* Navigation buttons */}
-          <div className="flex justify-between mt-8">
-            <Button
-              variant="outline"
-              onClick={prevStep}
-              disabled={step === 1}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Previous
-            </Button>
-            
-            {step < totalSteps ? (
+          {/* Navigation buttons - only show if not on preview step */}
+          {step < 5 && (
+            <div className="flex justify-between mt-8">
+              <Button
+                variant="outline"
+                onClick={prevStep}
+                disabled={step === 1}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Previous
+              </Button>
+              
               <Button onClick={nextStep} disabled={!formData.learningGoal}>
                 Next
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-            ) : (
-              <Button onClick={handleSubmit} disabled={!formData.learningGoal}>
-                Generate Curriculum
-                <Sparkles className="w-4 h-4 ml-2" />
-              </Button>
-            )}
-          </div>
+            </div>
+          )}
         </>
       ) : (
         <div className="text-center py-12">

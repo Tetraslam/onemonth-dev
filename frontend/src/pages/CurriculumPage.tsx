@@ -7,7 +7,8 @@ import { ChatPanel } from '@/components/ChatPanel'
 import { CurriculumCreationForm } from '@/components/CurriculumCreationForm'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 // Define interfaces for better type safety
 interface Day {
@@ -29,23 +30,25 @@ interface Curriculum {
   // Add other curriculum fields as needed from your Pydantic model
 }
 
-export function CurriculumPage() {
-  const { id } = useParams<{ id: string }>() // Typed useParams
-  const navigate = useNavigate()
-  const [curriculum, setCurriculum] = useState<Curriculum | null>(null)
-  const [days, setDays] = useState<Day[]>([])
-  const [selectedDay, setSelectedDay] = useState<Day | null>(null)
+export default function CurriculumPage() {
+  const { id } = useParams<{ id: string }>()
+  const [curriculum, setCurriculum] = useState<any>(null)
+  const [days, setDays] = useState<any[]>([])
+  const [selectedDay, setSelectedDay] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<any>(null)
+  const [progress, setProgress] = useState<any[]>([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (id && id !== 'new') {
-      fetchCurriculumAndProgress()
+      fetchCurriculum()
     } else if (id === 'new') {
       setLoading(false)
     }
   }, [id])
 
-  const fetchCurriculumAndProgress = async () => {
+  const fetchCurriculum = async () => {
     setLoading(true)
     if (!id) return; // Should not happen if id !== 'new'
 
@@ -112,90 +115,228 @@ export function CurriculumPage() {
     }
   };
 
+  const loadProgress = async () => {
+    // Implementation of loadProgress function
+  };
+
+  const checkUser = async () => {
+    // Implementation of checkUser function
+  };
+
   // Callback function to update a day's completion status
   const handleDayCompletionUpdate = (dayId: string, isCompleted: boolean) => {
-    setDays(prevDays => prevDays.map(day => 
-      day.id === dayId ? { ...day, completed: isCompleted } : day
-    ));
-    if (selectedDay && selectedDay.id === dayId) {
+    setDays(prevDays => 
+      prevDays.map(day => 
+        day.id === dayId 
+          ? { ...day, completed: isCompleted } 
+          : day
+      )
+    );
+    
+    // Update selected day if it's the one being completed
+    if (selectedDay?.id === dayId) {
       setSelectedDay(prev => prev ? { ...prev, completed: isCompleted } : null);
     }
   };
 
+  // Callback function to update a day's content
+  const handleDayUpdate = (dayId: string, updates: Partial<Day>) => {
+    setDays(prevDays => 
+      prevDays.map(day => 
+        day.id === dayId 
+          ? { ...day, ...updates } 
+          : day
+      )
+    );
+    
+    // Update selected day if it's the one being updated
+    if (selectedDay?.id === dayId) {
+      setSelectedDay(prev => prev ? { ...prev, ...updates } : null);
+    }
+  };
+
+  // Move day up or down
+  const handleMoveDay = async (dayId: string, dir: 'up' | 'down') => {
+    setDays(prev => {
+      const idx = prev.findIndex(d => d.id === dayId);
+      if (idx === -1) return prev;
+      const newIdx = dir === 'up' ? idx - 1 : idx + 1;
+      if (newIdx < 0 || newIdx >= prev.length) return prev;
+      const newArr = [...prev];
+      const [moved] = newArr.splice(idx, 1);
+      newArr.splice(newIdx, 0, moved);
+      // Reassign day_numbers locally
+      return newArr.map((d, i) => ({ ...d, day_number: i + 1 }));
+    });
+
+    // Prepare payload
+    const dayOrder = days.map((d, i) => ({ id: d.id, day_number: i + 1 }));
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${id}/days/reorder`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(dayOrder)
+      });
+    } catch (err) {
+      console.error('Reorder error', err);
+      toast.error('Failed to reorder');
+    }
+  };
+
+  // Persist new order from drag/drop
+  const handleReorder = async (newDays: any[]) => {
+    setDays(newDays);
+    const dayOrder = newDays.map(d=>({id:d.id, day_number:d.day_number}));
+    try{
+      const { data:{session} } = await supabase.auth.getSession();
+      const token=session?.access_token;
+      const res = await fetch(`${import.meta.env.VITE_API_URL||'http://localhost:8000'}/api/curricula/${id}/days/reorder`,{
+        method:'PUT',
+        headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+        body:JSON.stringify(dayOrder)
+      });
+      if(!res.ok){
+        throw new Error('Server error');
+      }
+    }catch(err){console.error(err);toast.error('Failed to save order');}
+  };
+
+  // Delete day
+  const handleDeleteDay = async (dayId: string) => {
+    if (!confirm('Delete this day?')) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${id}/days/${dayId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setDays(prev => prev.filter(d => d.id !== dayId).map((d,i)=>({...d, day_number:i+1})));
+      if (selectedDay?.id === dayId) {
+        setSelectedDay(null);
+      }
+    } catch (err) {
+      console.error('Delete error', err);
+      toast.error('Delete failed');
+    }
+  };
+
+  // Add new day at end
+  const handleAddDay = async () => {
+    const title = prompt('Title for new day');
+    if (title === null) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      const body = {
+        title: title || `Day ${days.length + 1}`,
+        content: { type: 'doc', content: [] },
+        day_number: days.length + 1,
+        resources: []
+      };
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${id}/days`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+      const json = await res.json();
+      if (res.ok) {
+        setDays(prev => [...prev, json]);
+        toast.success('Day added');
+      } else {
+        throw new Error(json.detail || 'Error');
+      }
+    } catch (err) {
+      console.error('Add day error', err);
+      toast.error('Failed to add day');
+    }
+  };
+
+  if (id === 'new') {
+    return <CurriculumCreationForm />
+  }
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+      <div className="h-screen w-full flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <p className="mt-2 text-muted-foreground">Loading curriculum...</p>
+        </div>
       </div>
     )
   }
 
-  if (id === 'new') {
+  if (!curriculum) {
     return (
-      <div className="min-h-screen bg-background">
-        <header className="bg-card border-b-4 border-foreground neo-brutal-shadow">
-          <div className="container mx-auto px-4 py-3 flex items-center">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => navigate('/dashboard')}
-              className="mr-4 h-9 w-9 bg-card"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <h1 className="text-2xl font-black text-foreground">Create New Curriculum</h1>
-          </div>
-        </header>
-        <main className="py-8 container mx-auto px-4">
-          <CurriculumCreationForm />
-        </main>
+      <div className="h-screen w-full flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-foreground mb-2">Curriculum Not Found</h2>
+          <p className="text-muted-foreground">This curriculum doesn't exist or you don't have access to it.</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="h-screen flex flex-col bg-background">
-      <header className="bg-card border-b-4 border-foreground neo-brutal-shadow h-[50px] flex items-center px-4 flex-shrink-0">
-        <div className="flex items-center gap-3 flex-1">
-          <Button 
-            variant="outline" 
-            size="icon" 
+    <div className="h-screen flex bg-background">
+      {/* Curriculum Explorer (File tree) */}
+      <div className="w-[320px] bg-card border-r-4 border-foreground flex flex-col">
+        <div className="px-6 py-8 border-b-4 border-foreground bg-primary">
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => navigate('/dashboard')}
-            className="h-8 w-8 p-0 bg-card"
+            className="w-full font-black bg-card mb-4"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Dashboard
           </Button>
-          <span className="text-lg font-black text-foreground truncate">
-            {curriculum?.title || 'Loading Curriculum...'}
-          </span>
+          <h1 className="text-2xl font-black text-primary-foreground leading-tight mb-2">
+            {curriculum.title}
+          </h1>
+          <p className="text-sm font-bold text-primary-foreground/80">
+            {curriculum.estimated_duration_days || 30} Day Journey
+          </p>
         </div>
-        {/* Placeholder for potential header actions */}
-      </header>
-
-      <div className="flex-1 flex overflow-hidden">
-        <div className="w-[280px] bg-card border-r-4 border-foreground flex-shrink-0 overflow-y-auto">
+        <ScrollArea className="flex-1">
           <FileTree 
-            days={days} // Now days include 'completed' status
-            selectedDay={selectedDay}
+            days={days} 
+            selectedDay={selectedDay} 
             onSelectDay={setSelectedDay}
-            curriculumTitle={curriculum?.title}
+            onMoveDay={handleMoveDay}
+            onDeleteDay={handleDeleteDay}
+            onAddDay={handleAddDay}
+            onReorder={handleReorder}
+            curriculumTitle={curriculum.title}
           />
-        </div>
+        </ScrollArea>
+      </div>
 
-        <div className="flex-1 bg-background overflow-y-auto min-w-0">
-          <ContentView 
-            day={selectedDay} // selectedDay now includes 'completed' status
-            curriculum={curriculum}
-            onDayCompletionUpdate={handleDayCompletionUpdate} // Pass callback
-          />
-        </div>
+      {/* Content View */}
+      <div className="flex-1 flex flex-col">
+        <ContentView 
+          day={selectedDay} 
+          curriculum={curriculum}
+          onDayCompletionUpdate={handleDayCompletionUpdate}
+          onDayUpdate={handleDayUpdate}
+        />
+      </div>
 
-        <div className="w-[380px] min-w-[380px] bg-card border-l-4 border-foreground flex-shrink-0 flex flex-col overflow-hidden">
-          <ChatPanel 
-            curriculum={curriculum}
-            currentDay={selectedDay}
-          />
-        </div>
+      {/* Chat Panel */}
+      <div className="w-[400px] bg-card border-l-4 border-foreground">
+        <ChatPanel 
+          curriculum={curriculum} 
+          currentDay={selectedDay}
+        />
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ import { Send, Loader2, Bot, User, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { supabase } from '@/lib/supabase'
 import React, { useEffect, useRef, useState } from 'react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -40,7 +40,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
 
   useEffect(() => {
     const currentCurriculumId = curriculum?.id
-    if (prevCurriculumIdRef.current !== currentCurriculumId) {
+    if (prevCurriculumIdRef.current !== currentCurriculumId && currentCurriculumId) {
       console.log("ChatPanel: Curriculum ID changed. Resetting history loaded flag and messages.")
       historyLoadedForCurriculumIdRef.current = null;
       setMessages([]); 
@@ -68,10 +68,18 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
       }
     }
     initializeChat()
-  }, [curriculum?.id, setMessages]);
+  }, [curriculum?.id]);
   
   useEffect(() => {
     const fetchChatHistory = async () => {
+      console.log("ChatPanel: fetchChatHistory effect running", {
+        isChatReady,
+        curriculumId: curriculum?.id,
+        isLoadingHistory,
+        historyLoadedFor: historyLoadedForCurriculumIdRef.current,
+        shouldLoad: isChatReady && curriculum?.id && !isLoadingHistory && historyLoadedForCurriculumIdRef.current !== curriculum.id
+      });
+      
       if (!isChatReady || !curriculum?.id || isLoadingHistory || historyLoadedForCurriculumIdRef.current === curriculum.id) {
         return;
       }
@@ -80,8 +88,10 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
       console.log(`ChatPanel: Fetching history for curriculum ${curriculum.id}`);
       try {
         const session = await supabase.auth.getSession();
+        console.log("ChatPanel: Auth session status:", { hasSession: !!session.data.session, hasToken: !!session.data.session?.access_token });
         const token = session.data.session?.access_token;
         if (!token) {
+          console.error("ChatPanel: No auth token in session");
           toast.error("Auth error fetching chat history.");
           setIsLoadingHistory(false);
           return;
@@ -123,7 +133,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
     };
 
     fetchChatHistory();
-  }, [isChatReady, curriculum?.id, setMessages]); // setMessages from useState is stable
+  }, [isChatReady, curriculum?.id]); // Removed setMessages - it's stable and shouldn't be a dependency
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -356,7 +366,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                 </div>
               )}
               <div className={cn(
-                "max-w-[80%] p-3 rounded-lg border-2 border-foreground neo-brutal-shadow-sm",
+                "max-w-[80%] min-w-0 p-3 rounded-lg border-2 border-foreground neo-brutal-shadow-sm overflow-hidden",
                 message.role === 'user' 
                   ? "bg-primary text-primary-foreground"
                   : "bg-card text-foreground"
@@ -370,11 +380,11 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                   </span>
                 </div>
                 {message.role === 'user' ? (
-                  <div className="text-sm whitespace-pre-wrap break-words">
+                  <div className="text-sm whitespace-pre-wrap break-words overflow-wrap-anywhere">
                     {message.content}
                   </div>
                 ) : (
-                  <div className="text-sm prose prose-sm max-w-none dark:prose-invert prose-p:my-1 prose-li:my-0.5">
+                  <div className="text-sm prose prose-sm max-w-none dark:prose-invert prose-p:my-1 prose-li:my-0.5 [&_*]:overflow-wrap-anywhere [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-normal">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {message.content}
                     </ReactMarkdown>
@@ -395,9 +405,9 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                    <div className="w-8 h-8 rounded-md border-2 border-foreground bg-secondary flex items-center justify-center flex-shrink-0 neo-brutal-shadow-sm">
                       <Bot className="w-4 h-4 text-secondary-foreground" strokeWidth={2.5}/>
                   </div>
-                  <div className="max-w-[80%] p-2.5 rounded-lg border-2 border-foreground/30 bg-card text-foreground/80 neo-brutal-shadow-sm italic flex items-center gap-2 text-xs">
+                  <div className="max-w-[80%] min-w-0 p-2.5 rounded-lg border-2 border-foreground/30 bg-card text-foreground/80 neo-brutal-shadow-sm italic flex items-center gap-2 text-xs overflow-hidden">
                       <Loader2 className="w-3.5 h-3.5 animate-spin flex-shrink-0" /> 
-                      <span>{toolStatusMessage}</span>
+                      <span className="truncate">{toolStatusMessage}</span>
                   </div>
               </div>
           )}

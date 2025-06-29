@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Plus, Search, Filter, Calendar, Tag, TrendingUp, Book, Lightbulb, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,7 @@ import { supabase } from '@/lib/supabase';
 import { LogbookEditor } from '../components/LogbookEditor';
 import { LogbookEntryCard } from '../components/LogbookEntryCard';
 import { LogbookStats } from '../components/LogbookStats';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 interface LogbookEntry {
   id: string;
@@ -35,6 +35,7 @@ interface Curriculum {
 
 export function LogbookPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [entries, setEntries] = useState<LogbookEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<LogbookEntry | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -47,6 +48,7 @@ export function LogbookPage() {
   const [isLoadingEntries, setIsLoadingEntries] = useState(true);
   const [stats, setStats] = useState<any>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [newEntryPrompt, setNewEntryPrompt] = useState<string>('');
 
   // Effect for initial auth check and curricula fetching
   useEffect(() => {
@@ -61,6 +63,17 @@ export function LogbookPage() {
     };
     initialLoad();
   }, [navigate]);
+
+  // Effect to handle incoming prompt from navigation state
+  useEffect(() => {
+    if (location.state?.newEntryPrompt) {
+      setNewEntryPrompt(location.state.newEntryPrompt);
+      setIsCreating(true);
+      setSelectedEntry(null);
+      // Clear the state to prevent re-triggering
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Effect for fetching entries and stats based on filters and auth
   useEffect(() => {
@@ -202,6 +215,7 @@ export function LogbookPage() {
         fetchEntries(); // Refetch entries to update the list
         fetchStats(); // Refetch stats
         setIsCreating(false);
+        setNewEntryPrompt(''); // Clear the prompt
         if (!selectedEntry) { // If it was a new entry, clear selection
             setSelectedEntry(null);
         } else { // If updating, re-select to show updated data (or clear if preferred)
@@ -378,7 +392,9 @@ export function LogbookPage() {
               onCancel={() => {
                 setSelectedEntry(null);
                 setIsCreating(false);
+                setNewEntryPrompt('');
               }}
+              initialContent={newEntryPrompt}
             />
           ) : (
             <div className="h-full flex items-center justify-center text-gray-500">

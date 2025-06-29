@@ -14,9 +14,12 @@ class CurriculumBase(BaseModel):
     prerequisites: Optional[str] = None
     daily_time_commitment_minutes: Optional[int] = None
     learning_style: Optional[str] = None
+    num_projects: Optional[int] = 0
     is_public: bool = False
     is_prebuilt: bool = False
     metadata: Dict[str, Any] = Field(default_factory=dict)
+    generation_status: Optional[str] = None  # 'generating', 'completed', 'failed'
+    generation_progress: Optional[str] = None  # Progress message
 
 
 class Curriculum(CurriculumBase):

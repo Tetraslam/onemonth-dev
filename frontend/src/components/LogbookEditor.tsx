@@ -31,9 +31,10 @@ interface LogbookEditorProps {
   curricula: Curriculum[];
   onSave: (entry: Partial<LogbookEntry>) => void;
   onCancel: () => void;
+  initialContent?: string;
 }
 
-export function LogbookEditor({ entry, curricula, onSave, onCancel }: LogbookEditorProps) {
+export function LogbookEditor({ entry, curricula, onSave, onCancel, initialContent }: LogbookEditorProps) {
   const [title, setTitle] = useState('');
   const [contentText, setContentText] = useState('');
   const [entryType, setEntryType] = useState<LogbookEntry['entry_type']>('reflection');
@@ -55,14 +56,14 @@ export function LogbookEditor({ entry, curricula, onSave, onCancel }: LogbookEdi
     } else {
       // Reset for new entry
       setTitle('');
-      setContentText('');
-      setEntryType('reflection');
+      setContentText(initialContent || '');
+      setEntryType('project_progress'); // Default to project progress when coming from project
       setMood('neutral');
       setTags([]);
       setHoursSpent('');
       setCurriculumId('');
     }
-  }, [entry]);
+  }, [entry, initialContent]);
 
   const handleSave = () => {
     if (!title.trim()) {
