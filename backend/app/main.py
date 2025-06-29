@@ -6,8 +6,9 @@ from app.api.endpoints import polar  # New: webhook endpoint
 from app.api.endpoints import (auth, chat, curricula, logbook, notifications,
                                practice, users)
 from app.core.config import settings
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import RedirectResponse
 
 # Global Redis client
@@ -43,6 +44,33 @@ app = FastAPI(
     redoc_url="/api/redoc",
     lifespan=lifespan
 )
+
+# Add TrustedHost middleware to handle proxy headers
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["api.onemonth.dev", "localhost", "127.0.0.1", "*.railway.app"]
+)
+
+# Add middleware to handle HTTPS redirects properly
+@app.middleware("http")
+async def ensure_https_redirects(request: Request, call_next):
+    # Get the forwarded proto header to detect if original request was HTTPS
+    forwarded_proto = request.headers.get("x-forwarded-proto", "http")
+    
+    # Store the original URL scheme
+    request.scope["scheme"] = forwarded_proto
+    
+    response = await call_next(request)
+    
+    # If it's a redirect response and we're in production, ensure it uses HTTPS
+    if response.status_code in (301, 302, 303, 307, 308) and forwarded_proto == "https":
+        if hasattr(response, "headers") and "location" in response.headers:
+            location = response.headers["location"]
+            # If the location starts with http://, replace with https://
+            if location.startswith("http://"):
+                response.headers["location"] = location.replace("http://", "https://", 1)
+    
+    return response
 
 # Configure CORS
 # Ensure this uses the parsed list from settings
