@@ -20,6 +20,8 @@ async def polar_webhook(request: Request, polar_signature: str = Header(None)):
         return Response(status_code=204)
     # If secret configured verify signature
     if POLAR_WEBHOOK_SECRET:
+        if not polar_signature:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing signature")
         computed = hmac.new(POLAR_WEBHOOK_SECRET.encode(), payload, hashlib.sha256).hexdigest()
         if not hmac.compare_digest(computed, polar_signature):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid signature")
