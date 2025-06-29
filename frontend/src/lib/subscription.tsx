@@ -36,9 +36,6 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
 
       if (response.ok) {
         const data = await response.json()
-        if (data.force_refresh) {
-          await supabase.auth.refreshSession()
-        }
         setStatus(data.status === 'active' ? 'active' : 'none')
       } else {
         // Fallback to user metadata if API fails

@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import json
 import os
+from datetime import datetime
 
 from app.db.supabase_client import supabase
 from fastapi import APIRouter, Header, HTTPException, Request, Response, status
@@ -76,14 +77,19 @@ async def polar_webhook(request: Request, polar_signature: str = Header(None)):
                 users_response = supabase.from_("users").select("id").eq("email", customer_email).execute()
                 if users_response.data and len(users_response.data) > 0:
                     user_id = users_response.data[0]["id"]
-                    supabase.auth.admin.update_user_by_id(user_id, {"user_metadata": {"subscription_status": status_value}})
-                    print(f"Updated user {user_id} subscription to {status_value}")
+                    # Update subscription status in table
+                    supabase.table("subscription_status").upsert({
+                        "user_id": user_id,
+                        "status": status_value,
+                        "customer_id": customer_id,
+                        "updated_at": datetime.utcnow().isoformat()
+                    }).execute()
+                    print(f"Updated subscription_status table for user {user_id} to {status_value}")
                 else:
                     print(f"No user found with email {customer_email}")
             elif customer_id:
-                # Try updating by ID if we have it
-                supabase.auth.admin.update_user_by_id(customer_id, {"user_metadata": {"subscription_status": status_value}})
-                print(f"Updated user {customer_id} subscription to {status_value}")
+                # If we only have customer_id, we can't update the table without user_id
+                print(f"Have customer_id {customer_id} but no user_id to update subscription_status table")
         except Exception as e:
             print(f"Polar webhook update error: {e}")
     

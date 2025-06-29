@@ -1,9 +1,11 @@
+from datetime import datetime
 from typing import Any, Dict
 
 import httpx
 from app.core.auth import get_current_user
 from app.core.config import settings
 from app.db.supabase_client import supabase
+from app.models.user import User
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
@@ -19,13 +21,25 @@ async def get_current_user_profile(current_user: Dict[str, Any] = Depends(get_cu
 @router.get("/me/subscription")
 async def get_subscription_status(user = Depends(get_current_user)):
     """Check subscription status directly from Polar."""
+    # First check our database
+    db_response = supabase.table("subscription_status")\
+        .select("status, customer_id")\
+        .eq("user_id", str(user["id"]))\
+        .maybe_single()\
+        .execute()
+    
+    # If we have a recent active status (updated in last hour), return it
+    if db_response.data and db_response.data.get("status") == "active":
+        return {"status": "active", "customer_id": db_response.data.get("customer_id")}
+    
+    # Otherwise check Polar API
     if not settings.polar_access_token:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Polar API not configured"
         )
     
-    print(f"Checking subscription for user: {user.email}")
+    print(f"Checking subscription for user: {user['email']}")
     
     async with httpx.AsyncClient() as client:
         try:
@@ -33,7 +47,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
             customers_response = await client.get(
                 "https://api.polar.sh/v1/customers",
                 headers={"Authorization": f"Bearer {settings.polar_access_token}"},
-                params={"email": user.email},
+                params={"email": user["email"]},
                 follow_redirects=True
             )
             print(f"Polar customers API status: {customers_response.status_code}")
@@ -42,7 +56,14 @@ async def get_subscription_status(user = Depends(get_current_user)):
             print(f"Customers data: {customers_data}")
             
             if not customers_data.get("items"):
-                print(f"No Polar customer found for email: {user.email}")
+                print(f"No Polar customer found for email: {user['email']}")
+                # Update database to reflect no subscription
+                supabase.table("subscription_status").upsert({
+                    "user_id": str(user["id"]),
+                    "status": "none",
+                    "customer_id": None,
+                    "updated_at": datetime.utcnow().isoformat()
+                }).execute()
                 return {"status": "none", "customer_id": None}
             
             customer = customers_data["items"][0]
@@ -62,21 +83,26 @@ async def get_subscription_status(user = Depends(get_current_user)):
             print(f"Subscriptions data: {subs_data}")
             
             if subs_data.get("items") and len(subs_data["items"]) > 0:
-                print(f"Found active subscription for user {user.email}")
-                # Update user metadata with subscription status
-                try:
-                    supabase.auth.admin.update_user_by_id(
-                        user.id, 
-                        {"user_metadata": {"subscription_status": "active"}}
-                    )
-                    print("Updated user metadata with active subscription")
-                except Exception as e:
-                    print(f"Failed to update user metadata: {e}")
-                
-                return JSONResponse({"status": "active", "customer_id": customer_id, "force_refresh": True})
+                print(f"Found active subscription for user {user['email']}")
+                # Update subscription status in table
+                supabase.table("subscription_status").upsert({
+                    "user_id": str(user["id"]),
+                    "status": "active",
+                    "customer_id": customer_id,
+                    "updated_at": datetime.utcnow().isoformat()
+                }).execute()
+                print("Updated subscription_status table with active subscription")
+                return {"status": "active", "customer_id": customer_id}
             else:
-                print(f"No active subscription found for user {user.email}")
-                return JSONResponse({"status": "none", "customer_id": customer_id})
+                print(f"No active subscription found for user {user['email']}")
+                # Update database to reflect no active subscription
+                supabase.table("subscription_status").upsert({
+                    "user_id": str(user["id"]),
+                    "status": "none",
+                    "customer_id": customer_id,
+                    "updated_at": datetime.utcnow().isoformat()
+                }).execute()
+                return {"status": "none", "customer_id": customer_id}
                 
         except httpx.HTTPStatusError as e:
             print(f"Polar API error: {e.response.text}")
