@@ -5,7 +5,7 @@ import os
 
 from app.db.supabase_client import supabase
 from fastapi import APIRouter, Header, HTTPException, Request, Response, status
-from starlette.exceptions import ClientDisconnect
+from starlette.requests import ClientDisconnect
 
 router = APIRouter()
 
