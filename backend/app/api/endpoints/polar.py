@@ -10,7 +10,7 @@ router = APIRouter()
 
 POLAR_WEBHOOK_SECRET = os.getenv("POLAR_WEBHOOK_SECRET", "")
 
-@router.post("/webhooks/polar", status_code=204)
+@router.post("/polar", status_code=204)
 async def polar_webhook(request: Request, polar_signature: str = Header(None)):
     payload = await request.body()
     # If secret configured verify signature
