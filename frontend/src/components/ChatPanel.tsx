@@ -8,6 +8,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { useSubscription } from '@/lib/subscription'
+import SubscribeDialog from '@/components/SubscribeDialog'
 
 interface ChatPanelProps {
   curriculum: any
@@ -37,6 +39,9 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
   const [isLoadingHistory, setIsLoadingHistory] = useState(false)
   const prevCurriculumIdRef = useRef<string | null | undefined>(null)
   const historyLoadedForCurriculumIdRef = useRef<string | null>(null);
+
+  const { status } = useSubscription()
+  const [showSubscribe,setShowSubscribe]=useState(false)
 
   useEffect(() => {
     const currentCurriculumId = curriculum?.id
@@ -170,6 +175,8 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!draft.trim() || isLoading || !isChatReady || !chatApiUrl) return;
+
+    if (status !== 'active') { setShowSubscribe(true); return }
 
     const userMessage: LocalMessage = {
         id: `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -499,6 +506,8 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
           )}
         </Button>
       </form>
+
+      {showSubscribe && <SubscribeDialog open={showSubscribe} onClose={()=>setShowSubscribe(false)} /> }
     </div>
   )
 } 

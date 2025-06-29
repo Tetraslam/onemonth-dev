@@ -8,6 +8,7 @@ from uuid import UUID, uuid4
 
 import json5
 from app.agents.curriculum_agent import curriculum_agent
+from app.api.dependencies import require_subscription
 from app.core.auth import get_current_user
 from app.db.supabase_client import supabase
 from app.models.curriculum import (Curriculum, CurriculumCreate, CurriculumDay,
@@ -28,7 +29,7 @@ class ProgressRecord(BaseModel):
 @router.post("/", response_model=Curriculum)
 async def create_curriculum(
     curriculum_data: CurriculumCreate,
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Create a new curriculum for the current user."""
     user_id = current_user.id

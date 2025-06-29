@@ -1,0 +1,9 @@
+# Railway service definition for FastAPI backend
+# Docs: https://docs.railway.app/deploy/configure
+
+[build]
+  builder = "NIXPACKS"
+  # Nixpacks will automatically install deps via uv based on pyproject.toml – no buildCommand needed
+
+[start]
+  cmd = "uv run main.py"

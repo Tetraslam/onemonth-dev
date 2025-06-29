@@ -10,6 +10,8 @@ import { ArrowRight, ArrowLeft, Loader2, Sparkles, Clock, Target, BookOpen, Chev
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import axios from 'axios'
+import { useSubscription } from '@/lib/subscription'
+import SubscribeDialog from '@/components/SubscribeDialog'
 
 interface CurriculumFormData {
   title: string
@@ -144,6 +146,9 @@ export function CurriculumCreationForm() {
 
   const totalSteps = 5
 
+  const { status } = useSubscription()
+  const [showSubscribe, setShowSubscribe] = useState(false)
+
   // Poll for generation status
   useEffect(() => {
     if (!generatingCurriculumId) return
@@ -202,6 +207,8 @@ export function CurriculumCreationForm() {
   }
 
   const handleSubmit = async () => {
+    if (status !== 'active') { setShowSubscribe(true); setLoading(false); return }
+
     setLoading(true)
     setGenerationProgress('Initializing curriculum generation...')
 
@@ -554,6 +561,8 @@ export function CurriculumCreationForm() {
           <p className="text-muted-foreground">{generationProgress}</p>
         </div>
       )}
+
+      {showSubscribe && <SubscribeDialog open={showSubscribe} onClose={()=>setShowSubscribe(false)} /> }
     </Card>
   )
 } 

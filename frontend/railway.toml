@@ -1,0 +1,10 @@
+# Railway service definition for Vite React frontend (static deploy)
+
+[build]
+  builder = "NIXPACKS"
+  buildCommand = "pnpm install --frozen-lockfile && pnpm run build"
+  watchPatterns = ["src/*", "index.html"]
+
+[static]
+  dir = "dist"
+  ignore = []

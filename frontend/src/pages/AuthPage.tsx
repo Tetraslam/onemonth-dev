@@ -47,7 +47,7 @@ export default function AuthPage() {
           password,
         })
         if (error) throw error
-        navigate('/dashboard')
+        navigate('/onboarding')
       }
     } catch (error: any) {
       toast.error(error.message)

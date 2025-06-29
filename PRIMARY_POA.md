@@ -136,11 +136,17 @@ CREATE TABLE public_curricula (
   - Question cards UI with multiple choice, short answer, code
   - Self-grading flow with reveal answer/explanation
   - Score summary and retry functionality
+- Project Support ✅
+  - `num_projects` slider in creation form
+  - Even distribution logic in agent prompt
+  - `is_project_day` & `project_data` schema
+  - Project-day UI + logbook prompt generator
+  - Parsing robustness (json5 fallback)
 
 ### 🔜 Next Steps (remaining MVP scope)
-1. **Onboarding Flow & Polar Payments** 👈 NEXT
+1. **Onboarding Flow & Polar Payments** 🚧 _in progress_
    – Guided first-curriculum wizard  
-   – Checkout + webhook → profile.subscription_status
+   – Polar checkout & webhook → `subscription_status`
 2. **Public Curricula Publishing**
    – POST /curricula/{id}/publish → view at /c/{id}
 3. **Final Polish**

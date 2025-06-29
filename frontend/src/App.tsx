@@ -7,7 +7,10 @@ import AuthPage from '@/pages/AuthPage'
 import DashboardPage from '@/pages/DashboardPage'
 import CurriculumPage from '@/pages/CurriculumPage'
 import { LogbookPage } from '@/pages/LogbookPage'
+import OnboardingPage from '@/pages/OnboardingPage'
+import PaymentSuccessPage from '@/pages/PaymentSuccessPage'
 import './App.css'
+import { SubscriptionProvider } from '@/lib/subscription'
 
 function App() {
   const [session, setSession] = useState<any>(null)
@@ -52,6 +55,7 @@ function App() {
   // If mobile, always show auth page (which has the mobile blocker)
   if (isMobile) {
     return (
+      <SubscriptionProvider>
       <Router>
         <Toaster position="top-right" />
         <Routes>
@@ -59,20 +63,25 @@ function App() {
           <Route path="*" element={<AuthPage />} />
         </Routes>
       </Router>
+      </SubscriptionProvider>
     )
   }
 
   return (
+    <SubscriptionProvider>
     <Router>
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={!session ? <LandingPage /> : <Navigate to="/dashboard" />} />
         <Route path="/auth" element={!session ? <AuthPage /> : <Navigate to="/dashboard" />} />
+        <Route path="/onboarding" element={session ? <OnboardingPage /> : <Navigate to="/auth" />} />
         <Route path="/dashboard" element={session ? <DashboardPage /> : <Navigate to="/auth" />} />
         <Route path="/curriculum/:id" element={session ? <CurriculumPage /> : <Navigate to="/auth" />} />
         <Route path="/logbook" element={session ? <LogbookPage /> : <Navigate to="/auth" />} />
+        <Route path="/payment-success" element={session ? <PaymentSuccessPage /> : <Navigate to="/auth" />} />
       </Routes>
     </Router>
+    </SubscriptionProvider>
   )
 }
 

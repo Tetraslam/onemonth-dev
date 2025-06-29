@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom'
 import { PracticeProblems } from '@/components/PracticeProblems'
 import { PracticeHistory } from '@/components/PracticeHistory'
 import { LogbookPromptModal } from '@/components/LogbookPromptModal'
+import { useSubscription } from '@/lib/subscription'
+import SubscribeDialog from '@/components/SubscribeDialog'
 
 interface Day {
   id: string;
@@ -432,6 +434,8 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
   const [regeneratePrompt, setRegeneratePrompt] = useState('');
   const [showPractice, setShowPractice] = useState(false);
   const [showLogbookPrompts, setShowLogbookPrompts] = useState(false);
+  const { status } = useSubscription()
+  const [showSubscribe,setShowSubscribe]=useState(false)
 
   // Initialize edit content when day changes or edit mode starts
   useEffect(() => {
@@ -508,6 +512,7 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
   };
 
   const handleRegenerate = async () => {
+    if (status !== 'active') { setShowSubscribe(true); return }
     if (!day || !curriculum || !regeneratePrompt.trim()) return;
 
     setIsRegenerating(true);
@@ -832,7 +837,10 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
                 variant="secondary" 
                 size="lg" 
                 className="font-black text-lg px-10 border-2 border-foreground"
-                onClick={() => setShowPractice(true)}
+                onClick={() => {
+                  if(status!=='active') {setShowSubscribe(true);return}
+                  setShowPractice(true)
+                }}
               >
                 <Brain className="w-5 h-5 mr-2" />
                 Start Practice Session
@@ -881,6 +889,8 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
             }}
           />
         )}
+
+        {showSubscribe && <SubscribeDialog open={showSubscribe} onClose={()=>setShowSubscribe(false)} /> }
       </div>
     </ScrollArea>
   )

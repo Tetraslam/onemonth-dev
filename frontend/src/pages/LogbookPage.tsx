@@ -11,6 +11,7 @@ import { LogbookEditor } from '../components/LogbookEditor';
 import { LogbookEntryCard } from '../components/LogbookEntryCard';
 import { LogbookStats } from '../components/LogbookStats';
 import { toast } from 'sonner';
+import SubscriptionBanner from '@/components/SubscriptionBanner'
 
 interface LogbookEntry {
   id: string;
@@ -297,6 +298,7 @@ export function LogbookPage() {
         </div>
       </div>
 
+      <SubscriptionBanner />
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Entry List */}
         <div className="w-1/3 border-r-4 border-[hsl(0_0%_15%)] bg-white flex flex-col">

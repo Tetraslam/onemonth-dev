@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card'
 import { supabase } from '@/lib/supabase'
 import { Plus, BookOpen, Clock, Zap, ArrowRight, Book } from 'lucide-react'
 import { toast } from 'sonner'
+import SubscriptionBanner from '@/components/SubscriptionBanner'
 
 interface Curriculum {
   id: string
@@ -63,9 +64,9 @@ export default function DashboardPage() {
         .order('created_at', { ascending: false })
 
       if (curriculaError) throw curriculaError;
-      if (!curriculaData) {
-        setCurricula([]);
-        setLoading(false);
+      if (!curriculaData || curriculaData.length === 0) {
+        // No curricula – send to onboarding
+        navigate('/onboarding')
         return;
       }
 
@@ -171,6 +172,7 @@ export default function DashboardPage() {
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Welcome Section */}
+          <SubscriptionBanner />
           <div className="mb-8">
             <h2 className="text-4xl font-black mb-2">Your Learning Journey</h2>
             <p className="text-xl font-bold text-foreground/80">

@@ -36,6 +36,7 @@ from langchain.memory import ConversationBufferWindowMemory # Already there
 from langchain_google_genai import ChatGoogleGenerativeAI # Already there
 from app.core.config import settings # Already there
 import asyncio # Already there
+from app.api.dependencies import require_subscription
 
 router = APIRouter()
 
@@ -84,7 +85,7 @@ class LangChainChatRequest(BaseModel):
 @router.post("/")
 async def chat(
     request: ChatRequest,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     supabase=Depends(get_supabase)
 ) -> ChatResponse:
     """Process a chat message and return the AI response."""
@@ -141,7 +142,7 @@ async def format_llm_stream_for_sdk(agent_stream: AsyncIterator[str]) -> AsyncIt
 @router.post("/stream")
 async def chat_stream(
     request: ChatRequest,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     supabase=Depends(get_supabase)
 ):
     """Process a chat message and return streaming AI response for Vercel AI SDK."""
@@ -205,7 +206,7 @@ async def chat_stream(
 @router.get("/sessions")
 async def get_chat_sessions(
     curriculum_id: str | None = None,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     supabase=Depends(get_supabase)
 ):
     """Get chat sessions for the current user."""
@@ -226,7 +227,7 @@ async def get_chat_sessions(
 @router.post("/append_turn")
 async def append_chat_turn(
     request: AppendChatTurnRequest,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     supabase=Depends(get_supabase)
 ):
     """Appends a user message and an assistant message to a chat session."""
@@ -297,7 +298,7 @@ async def append_chat_turn(
 @router.get("/history/{curriculum_id}", response_model=ChatHistoryResponse)
 async def get_chat_history_for_curriculum(
     curriculum_id: str, # Assuming curriculum_id will always be provided for specific history
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     supabase=Depends(get_supabase)
 ):
     """Gets the chat message history for a given curriculum and the current user."""
@@ -349,7 +350,7 @@ async def vercel_ai_sdk_hello_stream_generator_data():
 
 @router.post("/vercel_ai_sdk")
 async def chat_vercel_ai_sdk_endpoint(
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     headers = {"x-vercel-ai-data-stream": "v1"}
     return StreamingResponse(vercel_ai_sdk_hello_stream_generator_data(), media_type="text/plain", headers=headers) 
@@ -557,7 +558,7 @@ async def langchain_chat_stream_generator(
 @router.post("/lc_stream")
 async def chat_langchain_stream(
     request_data: LangChainChatRequest, 
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     supabase_client = Depends(get_supabase)
 ):
     if not current_user or not current_user.id:
