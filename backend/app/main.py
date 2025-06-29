@@ -8,6 +8,7 @@ from app.api.endpoints import (auth, chat, curricula, logbook, notifications,
 from app.core.config import settings
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 # Global Redis client
 redis_client: Optional[redis.Redis] = None
@@ -80,6 +81,22 @@ async def health_check():
         "environment": settings.environment,
         "version": "1.0.0"
     }
+
+
+# Redirect any mistaken backend success URL to frontend
+@app.get("/api/payment-success")
+async def payment_success_redirect(checkout_id: str | None = None, customer_session_token: str | None = None):
+    # Preserve query params
+    query = []
+    if checkout_id:
+        query.append(f"checkout_id={checkout_id}")
+    if customer_session_token:
+        query.append(f"customer_session_token={customer_session_token}")
+    qs = "&".join(query)
+    url = f"https://onemonth.dev/payment-success"
+    if qs:
+        url += f"?{qs}"
+    return RedirectResponse(url)
 
 
 if __name__ == "__main__":
