@@ -24,7 +24,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
             detail="Polar API not configured"
         )
     
-    print(f"Checking subscription for user: {user['email']}")
+    print(f"Checking subscription for user: {user.email}")
     
     async with httpx.AsyncClient() as client:
         try:
@@ -32,7 +32,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
             customers_response = await client.get(
                 "https://api.polar.sh/v1/customers",
                 headers={"Authorization": f"Bearer {settings.polar_access_token}"},
-                params={"email": user["email"]}
+                params={"email": user.email}
             )
             print(f"Polar customers API status: {customers_response.status_code}")
             customers_response.raise_for_status()
@@ -40,7 +40,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
             print(f"Customers data: {customers_data}")
             
             if not customers_data.get("items"):
-                print(f"No Polar customer found for email: {user['email']}")
+                print(f"No Polar customer found for email: {user.email}")
                 return {"status": "none", "customer_id": None}
             
             customer = customers_data["items"][0]
@@ -59,11 +59,11 @@ async def get_subscription_status(user = Depends(get_current_user)):
             print(f"Subscriptions data: {subs_data}")
             
             if subs_data.get("items") and len(subs_data["items"]) > 0:
-                print(f"Found active subscription for user {user['email']}")
+                print(f"Found active subscription for user {user.email}")
                 # Update user metadata with subscription status
                 try:
                     supabase.auth.admin.update_user_by_id(
-                        user["id"], 
+                        user.id, 
                         {"user_metadata": {"subscription_status": "active"}}
                     )
                     print("Updated user metadata with active subscription")
@@ -72,7 +72,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
                 
                 return {"status": "active", "customer_id": customer_id}
             else:
-                print(f"No active subscription found for user {user['email']}")
+                print(f"No active subscription found for user {user.email}")
                 return {"status": "none", "customer_id": customer_id}
                 
         except httpx.HTTPStatusError as e:
