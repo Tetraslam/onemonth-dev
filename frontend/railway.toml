@@ -3,7 +3,6 @@
 [build]
   builder = "NIXPACKS"
   buildCommand = "pnpm install --frozen-lockfile && pnpm run build"
-  watchPatterns = ["src/*", "index.html"]
 
 [static]
   dir = "dist"
