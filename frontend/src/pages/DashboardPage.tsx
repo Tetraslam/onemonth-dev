@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase'
 import { Plus, BookOpen, Clock, Zap, ArrowRight, Book } from 'lucide-react'
 import { toast } from 'sonner'
 import SubscriptionBanner from '@/components/SubscriptionBanner'
+import { useSubscription } from '@/lib/subscription'
 
 interface Curriculum {
   id: string
@@ -26,6 +27,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [curricula, setCurricula] = useState<Curriculum[]>([])
   const [loading, setLoading] = useState(true)
+  const { loading: subscriptionLoading } = useSubscription()
   const [stats, setStats] = useState({
     totalCurricula: 0,
     activeCurricula: 0,
@@ -137,7 +139,7 @@ export default function DashboardPage() {
     navigate('/')
   }
 
-  if (loading) {
+  if (loading || subscriptionLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl font-black animate-pulse">Loading your curricula...</div>
