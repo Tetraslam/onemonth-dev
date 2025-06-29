@@ -65,10 +65,16 @@ export default function DashboardPage() {
         .eq('user_id', userObj.id)
         .order('created_at', { ascending: false })
 
-      if (curriculaError) throw curriculaError;
+      if (curriculaError) {
+        console.error('Supabase curricula error', curriculaError)
+        toast.error('Failed to load curricula')
+        setLoading(false)
+        return
+      }
       if (!curriculaData || curriculaData.length === 0) {
         // No curricula: only redirect if user hasn't skipped onboarding
         if (!userObj.user_metadata?.onboarding_skipped) {
+          setLoading(false)
           navigate('/onboarding')
           return
         }
@@ -125,8 +131,6 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Error loading curricula:', error)
       toast.error('Failed to load curricula')
-    } finally {
-      setLoading(false)
     }
   }
 
