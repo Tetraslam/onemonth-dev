@@ -62,7 +62,7 @@ class Settings(BaseSettings):
     gemini_api_key: Optional[str] = Field(None, env="GEMINI_API_KEY")
     
     # CORS - store as string from env, parse into list
-    cors_origins_env_str: str = Field("http://localhost:5173,http://127.0.0.1:5173", alias="CORS_ORIGINS")
+    cors_origins_env_str: str = Field("https://onemonth.dev,http://localhost:5173,http://127.0.0.1:5173", alias="CORS_ORIGINS")
     cors_origins_list: List[str] = []
 
     @field_validator("cors_origins_list", mode="before")
