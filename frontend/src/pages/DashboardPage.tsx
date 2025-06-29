@@ -72,13 +72,7 @@ export default function DashboardPage() {
         return
       }
       if (!curriculaData || curriculaData.length === 0) {
-        // No curricula: only redirect if user hasn't skipped onboarding
-        if (!userObj.user_metadata?.onboarding_skipped) {
-          setLoading(false)
-          navigate('/onboarding')
-          return
-        }
-        // user skipped onboarding; show empty state
+        // No curricula yet – just show the empty-state card (no onboarding redirect)
       }
 
       // Fetch progress for each curriculum
