@@ -125,34 +125,12 @@ export default function CurriculumPage() {
 
   // Callback function to update a day's completion status
   const handleDayCompletionUpdate = (dayId: string, isCompleted: boolean) => {
-    setDays(prevDays => 
-      prevDays.map(day => 
-        day.id === dayId 
-          ? { ...day, completed: isCompleted } 
-          : day
-      )
-    );
-    
-    // Update selected day if it's the one being completed
-    if (selectedDay?.id === dayId) {
-      setSelectedDay(prev => prev ? { ...prev, completed: isCompleted } : null);
-    }
+    setDays((prev: any) => prev.map((d: any) => d.id === dayId ? { ...d, completed: isCompleted } : d))
   };
 
   // Callback function to update a day's content
   const handleDayUpdate = (dayId: string, updates: Partial<Day>) => {
-    setDays(prevDays => 
-      prevDays.map(day => 
-        day.id === dayId 
-          ? { ...day, ...updates } 
-          : day
-      )
-    );
-    
-    // Update selected day if it's the one being updated
-    if (selectedDay?.id === dayId) {
-      setSelectedDay(prev => prev ? { ...prev, ...updates } : null);
-    }
+    setDays((prev: any) => prev.map((d: any) => d.id === dayId ? { ...d, ...updates } : d))
   };
 
   // Move day up or down

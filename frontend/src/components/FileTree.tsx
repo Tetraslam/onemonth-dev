@@ -93,7 +93,7 @@ export function FileTree({ days, selectedDay, onSelectDay, onMoveDay, onDeleteDa
                     <CheckCircle2 className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" />
                   )}
                   {onDeleteDay && (
-                    <X onClick={(e)=>{e.stopPropagation();onDeleteDay(day.id)}} className="w-4 h-4 text-red-600 flex-shrink-0 hover:text-red-700" title="Delete" />
+                    <X onClick={(e)=>{e.stopPropagation();onDeleteDay(day.id)}} className="w-4 h-4 text-red-600 flex-shrink-0 hover:text-red-700" />
                   )}
                 </div>
               ))}
