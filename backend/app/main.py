@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 import redis.asyncio as redis
+from app.api.endpoints import polar  # New: webhook endpoint
 from app.api.endpoints import (auth, chat, curricula, logbook, notifications,
                                practice, users)
 from app.core.config import settings
@@ -68,6 +69,7 @@ app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(logbook.router, prefix="/api/logbook", tags=["logbook"])
 app.include_router(notifications.router, prefix="/api/notifications", tags=["notifications"])
 app.include_router(practice.router, prefix="/api/practice", tags=["practice"])
+app.include_router(polar.router, prefix="/api/webhooks", tags=["webhooks"])
 
 
 @app.get("/api/health")
