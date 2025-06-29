@@ -28,7 +28,7 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       }
 
       // Check Polar directly via our API
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/me/subscription`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/users/me/subscription`, {
         headers: {
           'Authorization': `Bearer ${session.access_token}`
         }
