@@ -5,6 +5,7 @@ from app.core.auth import get_current_user
 from app.core.config import settings
 from app.db.supabase_client import supabase
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 
 router = APIRouter()
@@ -72,10 +73,10 @@ async def get_subscription_status(user = Depends(get_current_user)):
                 except Exception as e:
                     print(f"Failed to update user metadata: {e}")
                 
-                return {"status": "active", "customer_id": customer_id}
+                return JSONResponse({"status": "active", "customer_id": customer_id, "force_refresh": True})
             else:
                 print(f"No active subscription found for user {user.email}")
-                return {"status": "none", "customer_id": customer_id}
+                return JSONResponse({"status": "none", "customer_id": customer_id})
                 
         except httpx.HTTPStatusError as e:
             print(f"Polar API error: {e.response.text}")
