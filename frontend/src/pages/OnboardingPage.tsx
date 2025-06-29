@@ -31,7 +31,21 @@ export default function OnboardingPage() {
         <h1 className="text-4xl font-black mb-6 text-center">Let's craft your first curriculum</h1>
         <CurriculumCreationForm />
         <div className="text-center mt-6">
-          <Button variant="ghost" onClick={() => navigate('/dashboard')}>Skip for now</Button>
+          <Button
+            variant="ghost"
+            onClick={async () => {
+              const { data: { session } } = await supabase.auth.getSession()
+              if (session) {
+                // mark onboarding as skipped in user metadata
+                await supabase.auth.updateUser({
+                  data: { onboarding_skipped: true }
+                })
+              }
+              navigate('/dashboard')
+            }}
+          >
+            Skip for now
+          </Button>
         </div>
       </div>
     </div>

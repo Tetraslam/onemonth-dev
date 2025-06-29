@@ -6,6 +6,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://api.onemonth.dev/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "redirects": [

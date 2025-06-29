@@ -47,27 +47,30 @@ export default function DashboardPage() {
       }
       setUser(user)
       // Fetch curricula only after user is confirmed
-      fetchCurricula(user.id)
+      fetchCurricula(user)
     } catch (error) {
       console.error('Error checking user:', error)
       toast.error('Failed to check user')
     }
   }
 
-  async function fetchCurricula(userId: string) {
+  async function fetchCurricula(userObj: any) {
     try {
       // Load user's curricula
       const { data: curriculaData, error: curriculaError } = await supabase
         .from('curricula')
         .select('*') 
-        .eq('user_id', userId) // Use the passed userId instead of user.id
+        .eq('user_id', userObj.id)
         .order('created_at', { ascending: false })
 
       if (curriculaError) throw curriculaError;
       if (!curriculaData || curriculaData.length === 0) {
-        // No curricula – send to onboarding
-        navigate('/onboarding')
-        return;
+        // No curricula: only redirect if user hasn't skipped onboarding
+        if (!userObj.user_metadata?.onboarding_skipped) {
+          navigate('/onboarding')
+          return
+        }
+        // user skipped onboarding; show empty state
       }
 
       // Fetch progress for each curriculum
@@ -94,7 +97,7 @@ export default function DashboardPage() {
           const { data: progressData, error: progressError } = await supabase
             .from('progress')
             .select('day_id, completed_at')
-            .eq('user_id', userId)
+            .eq('user_id', userObj.id)
             .eq('curriculum_id', curriculum.id)
             .in('day_id', dayIds);
 
