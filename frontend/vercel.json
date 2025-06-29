@@ -8,10 +8,6 @@
       "destination": "https://api.onemonth.dev/api/$1"
     }
   ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
   "redirects": [
     {
       "source": "/payment_success",
