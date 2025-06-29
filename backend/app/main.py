@@ -41,7 +41,8 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
-    lifespan=lifespan
+    lifespan=lifespan,
+    redirect_slashes=False  # Prevent automatic trailing slash redirects
 )
 
 # Configure CORS

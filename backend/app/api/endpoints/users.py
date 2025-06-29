@@ -32,7 +32,8 @@ async def get_subscription_status(user = Depends(get_current_user)):
             customers_response = await client.get(
                 "https://api.polar.sh/v1/customers",
                 headers={"Authorization": f"Bearer {settings.polar_access_token}"},
-                params={"email": user.email}
+                params={"email": user.email},
+                follow_redirects=True
             )
             print(f"Polar customers API status: {customers_response.status_code}")
             customers_response.raise_for_status()
@@ -51,7 +52,8 @@ async def get_subscription_status(user = Depends(get_current_user)):
             subs_response = await client.get(
                 "https://api.polar.sh/v1/subscriptions",
                 headers={"Authorization": f"Bearer {settings.polar_access_token}"},
-                params={"customer_id": customer_id, "status": "active"}
+                params={"customer_id": customer_id, "status": "active"},
+                follow_redirects=True
             )
             print(f"Polar subscriptions API status: {subs_response.status_code}")
             subs_response.raise_for_status()
