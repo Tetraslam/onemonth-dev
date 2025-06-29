@@ -4,6 +4,10 @@
   builder = "NIXPACKS"
   buildCommand = "pnpm install --frozen-lockfile && pnpm run build"
 
+[deploy]
+  startCommand = "pnpm dlx serve dist -s -p ${PORT:-3000}"
+
 [static]
   dir = "dist"
   ignore = []
+  enabled = false
