@@ -4,7 +4,8 @@ import json
 import os
 
 from app.db.supabase_client import supabase
-from fastapi import APIRouter, Header, HTTPException, Request, status
+from fastapi import APIRouter, Header, HTTPException, Request, Response, status
+from starlette.exceptions import ClientDisconnect
 
 router = APIRouter()
 
@@ -12,7 +13,11 @@ POLAR_WEBHOOK_SECRET = os.getenv("POLAR_WEBHOOK_SECRET", "")
 
 @router.post("/polar", status_code=204)
 async def polar_webhook(request: Request, polar_signature: str = Header(None)):
-    payload = await request.body()
+    try:
+        payload = await request.body()
+    except ClientDisconnect:
+        # Polar closed the connection before sending a body; treat as success
+        return Response(status_code=204)
     # If secret configured verify signature
     if POLAR_WEBHOOK_SECRET:
         computed = hmac.new(POLAR_WEBHOOK_SECRET.encode(), payload, hashlib.sha256).hexdigest()
