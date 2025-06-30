@@ -21,15 +21,20 @@ async def get_current_user_profile(current_user: Dict[str, Any] = Depends(get_cu
 async def get_subscription_status(user = Depends(get_current_user)):
     """Check subscription status directly from Polar."""
     # First check our database
-    db_response = supabase.table("subscription_status")\
-        .select("status, customer_id")\
-        .eq("user_id", str(user.id))\
-        .maybe_single()\
-        .execute()
-    
-    # If we have a recent active status (updated in last hour), return it
-    if db_response.data and db_response.data.get("status") == "active":
-        return {"status": "active", "customer_id": db_response.data.get("customer_id")}
+    try:
+        db_response = supabase.table("subscription_status") \
+            .select("status, customer_id") \
+            .eq("user_id", str(user.id)) \
+            .maybe_single() \
+            .execute()
+    except Exception as e:
+        print(f"Supabase select subscription_status error: {e}")
+        db_response = None
+
+    if db_response and getattr(db_response, 'data', None):
+        status_in_db = db_response.data.get("status")
+        if status_in_db == "active":
+            return {"status": "active", "customer_id": db_response.data.get("customer_id")}
     
     # Otherwise check Polar API
     if not settings.polar_access_token:

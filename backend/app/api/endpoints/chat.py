@@ -389,7 +389,7 @@ async def langchain_chat_stream_generator(
     # Helper to escape braces for prompt templates
     def _escape_braces(text: str) -> str:
         return text.replace('{', '{{').replace('}', '}}')
-
+    
     # --- Context Augmentation (as before) ---
     lesson_content_for_prompt = ""
     if curriculum_id and context_data.get("current_day_number") is not None:
