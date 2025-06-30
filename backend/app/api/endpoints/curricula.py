@@ -186,6 +186,9 @@ async def create_curriculum(
             # Replace raw backticks in JSON strings with their unicode escape to avoid invalid escapes
             json_str = json_str.replace('`', '\\u0060')
             
+            # Remove stray ':a:' pattern typo
+            json_str = re.sub(r'":a\s*:', '":', json_str)
+            
             # Try to parse the cleaned JSON (standard json), fallback to json5 for lenient parsing
             try:
                 generated_curriculum = json.loads(json_str)
@@ -219,7 +222,7 @@ async def create_curriculum(
                 "generation_progress": f"Failed to parse curriculum content: {str(e)}"
             }).eq("id", new_curriculum_id).execute()
             
-            raise HTTPException(status_code=500, detail=f"Failed to parse agent response even after cleaning attempts: {str(e)}. Error near position {getattr(e, 'pos', 'unknown')}")
+            return JSONResponse({"id": new_curriculum_id, "error": "parse_failed"})
 
         # Update curriculum with title and description from agent
         supabase.table("curricula").update({
