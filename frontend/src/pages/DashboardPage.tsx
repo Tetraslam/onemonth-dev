@@ -27,7 +27,9 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [curricula, setCurricula] = useState<Curriculum[]>([])
   const [loading, setLoading] = useState(true)
-  const [loadedOnce, setLoadedOnce] = useState(false)
+  const [loadedOnce, setLoadedOnce] = useState(() => {
+    return sessionStorage.getItem('dashboardLoaded') === '1'
+  })
   const [stats, setStats] = useState({
     totalCurricula: 0,
     activeCurricula: 0,
@@ -73,7 +75,10 @@ export default function DashboardPage() {
         console.error('Supabase curricula error', curriculaError)
         toast.error('Failed to load curricula')
         setLoading(false)
-        setLoadedOnce(true)
+        if (!loadedOnce) {
+          sessionStorage.setItem('dashboardLoaded', '1')
+          setLoadedOnce(true)
+        }
         return
       }
       if (!curriculaData || curriculaData.length === 0) {
@@ -128,12 +133,18 @@ export default function DashboardPage() {
       
       setCurricula(curriculaWithProgress);
       setLoading(false);
-      setLoadedOnce(true);
+      if (!loadedOnce) {
+        sessionStorage.setItem('dashboardLoaded', '1')
+        setLoadedOnce(true)
+      }
     } catch (error) {
       console.error('Error loading curricula:', error)
       toast.error('Failed to load curricula')
       setLoading(false);
-      setLoadedOnce(true);
+      if (!loadedOnce) {
+        sessionStorage.setItem('dashboardLoaded', '1')
+        setLoadedOnce(true)
+      }
     }
   }
 
