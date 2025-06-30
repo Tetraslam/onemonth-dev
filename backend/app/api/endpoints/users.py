@@ -23,7 +23,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
     # First check our database
     db_response = supabase.table("subscription_status")\
         .select("status, customer_id")\
-        .eq("user_id", str(user["id"]))\
+        .eq("user_id", str(user.id))\
         .maybe_single()\
         .execute()
     
@@ -38,7 +38,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
             detail="Polar API not configured"
         )
     
-    print(f"Checking subscription for user: {user['email']}")
+    print(f"Checking subscription for user: {user.email}")
     
     async with httpx.AsyncClient() as client:
         try:
@@ -46,7 +46,7 @@ async def get_subscription_status(user = Depends(get_current_user)):
             customers_response = await client.get(
                 "https://api.polar.sh/v1/customers",
                 headers={"Authorization": f"Bearer {settings.polar_access_token}"},
-                params={"email": user["email"]},
+                params={"email": user.email},
                 follow_redirects=True
             )
             print(f"Polar customers API status: {customers_response.status_code}")
@@ -55,10 +55,10 @@ async def get_subscription_status(user = Depends(get_current_user)):
             print(f"Customers data: {customers_data}")
             
             if not customers_data.get("items"):
-                print(f"No Polar customer found for email: {user['email']}")
+                print(f"No Polar customer found for email: {user.email}")
                 # Update database to reflect no subscription
                 supabase.table("subscription_status").upsert({
-                    "user_id": str(user["id"]),
+                    "user_id": str(user.id),
                     "status": "none",
                     "customer_id": None,
                     "updated_at": datetime.utcnow().isoformat()
@@ -82,10 +82,10 @@ async def get_subscription_status(user = Depends(get_current_user)):
             print(f"Subscriptions data: {subs_data}")
             
             if subs_data.get("items") and len(subs_data["items"]) > 0:
-                print(f"Found active subscription for user {user['email']}")
+                print(f"Found active subscription for user {user.email}")
                 # Update subscription status in table
                 supabase.table("subscription_status").upsert({
-                    "user_id": str(user["id"]),
+                    "user_id": str(user.id),
                     "status": "active",
                     "customer_id": customer_id,
                     "updated_at": datetime.utcnow().isoformat()
@@ -93,10 +93,10 @@ async def get_subscription_status(user = Depends(get_current_user)):
                 print("Updated subscription_status table with active subscription")
                 return {"status": "active", "customer_id": customer_id}
             else:
-                print(f"No active subscription found for user {user['email']}")
+                print(f"No active subscription found for user {user.email}")
                 # Update database to reflect no active subscription
                 supabase.table("subscription_status").upsert({
-                    "user_id": str(user["id"]),
+                    "user_id": str(user.id),
                     "status": "none",
                     "customer_id": customer_id,
                     "updated_at": datetime.utcnow().isoformat()

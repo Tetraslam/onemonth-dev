@@ -122,9 +122,11 @@ export default function DashboardPage() {
       );
       
       setCurricula(curriculaWithProgress);
+      setLoading(false);
     } catch (error) {
       console.error('Error loading curricula:', error)
       toast.error('Failed to load curricula')
+      setLoading(false);
     }
   }
 
