@@ -27,7 +27,6 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [curricula, setCurricula] = useState<Curriculum[]>([])
   const [loading, setLoading] = useState(true)
-  const { loading: subscriptionLoading } = useSubscription()
   const [stats, setStats] = useState({
     totalCurricula: 0,
     activeCurricula: 0,
@@ -139,7 +138,7 @@ export default function DashboardPage() {
     navigate('/')
   }
 
-  if (loading || subscriptionLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl font-black animate-pulse">Loading your curricula...</div>
