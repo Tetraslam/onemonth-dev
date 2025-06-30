@@ -218,7 +218,7 @@ export function CurriculumCreationForm() {
 
       // Create curriculum via API
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/`,
         {
           title: formData.title || `Learning ${formData.learningGoal}`,
           description: formData.description || formData.learningGoal,
