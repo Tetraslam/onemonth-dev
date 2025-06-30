@@ -27,12 +27,14 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
   const [curricula, setCurricula] = useState<Curriculum[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadedOnce, setLoadedOnce] = useState(false)
   const [stats, setStats] = useState({
     totalCurricula: 0,
     activeCurricula: 0,
     completedDays: 0,
     currentStreak: 0
   })
+  const { loading: subscriptionLoading } = useSubscription()
 
   useEffect(() => {
     checkUser()
@@ -57,6 +59,9 @@ export default function DashboardPage() {
 
   async function fetchCurricula(userObj: any) {
     try {
+      // Show spinner only on very first load
+      if (!loadedOnce) setLoading(true)
+
       // Load user's curricula
       const { data: curriculaData, error: curriculaError } = await supabase
         .from('curricula')
@@ -68,6 +73,7 @@ export default function DashboardPage() {
         console.error('Supabase curricula error', curriculaError)
         toast.error('Failed to load curricula')
         setLoading(false)
+        setLoadedOnce(true)
         return
       }
       if (!curriculaData || curriculaData.length === 0) {
@@ -122,10 +128,12 @@ export default function DashboardPage() {
       
       setCurricula(curriculaWithProgress);
       setLoading(false);
+      setLoadedOnce(true);
     } catch (error) {
       console.error('Error loading curricula:', error)
       toast.error('Failed to load curricula')
       setLoading(false);
+      setLoadedOnce(true);
     }
   }
 
@@ -138,7 +146,7 @@ export default function DashboardPage() {
     navigate('/')
   }
 
-  if (loading) {
+  if (!loadedOnce && loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl font-black animate-pulse">Loading your curricula...</div>
