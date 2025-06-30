@@ -15,6 +15,7 @@ from app.models.curriculum import (Curriculum, CurriculumCreate, CurriculumDay,
                                    CurriculumDayCreate)
 from app.models.user import AuthenticatedUser
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -282,29 +283,8 @@ async def create_curriculum(
             "generation_progress": "Curriculum generated successfully!"
         }).eq("id", new_curriculum_id).execute()
         
-        # Fetch the created curriculum with its days to return it
-        # (Or construct it from created_curriculum_row.data[0] and created_days_response.data)
-        # For now, just returning the main curriculum object
-        
-        # Map database fields back to Pydantic model fields for the response
-        response_data = created_curriculum_row.data[0]
-        response_data["learning_goal"] = response_data.get("topic") or response_data.get("goal")
-        response_data["title"] = curriculum_title
-        response_data["description"] = curriculum_description
-        response_data["generation_status"] = "completed"
-        response_data["generation_progress"] = "Curriculum generated successfully!"
-        
-        # If topic/goal were stored in metadata, you'd fetch from there
-        
-        # Ensure all fields required by Curriculum model are present or have defaults
-        # For example, if prerequisites, daily_time_commitment_minutes, learning_style are part of Curriculum model
-        # and were stored in metadata, fetch them here for the response model if needed.
-        metadata_from_db = response_data.get("metadata", {})
-        response_data["prerequisites"] = metadata_from_db.get("prerequisites")
-        response_data["daily_time_commitment_minutes"] = metadata_from_db.get("daily_time_commitment_minutes")
-        response_data["learning_style"] = metadata_from_db.get("learning_style")
-        
-        return Curriculum(**response_data)
+        # Return only the ID – UI will poll /api/curricula/{id} for full data
+        return JSONResponse({"id": new_curriculum_id})
 
     except HTTPException as e: # Re-raise HTTPExceptions
         raise e
