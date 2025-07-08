@@ -16,8 +16,12 @@ export default function OnboardingPage() {
   useEffect(() => {
     // Check if already subscribed
     const checkStatus = async () => {
+      console.log('Checking subscription status in onboarding...')
       await checkSubscription()
-      if (isSubscribed()) {
+      const subscribed = isSubscribed()
+      console.log('Is subscribed?', subscribed)
+      if (subscribed) {
+        console.log('User is subscribed, redirecting to dashboard')
         navigate('/dashboard')
       }
     }
@@ -33,8 +37,8 @@ export default function OnboardingPage() {
           cancel_url: `${window.location.origin}/onboarding`
         })
         
-        if (response.data.checkout_url) {
-          setCheckoutUrl(response.data.checkout_url)
+        if (response.data.url) {
+          setCheckoutUrl(response.data.url)
         }
       } catch (error) {
         console.error('Failed to create checkout:', error)
@@ -51,8 +55,8 @@ export default function OnboardingPage() {
       setIsLoading(true)
       try {
         const response = await api.post('/api/checkout/session')
-        if (response.data.checkout_url) {
-          window.location.href = response.data.checkout_url
+        if (response.data.url) {
+          window.location.href = response.data.url
         }
       } catch (error) {
         toast.error('Failed to start checkout. Please try again.')

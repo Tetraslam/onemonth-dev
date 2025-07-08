@@ -85,7 +85,7 @@ function PreviewModal({ formData, onGenerate, onBack, isLoading }: PreviewModalP
       <Card className="p-4 border-2 border-yellow-500 bg-yellow-50">
         <p className="text-sm font-medium">
           <Clock className="inline-block w-4 h-4 mr-2" />
-          Generation typically takes 3-5 minutes
+          Generation typically take around 10 minutes
         </p>
       </Card>
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Plus, BookOpen, Clock, ArrowRight, Book, CreditCard, CheckCircle, RefreshCw } from 'lucide-react'
+import { Plus, BookOpen, Clock, ArrowRight, Book, CreditCard, CheckCircle, RefreshCw, Loader2 } from 'lucide-react'
 import api from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
@@ -45,6 +45,30 @@ export default function DashboardPage() {
     }
     checkAuthAndFetchCurricula()
   }, [navigate, checkSubscription])
+
+  // Poll for generating curricula
+  useEffect(() => {
+    const hasGeneratingCurricula = curricula.some(c => c.generation_status === 'generating')
+    
+    if (hasGeneratingCurricula) {
+      const interval = setInterval(async () => {
+        try {
+          const { data } = await api.get('/api/curricula/')
+          setCurricula(data || [])
+          
+          // Stop polling if no more generating curricula
+          const stillGenerating = data?.some((c: any) => c.generation_status === 'generating')
+          if (!stillGenerating) {
+            clearInterval(interval)
+          }
+        } catch (error) {
+          console.error("Failed to poll curricula", error)
+        }
+      }, 30000) // Poll every 30 seconds
+      
+      return () => clearInterval(interval)
+    }
+  }, [curricula])
 
   async function handleSignOut() {
     try {
@@ -179,8 +203,16 @@ export default function DashboardPage() {
               {curricula.map((curriculum) => (
                 <Card
                   key={curriculum.id}
-                  className="bg-card border-4 border-foreground p-6 neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer"
-                  onClick={() => navigate(`/curriculum/${curriculum.id}`)}
+                  className={`bg-card border-4 border-foreground p-6 neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer ${
+                    curriculum.generation_status === 'generating' ? 'opacity-75' : ''
+                  }`}
+                  onClick={() => {
+                    if (curriculum.generation_status === 'generating') {
+                      toast.info('This curriculum is still being generated. Please check back in a few moments.')
+                    } else {
+                      navigate(`/curriculum/${curriculum.id}`)
+                    }
+                  }}
                 >
                   <h3 className="text-xl font-black mb-2">{curriculum.title}</h3>
                   <p className="text-sm font-bold text-foreground/70 mb-4 line-clamp-2">
@@ -191,6 +223,12 @@ export default function DashboardPage() {
                       <Clock className="h-4 w-4" />
                       <span>{curriculum.total_days} days</span>
                     </div>
+                    {curriculum.generation_status === 'generating' && (
+                      <div className="flex items-center gap-2 text-primary">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Generating...</span>
+                      </div>
+                    )}
                   </div>
                 </Card>
               ))}
