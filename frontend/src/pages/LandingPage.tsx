@@ -231,9 +231,9 @@ export function LandingPage() {
                         style={{ width: `${(index + 1) * 36}px` }}
                       ></div>
                       <span className="font-bold text-sm">{week}</span>
-                    </div>
+                  </div>
                   ))}
-                </div>
+                  </div>
                 <div className="mt-6 p-4 bg-primary/10 rounded-md border-2 border-primary">
                   <p className="font-bold text-sm">"{currentExample.progress.testimonial}"</p>
                   <p className="font-black text-sm mt-2">- {currentExample.progress.author}</p>

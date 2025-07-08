@@ -11,19 +11,36 @@ from youtube_search import YoutubeSearch
 async def youtube_search(query: str, max_results: int = 10) -> List[Dict[str, Any]]:
     """Search YouTube for educational videos."""
     try:
-        results = YoutubeSearch(query, max_results=max_results).to_dict()
+        # Search for more results initially since we'll filter out shorts
+        results = YoutubeSearch(query, max_results=max_results * 5).to_dict()
         
         formatted_results = []
         for video in results:
-            formatted_results.append({
-                "title": video.get("title", ""),
-                "url": f"https://youtube.com{video.get('url_suffix', '')}",
-                "duration": video.get("duration", ""),
-                "views": video.get("views", ""),
-                "channel": video.get("channel", ""),
-                "description": video.get("long_desc", "")[:500] + "..." if video.get("long_desc") else "",
-                "thumbnail": video.get("thumbnails", [None])[0] if video.get("thumbnails") else None
-            })
+            url_suffix = video.get('url_suffix', '')
+            
+            # Skip YouTube Shorts
+            if '/shorts/' in url_suffix:
+                continue
+                
+            # Only process regular videos (with /watch?v=)
+            if '/watch?v=' in url_suffix:
+                formatted_results.append({
+                    "title": video.get("title", ""),
+                    "url": f"https://youtube.com{url_suffix}",
+                    "duration": video.get("duration", ""),
+                    "views": video.get("views", ""),
+                    "channel": video.get("channel", ""),
+                    "description": video.get("long_desc", "")[:500] + "..." if video.get("long_desc") else "",
+                    "thumbnail": video.get("thumbnails", [None])[0] if video.get("thumbnails") else None
+                })
+                
+                # Stop when we have enough regular videos
+                if len(formatted_results) >= max_results:
+                    break
+        
+        # If we couldn't find enough regular videos, add a note
+        if len(formatted_results) == 0:
+            return [{"error": f"No regular YouTube videos found for '{query}' (only Shorts were found)"}]
         
         return formatted_results
     except Exception as e:

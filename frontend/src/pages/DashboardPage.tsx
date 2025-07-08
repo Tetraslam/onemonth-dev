@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Plus, BookOpen, Clock, ArrowRight, Book, CreditCard, CheckCircle, RefreshCw, Loader2 } from 'lucide-react'
+import { Plus, BookOpen, Clock, ArrowRight, Loader2 } from 'lucide-react'
 import api from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore'
 import { useSubscribeModal } from '@/stores/useSubscribeModal'
+import { Navbar } from '@/components/Navbar'
 
 export default function DashboardPage() {
   const navigate = useNavigate()
@@ -70,76 +71,9 @@ export default function DashboardPage() {
     }
   }, [curricula])
 
-  async function handleSignOut() {
-    try {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        toast.error(error.message)
-      } else {
-        // Clear subscription status
-        useSubscriptionStore.getState().clearSubscription()
-        navigate('/auth')
-      }
-    } catch (error: any) {
-      toast.error('Failed to sign out')
-    }
-  }
-  
-  async function handleRefreshSubscription() {
-    try {
-      // Clear cache and check subscription
-      useSubscriptionStore.getState().clearSubscription()
-      await checkSubscription()
-      toast.success('Subscription status refreshed')
-    } catch (error) {
-      toast.error('Failed to refresh subscription status')
-    }
-  }
-
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b-4 border-foreground bg-card neo-brutal-shadow">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-black">onemonth.dev</h1>
-          <div className="flex items-center gap-4">
-            {/* Subscription status badge */}
-            {status && (
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-1 bg-background rounded-md border-2 border-foreground">
-                  {isSubscribed() ? (
-                    <>
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      <span className="text-sm font-bold">Premium</span>
-                    </>
-                  ) : (
-                    <>
-                      <CreditCard className="h-4 w-4" />
-                      <span className="text-sm font-bold">Free</span>
-                    </>
-                  )}
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={handleRefreshSubscription}
-                  className="h-8 w-8 p-0"
-                  title="Refresh subscription status"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
-            
-            <Button variant="outline" onClick={() => navigate('/logbook')} className="font-black bg-card">
-              <Book className="mr-2 h-4 w-4" />
-              Logbook
-            </Button>
-            <Button variant="outline" onClick={handleSignOut} className="font-black bg-card">
-              Sign Out
-            </Button>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
@@ -221,7 +155,7 @@ export default function DashboardPage() {
                   <div className="flex items-center justify-between text-sm font-bold">
                     <div className="flex items-center gap-2 text-foreground/60">
                       <Clock className="h-4 w-4" />
-                      <span>{curriculum.total_days} days</span>
+                      <span>{curriculum.estimated_duration_days || 30} days</span>
                     </div>
                     {curriculum.generation_status === 'generating' && (
                       <div className="flex items-center gap-2 text-primary">

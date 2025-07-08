@@ -50,6 +50,9 @@ class CurriculumAgent:
             "github_search": github_search,
             "wolfram_alpha_query": wolfram_alpha_query
         }
+        
+        self.graph = self._build_graph()
+        self.youtube_url_mapping = {}  # Store YouTube URL mappings
     
     def _build_graph(self) -> StateGraph:
         """Build the LangGraph workflow."""
@@ -410,6 +413,9 @@ CRITICAL OUTPUT FORMATTING RULES:
 
     def _format_tool_results(self, tools_output: List[Dict[str, Any]]) -> str:
         formatted = []
+        self.youtube_url_mapping = {}  # Reset mapping for each format call
+        youtube_counter = 1
+        
         for output in tools_output:
             tool_name = output.get("tool", "Unknown Tool")
             if "error" in output:
@@ -432,11 +438,19 @@ CRITICAL OUTPUT FORMATTING RULES:
                     if "content" in item:
                         formatted.append(f"\n### Perplexity Search Result:\n{item['content'][:1000]}...")
             elif tool_name == "youtube_search" and isinstance(result, list):
-                formatted.append("\n### YouTube Videos:")
-                for video in result[:5]:
+                formatted.append("\n### YouTube Videos (USE THESE IN YOUR RESOURCES SECTION):")
+                formatted.append("IMPORTANT: When creating the 'resources' array for each day, use the identifiers below (e.g., [YT1], [YT2]) as placeholders for YouTube URLs.")
+                formatted.append("")
+                for video in result[:10]:  # Store more videos
                     if not isinstance(video, dict) or "error" in video:
                         continue
-                    formatted.append(f"- [{video.get('title', 'Unknown')}]({video.get('url', '#')}) by {video.get('channel', 'Unknown')}")
+                    video_id = f"[YT{youtube_counter}]"
+                    self.youtube_url_mapping[video_id] = video.get('url', '#')
+                    formatted.append(f"{video_id}: {video.get('title', 'Unknown')} by {video.get('channel', 'Unknown')}")
+                    formatted.append(f"    Duration: {video.get('duration', 'Unknown')}")
+                    formatted.append(f"    Description: {video.get('description', 'No description')[:200]}...")
+                    formatted.append("")
+                    youtube_counter += 1
             elif tool_name == "wikipedia_search" and isinstance(result, dict):
                 if "summary" in result:
                     formatted.append(f"\n### Wikipedia: {result.get('title', 'Unknown')}\n{result['summary'][:500]}...")
@@ -574,6 +588,13 @@ CRITICAL: Output ONLY the JSON inside markdown code blocks. Do NOT include any t
                 ]
             }
 
+    def replace_youtube_identifiers(self, curriculum_json: str) -> str:
+        """Replace YouTube identifiers like [YT1] with actual URLs in the curriculum JSON."""
+        result = curriculum_json
+        for identifier, url in self.youtube_url_mapping.items():
+            result = result.replace(identifier, url)
+        return result
+    
     async def run(self, messages: List[Dict[str, Any]], context: Optional[Dict[str, Any]] = None) -> str:
         initial_state = {
             "messages": messages,
@@ -583,6 +604,12 @@ CRITICAL: Output ONLY the JSON inside markdown code blocks. Do NOT include any t
             "final_response": None
         }
         final_state = await self.graph.ainvoke(initial_state)
-        return final_state.get("final_response", "I apologize, but I encountered an error generating a response.")
+        response = final_state.get("final_response", "I apologize, but I encountered an error generating a response.")
+        
+        # Replace YouTube identifiers if this is a curriculum creation response
+        if context and context.get("intent") == "create_curriculum" and self.youtube_url_mapping:
+            response = self.replace_youtube_identifiers(response)
+            
+        return response
 
 curriculum_agent = CurriculumAgent() 

@@ -11,6 +11,7 @@ import { LogbookEditor } from '../components/LogbookEditor';
 import { LogbookEntryCard } from '../components/LogbookEntryCard';
 import { LogbookStats } from '../components/LogbookStats';
 import { toast } from 'sonner';
+import { Navbar } from '@/components/Navbar';
 
 interface LogbookEntry {
   id: string;
@@ -283,19 +284,7 @@ export function LogbookPage() {
 
   return (
     <div className="h-screen flex flex-col bg-[hsl(30_40%_96%)]">
-      {/* Header */}
-      <div className="border-b-4 border-[hsl(0_0%_15%)] bg-white p-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[hsl(0_0%_15%)]">Logbook</h1>
-          <Button
-            onClick={() => navigate('/dashboard')}
-            variant="outline"
-            className="border-2 border-[hsl(0_0%_15%)] hover:bg-[hsl(30_40%_96%)]"
-          >
-            Back to Dashboard
-          </Button>
-        </div>
-      </div>
+      <Navbar />
 
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Entry List */}

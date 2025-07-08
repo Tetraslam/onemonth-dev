@@ -134,7 +134,14 @@ async def create_curriculum(
             
             Focus on creating practical, actionable content for each day.
             Ensure the curriculum spans the specified number of days.
-            Provide diverse resources (articles, videos, interactive exercises if possible).
+            
+            CRITICAL INSTRUCTIONS FOR RESOURCES:
+            1. The Supporting Research section will contain YouTube videos with identifiers like [YT1], [YT2], etc.
+            2. You MUST use these identifiers in the 'url' field when adding YouTube videos to resources
+            3. For example: {{"title": "Introduction to React Hooks", "url": "[YT3]"}}
+            4. Also include non-YouTube resources (articles, documentation) with their full URLs
+            5. Each day should have 2-4 relevant resources mixing YouTube videos and other sources
+            
             When generating the 'content' for each day, utilize the 'Supporting Research' (which will be provided to you along with these preferences) to make the explanations and concepts as detailed and accurate as possible.
             
             IMPORTANT: If num_projects is greater than 0, distribute the projects evenly throughout the curriculum. For example:
@@ -155,6 +162,7 @@ async def create_curriculum(
     # Agent context can pass along the structured preferences and curriculum_id for status updates
     agent_context = curriculum_data.model_dump()
     agent_context["curriculum_id"] = new_curriculum_id
+    agent_context["intent"] = "create_curriculum"  # Add intent for YouTube URL replacement
 
     background_tasks.add_task(generate_and_save_curriculum, new_curriculum_id, curriculum_data, agent_messages, agent_context)
     
