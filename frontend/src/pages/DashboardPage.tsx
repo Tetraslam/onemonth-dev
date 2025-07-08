@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Plus, BookOpen, Clock, ArrowRight, Book, CreditCard, CheckCircle } from 'lucide-react'
+import { Plus, BookOpen, Clock, ArrowRight, Book, CreditCard, CheckCircle, RefreshCw } from 'lucide-react'
 import api from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
@@ -26,6 +26,10 @@ export default function DashboardPage() {
           navigate('/auth')
           return
         }
+        
+        // Force refresh subscription status on mount
+        const subscriptionStore = useSubscriptionStore.getState()
+        subscriptionStore.clearSubscription()
         
         // Check subscription status
         await checkSubscription()
@@ -56,6 +60,17 @@ export default function DashboardPage() {
       toast.error('Failed to sign out')
     }
   }
+  
+  async function handleRefreshSubscription() {
+    try {
+      // Clear cache and check subscription
+      useSubscriptionStore.getState().clearSubscription()
+      await checkSubscription()
+      toast.success('Subscription status refreshed')
+    } catch (error) {
+      toast.error('Failed to refresh subscription status')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -65,18 +80,29 @@ export default function DashboardPage() {
           <div className="flex items-center gap-4">
             {/* Subscription status badge */}
             {status && (
-              <div className="flex items-center gap-2 px-3 py-1 bg-background rounded-md border-2 border-foreground">
-                {isSubscribed() ? (
-                  <>
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-bold">Premium</span>
-                  </>
-                ) : (
-                  <>
-                    <CreditCard className="h-4 w-4" />
-                    <span className="text-sm font-bold">Free</span>
-                  </>
-                )}
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 px-3 py-1 bg-background rounded-md border-2 border-foreground">
+                  {isSubscribed() ? (
+                    <>
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span className="text-sm font-bold">Premium</span>
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="h-4 w-4" />
+                      <span className="text-sm font-bold">Free</span>
+                    </>
+                  )}
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleRefreshSubscription}
+                  className="h-8 w-8 p-0"
+                  title="Refresh subscription status"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
               </div>
             )}
             
