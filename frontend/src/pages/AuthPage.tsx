@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { supabase } from '@/lib/supabase'
@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import { toast } from 'sonner'
+import { ArrowLeft, Sparkles, Zap, Star } from 'lucide-react'
 
 export default function AuthPage() {
   const [email, setEmail] = useState('')
@@ -122,65 +123,140 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="max-w-md w-full p-8 border-4 border-foreground shadow-[8px_8px_0_0_rgb(0,0,0)]">
-        <h1 className="text-3xl font-bold mb-6 text-foreground">
-          {isSignUp ? 'Create Account' : 'Welcome Back'}
-        </h1>
-        
-        <form onSubmit={handleAuth} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium">
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="border-2 border-foreground focus:ring-2 focus:ring-primary"
-              placeholder="you@example.com"
-            />
-          </div>
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Back to home button */}
+      <Link 
+        to="/" 
+        className="absolute top-8 left-8 z-10 inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-foreground rounded-lg shadow-[4px_4px_0_0_rgb(0,0,0)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_rgb(0,0,0)] transition-all"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <span className="font-medium">Back to Home</span>
+      </Link>
+
+      {/* Main content */}
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="relative">
+          {/* Decorative cards behind main card */}
+          <div className="absolute -top-4 -left-4 w-full h-full bg-secondary rounded-xl transform rotate-3" />
+          <div className="absolute -top-2 -left-2 w-full h-full bg-accent rounded-xl transform -rotate-3" />
           
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="border-2 border-foreground focus:ring-2 focus:ring-primary"
-              placeholder="••••••••"
-            />
-          </div>
-          
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-primary text-primary-foreground border-2 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_rgb(0,0,0)] transition-all"
-          >
-            {loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
-          </Button>
-        </form>
-        
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm text-muted-foreground hover:text-foreground underline"
-          >
-            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-          </button>
+          {/* Main auth card */}
+          <Card className="relative max-w-md w-full p-8 bg-white border-4 border-foreground shadow-[8px_8px_0_0_rgb(0,0,0)]">
+            {/* Decorative icon */}
+            <div className="absolute -top-6 -right-6 p-3 bg-primary rounded-full border-4 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)]">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold mb-2 text-foreground">
+                {isSignUp ? 'Join the Club' : 'Welcome Back'}
+              </h1>
+              <p className="text-muted-foreground">
+                {isSignUp ? 'Start your 30-day journey' : 'Continue your learning adventure'}
+              </p>
+            </div>
+            
+            <form onSubmit={handleAuth} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-bold uppercase tracking-wider">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="border-2 border-foreground rounded-lg focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all"
+                  placeholder="you@example.com"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-bold uppercase tracking-wider">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="border-2 border-foreground rounded-lg focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
+              
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-12 text-lg font-bold bg-primary text-primary-foreground border-4 border-foreground shadow-[6px_6px_0_0_rgb(0,0,0)] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0_0_rgb(0,0,0)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Loading...' : (isSignUp ? 'Create Account' : 'Sign In')}
+              </Button>
+            </form>
+            
+            <div className="mt-8 text-center">
+              <button
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors"
+              >
+                {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+              </button>
+            </div>
+
+            {/* Fun fact */}
+            <div className="mt-8 p-4 bg-primary/10 rounded-lg border-2 border-primary/20">
+              <p className="text-sm text-center">
+                <span className="font-bold">Fun fact:</span> The average person can learn a new skill in just 20 hours of deliberate practice!
+              </p>
+            </div>
+          </Card>
         </div>
-      </Card>
+      </div>
+
+      {/* Decorative floating elements */}
+      <div className="absolute top-20 right-20 animate-float">
+        <div className="w-16 h-16 bg-primary rounded-lg border-4 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)] flex items-center justify-center transform rotate-12">
+          <Zap className="w-8 h-8" />
+        </div>
+      </div>
       
-      {/* Decorative shapes with gradient backgrounds */}
-      <div className="fixed top-10 left-10 w-32 h-32 neo-gradient-blue rounded-full border-4 border-foreground neo-brutal-shadow-lg" />
-      <div className="fixed bottom-10 right-10 w-24 h-24 neo-gradient-pink rotate-45 border-4 border-foreground neo-brutal-shadow-lg" />
+      <div className="absolute bottom-20 left-20 animate-float-delayed">
+        <div className="w-20 h-20 bg-secondary rounded-full border-4 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)] flex items-center justify-center transform -rotate-12">
+          <Star className="w-10 h-10" />
+        </div>
+      </div>
+
+      <div className="absolute top-1/2 right-10 animate-float">
+        <div className="w-12 h-12 bg-accent rounded-lg border-4 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)] transform rotate-45" />
+      </div>
+
+      <div className="absolute bottom-40 right-40 animate-float-delayed">
+        <div className="w-8 h-8 bg-primary rounded-full border-2 border-foreground shadow-[2px_2px_0_0_rgb(0,0,0)]" />
+      </div>
+
+      {/* Add floating animation styles */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(var(--rotate, 0deg)); }
+          50% { transform: translateY(-20px) rotate(var(--rotate, 0deg)); }
+        }
+        
+        @keyframes float-delayed {
+          0%, 100% { transform: translateY(0px) rotate(var(--rotate, 0deg)); }
+          50% { transform: translateY(-15px) rotate(var(--rotate, 0deg)); }
+        }
+        
+        .animate-float {
+          animation: float 4s ease-in-out infinite;
+        }
+        
+        .animate-float-delayed {
+          animation: float-delayed 4s ease-in-out infinite;
+          animation-delay: 2s;
+        }
+      `}</style>
     </div>
   )
 } 
