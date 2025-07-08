@@ -19,7 +19,7 @@ export function LandingPage() {
         "Week 4: Got job interviews"
       ],
       testimonial: "I tried learning NextJS 4 times before. This was the first time I actually built something real.",
-      author: "Alex, now Frontend Dev at Stripe"
+      author: "Alex, now Frontend Dev at Instagram"
     }
   })
   const [currentDemoIndex, setCurrentDemoIndex] = useState(0);
@@ -141,7 +141,7 @@ export function LandingPage() {
             "Week 4: Got job interviews"
           ],
           testimonial: "I tried learning NextJS 4 times before. This was the first time I actually built something real.",
-          author: "Alex, now Frontend Dev at Stripe"
+          author: "Alex, now Frontend Dev at Instagram"
         }
       },
       {
@@ -155,8 +155,8 @@ export function LandingPage() {
             "Week 3: Aced practice test",
             "Week 4: Confident for exam"
           ],
-          testimonial: "I went from a D in calc to getting a 5 on the AP exam. The daily practice problems saved me.",
-          author: "Sarah Martinez, now at MIT"
+          testimonial: "I went from a C in calc BC to getting a 5 on the AP exam. The daily practice problems saved me.",
+          author: "Sarah, now going to Cornell"
         }
       },
       {
@@ -512,7 +512,7 @@ export function LandingPage() {
       </section>
 
       {/* What Can You Learn Section */}
-      <section className="container mx-auto px-4 lg:px-8 py-16 overflow-hidden">
+      <section className="container mx-auto px-4 lg:px-8 py-16 border-y-4 border-foreground overflow-hidden">
         <h3 className="text-4xl lg:text-5xl font-black text-center mb-4">
           Learn{' '}
           <span className="relative inline-block">
