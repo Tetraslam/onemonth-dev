@@ -397,7 +397,7 @@ export function LandingPage() {
               </li>
               <li className="font-bold flex items-start gap-3 text-primary-foreground">
                 <CheckCircle className="h-6 w-6 flex-shrink-0 mt-0.5" />
-                <span>24/7 AI tutor powered by GPT-4 for instant help</span>
+                <span>24/7 AI tutor powered by Gemini 2.5 Pro for instant help</span>
               </li>
               <li className="font-bold flex items-start gap-3 text-primary-foreground">
                 <CheckCircle className="h-6 w-6 flex-shrink-0 mt-0.5" />
@@ -537,7 +537,7 @@ export function LandingPage() {
           
           <div className="border-t border-background/20 pt-8 text-center">
             <p className="font-bold opacity-80">
-              © 2024 onemonth.dev. All rights reserved. Built with ❤️ by learners, for learners.
+              © 2025 onemonth.dev. All rights reserved. Built with ❤️ by learners, for learners.
             </p>
           </div>
         </div>
