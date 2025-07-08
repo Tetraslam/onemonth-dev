@@ -1,13 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, CheckCircle, BookOpen, Zap, Target, Sparkles, Star } from 'lucide-react'
+import { ArrowRight, CheckCircle, BookOpen, Zap, Target, Sparkles, Star, Rocket, Brain, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import Typed from 'typed.js'
 
 export function LandingPage() {
   const navigate = useNavigate()
-  const watchingRef = useRef<HTMLSpanElement>(null)
-  const shippingRef = useRef<HTMLSpanElement>(null)
+  const el = useRef<HTMLSpanElement>(null)
   const [currentExample, setCurrentExample] = useState({
     description: "You've bookmarked 47 tutorials. Bought 3 Udemy courses. Asked ChatGPT the same question 12 times.",
     stillHavent: "Still haven't built anything.",
@@ -19,28 +18,116 @@ export function LandingPage() {
         "Week 3: Added to portfolio",
         "Week 4: Got job interviews"
       ],
-      testimonial: "I tried learning React 4 times before. This was the first time I actually built something real.",
-      author: "Alex Chen, now Frontend Dev at Stripe"
+      testimonial: "I tried learning NextJS 4 times before. This was the first time I actually built something real.",
+      author: "Alex, now Frontend Dev at Stripe"
     }
   })
+  const [currentDemoIndex, setCurrentDemoIndex] = useState(0);
+  const [currentLearningCard, setCurrentLearningCard] = useState(0);
+
+  const demographics = [
+    { 
+      title: "anything",
+      watching: "Watching",
+      shipping: "Shipping",
+      cardTitle: "Full-Stack Development",
+      cardDescription: "Build real apps that people actually use",
+      cardIcon: "💻",
+      cardBg: "bg-card"
+    },
+    { 
+      title: "React", 
+      watching: "Watching",
+      shipping: "Shipping",
+      cardTitle: "Full-Stack Development",
+      cardDescription: "Build real apps that people actually use",
+      cardIcon: "💻",
+      cardBg: "bg-card"
+    },
+    { 
+      title: "Calculus", 
+      watching: "Cramming",
+      shipping: "Acing Exams",
+      cardTitle: "Academic Excellence", 
+      cardDescription: "Master any subject with personalized lessons",
+      cardIcon: "📚",
+      cardBg: "bg-card"
+    },
+    { 
+      title: "Spanish", 
+      watching: "Struggling",
+      shipping: "Speaking Fluently",
+      cardTitle: "Language Mastery",
+      cardDescription: "From beginner to conversational in weeks",
+      cardIcon: "🌍",
+      cardBg: "bg-card"
+    },
+    { 
+      title: "Guitar", 
+      watching: "Dreaming",
+      shipping: "Playing",
+      cardTitle: "Musical Skills",
+      cardDescription: "From zero to performing your favorite songs",
+      cardIcon: "🎸",
+      cardBg: "bg-card"
+    },
+    {
+      title: "Machine Learning",
+      watching: "Reading Papers",
+      shipping: "Building Models",
+      cardTitle: "AI & Data Science",
+      cardDescription: "From theory to deployed ML applications",
+      cardIcon: "🤖",
+      cardBg: "bg-card"
+    }
+  ];
+
+  const learningCards = [
+    {
+      emoji: "👩‍💻",
+      title: "Full-Stack Dev",
+      description: "React, Node.js, databases, deployment",
+      person: "Sarah, 24",
+      color: "primary"
+    },
+    {
+      emoji: "🧮",
+      title: "AP Calculus",
+      description: "Ace that exam with personalized tutoring",
+      person: "Jake, 17",
+      color: "secondary"
+    },
+    {
+      emoji: "🍰",
+      title: "French Pastries",
+      description: "Master croissants, macarons, éclairs",
+      person: "Maria, 45",
+      color: "accent"
+    },
+    {
+      emoji: "🎸",
+      title: "Guitar Mastery",
+      description: "From chords to shredding solos",
+      person: "Alex, 31",
+      color: "primary"
+    },
+    {
+      emoji: "🏛️",
+      title: "Ancient History",
+      description: "Rome, Greece, Egypt - bring it to life",
+      person: "Prof. Chen, 52",
+      color: "secondary"
+    },
+    {
+      emoji: "💃",
+      title: "Salsa Dancing",
+      description: "Step-by-step from basics to pro",
+      person: "Isabella, 28",
+      color: "accent"
+    }
+  ];
 
   useEffect(() => {
-    const watchingOptions = [
-      'Watching',
-      'Cramming',
-      'Struggling',
-      'Googling',
-      'Hoarding'
-    ]
-    
-    const shippingOptions = [
-      'Shipping',
-      'Passing',
-      'Working',
-      'Creating',
-      'Winning'
-    ]
-
     const examples = [
       {
         description: "You've bookmarked 47 tutorials. Bought 3 Udemy courses. Asked ChatGPT the same question 12 times.",
@@ -53,8 +140,8 @@ export function LandingPage() {
             "Week 3: Added to portfolio",
             "Week 4: Got job interviews"
           ],
-          testimonial: "I tried learning React 4 times before. This was the first time I actually built something real.",
-          author: "Alex Chen, now Frontend Dev at Stripe"
+          testimonial: "I tried learning NextJS 4 times before. This was the first time I actually built something real.",
+          author: "Alex, now Frontend Dev at Stripe"
         }
       },
       {
@@ -73,21 +160,6 @@ export function LandingPage() {
         }
       },
       {
-        description: "You've read 12 'Learn ML' articles. Copied 20 Kaggle notebooks. Still don't understand anything.",
-        stillHavent: "Still can't build your own models.",
-        progress: {
-          title: "From \"What's a Tensor?\" to ML Engineer",
-          weeks: [
-            "Week 1: Built first neural network",
-            "Week 2: Training custom models", 
-            "Week 3: Deployed to production",
-            "Week 4: Contributing to open source"
-          ],
-          testimonial: "Finally understood the math AND the code. Now I'm building ML systems at work.",
-          author: "Priya Patel, ML Engineer at Tesla"
-        }
-      },
-      {
         description: "You've downloaded 5 language apps. Tried Duolingo for 2 weeks. Can still only say 'hello'.",
         stillHavent: "Still can't hold a conversation.",
         progress: {
@@ -103,55 +175,79 @@ export function LandingPage() {
         }
       },
       {
-        description: "You've saved 30 design tutorials. Bought expensive tools. Still using templates for everything.",
-        stillHavent: "Still can't design from scratch.",
+        description: "You've saved 15 guitar tabs. Watched 20 YouTube tutorials. Your guitar is still collecting dust.",
+        stillHavent: "Still can't play a full song.",
         progress: {
-          title: "From Templates to Design Pro",
+          title: "From \"Can't Hold a Pick\" to Playing Live",
           weeks: [
-            "Week 1: Understood design principles",
-            "Week 2: Created first original design", 
-            "Week 3: Built complete design system",
-            "Week 4: Clients loving my work"
+            "Week 1: Learned basic chords",
+            "Week 2: First complete song", 
+            "Week 3: Playing with backing tracks",
+            "Week 4: Performed at open mic"
           ],
-          testimonial: "Stopped copying, started creating. Now I charge 5x more for original designs.",
-          author: "Maya Chen, Freelance Designer"
+          testimonial: "Finally stopped watching and started playing. Best decision I ever made.",
+          author: "Marcus Johnson, Weekend Musician"
+        }
+      },
+      {
+        description: "You've read 12 'Learn ML' articles. Copied 20 Kaggle notebooks. Still don't understand anything.",
+        stillHavent: "Still can't build your own models.",
+        progress: {
+          title: "From \"What's a Tensor?\" to ML Engineer",
+          weeks: [
+            "Week 1: Built first neural network",
+            "Week 2: Training custom models", 
+            "Week 3: Deployed to production",
+            "Week 4: Contributing to open source"
+          ],
+          testimonial: "Finally understood the math AND the code. Now I'm building ML systems at work.",
+          author: "Priya, ML Engineer at Tesla"
         }
       }
     ]
 
     let currentIndex = 0
 
-    if (watchingRef.current && shippingRef.current) {
-      const watchingTyped = new Typed(watchingRef.current, {
-        strings: watchingOptions,
+    if (el.current) {
+      const typed = new Typed(el.current, {
+        strings: demographics.map(d => d.title),
         typeSpeed: 50,
         backSpeed: 30,
         backDelay: 2000,
         loop: true,
         showCursor: false,
-        onStringTyped: () => {
-          // Update example when watching changes
-          currentIndex = (currentIndex + 1) % examples.length
-          setCurrentExample(examples[currentIndex])
+        onStringTyped: (arrayPos: number) => {
+          // Update the current demographic index
+          setCurrentDemoIndex(arrayPos)
+          // Update example based on the subject
+          if (arrayPos === 1) { // React
+            setCurrentExample(examples[0])
+          } else if (arrayPos === 2) { // Calculus
+            setCurrentExample(examples[1])
+          } else if (arrayPos === 3) { // Spanish
+            setCurrentExample(examples[2])
+          } else if (arrayPos === 4) { // Guitar
+            setCurrentExample(examples[3])
+          } else if (arrayPos === 5) { // Machine Learning
+            setCurrentExample(examples[4])
+          } else { // anything (default)
+            setCurrentExample(examples[0])
+          }
         }
       })
 
-      const shippingTyped = new Typed(shippingRef.current, {
-        strings: shippingOptions,
-        typeSpeed: 50,
-        backSpeed: 30,
-        backDelay: 2000,
-        loop: true,
-        showCursor: false,
-        startDelay: 300
-      })
-
       return () => {
-        watchingTyped.destroy()
-        shippingTyped.destroy()
+        typed.destroy()
       }
     }
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLearningCard((prev) => (prev + 1) % learningCards.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -174,14 +270,7 @@ export function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-5xl lg:text-6xl xl:text-7xl font-black mb-6 leading-[1.1]">
-                <div>
-                  <span className="block">
-                    Stop <span ref={watchingRef} className="text-primary"></span>
-                  </span>
-                  <span className="block">
-                    <span className="text-primary">Start</span> <span ref={shippingRef} className="text-foreground"></span>
-                  </span>
-                </div>
+                Learn <span ref={el} className="text-primary"></span> in 30 Days
               </h2>
               <div className="transition-all duration-500 ease-in-out min-h-[4rem] lg:min-h-[3.5rem]">
                 <p className="text-xl lg:text-2xl font-bold mb-8 text-foreground/80">
@@ -189,9 +278,7 @@ export function LandingPage() {
                 </p>
               </div>
               <p className="text-lg font-bold mb-8 text-foreground/70">
-                Get a structured 30-day roadmap that actually gets you from 
-                "I want to learn this" to "I can do this" — powered by the most advanced AI 
-                models with the longest context windows and deepest reasoning capabilities.
+                Stop watching tutorials. Start building real projects with AI-powered daily lessons.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -213,32 +300,49 @@ export function LandingPage() {
                 </Button>
               </div>
               <p className="mt-4 text-sm font-bold text-foreground/60">
-                Join 2,847 people who finally stopped procrastinating this month
+                Join 23 people who finally stopped procrastinating this month
               </p>
             </div>
             
             <div className="relative">
-              <div className="bg-card rounded-lg border-4 border-foreground p-6 neo-brutal-shadow-lg transition-all duration-500">
+              <div className="bg-white rounded-lg border-4 border-foreground p-6 neo-brutal-shadow-lg transition-all duration-500 transform rotate-3 hover:rotate-2">
                 <div className="mb-4">
-                  <span className="text-sm font-bold text-foreground/60">REAL STUDENT PROGRESS</span>
+                  <span className="text-sm font-bold text-foreground/60 uppercase tracking-wider">Real Student Progress</span>
                   <h3 className="font-black text-2xl mt-1">{currentExample.progress.title}</h3>
                 </div>
                 <div className="space-y-3">
                   {currentExample.progress.weeks.map((week, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div 
-                        className="h-1 bg-green-500 rounded-full transition-all duration-500"
-                        style={{ width: `${(index + 1) * 36}px` }}
-                      ></div>
-                      <span className="font-bold text-sm">{week}</span>
-                  </div>
+                    <div key={index} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-sm">{week}</span>
+                      </div>
+                      <div className="relative">
+                        <div className="h-4 bg-white border-2 border-foreground rounded-full overflow-hidden shadow-[2px_2px_0_0_rgb(0,0,0,0.9)]">
+                          <div 
+                            className={`h-full border-r-2 border-foreground/20 transition-all duration-1000 ease-out ${
+                              index === 0 ? 'bg-primary' :
+                              index === 1 ? 'bg-secondary' :
+                              index === 2 ? 'bg-accent' :
+                              'bg-green-500'
+                            }`}
+                            style={{ 
+                              width: `${(index + 1) * 25}%`,
+                              animation: `slideIn ${0.5 + index * 0.2}s ease-out`
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
                   ))}
-                  </div>
-                <div className="mt-6 p-4 bg-primary/10 rounded-md border-2 border-primary">
-                  <p className="font-bold text-sm">"{currentExample.progress.testimonial}"</p>
-                  <p className="font-black text-sm mt-2">- {currentExample.progress.author}</p>
+                </div>
+                <div className="mt-6 p-4 bg-primary rounded-md border-2 border-foreground neo-brutal-shadow">
+                  <p className="font-bold text-sm text-foreground">"{currentExample.progress.testimonial}"</p>
+                  <p className="font-black text-sm mt-2 text-foreground">- {currentExample.progress.author}</p>
                 </div>
               </div>
+              {/* Background decorative cards for depth */}
+              <div className="absolute -bottom-2 -right-2 w-full h-full bg-secondary rounded-lg border-4 border-foreground -z-10 transform rotate-6"></div>
+              <div className="absolute -bottom-4 -right-4 w-full h-full bg-accent rounded-lg border-4 border-foreground -z-20 transform rotate-9"></div>
             </div>
           </div>
         </div>
@@ -246,35 +350,357 @@ export function LandingPage() {
 
       {/* Outcomes Section */}
       <section className="container mx-auto px-4 lg:px-8 py-16">
-        <h3 className="text-4xl lg:text-5xl font-black text-center mb-12">
-          30 Days From Now, You'll Be...
+        <h3 className="text-4xl lg:text-5xl font-black text-center mb-4">
+          In 30 Days, Watch Your Friends Ask
+        </h3>
+        <h3 className="text-3xl lg:text-4xl font-black text-center mb-12 text-primary-outlined">
+          "How Did You Learn That So Fast?"
         </h3>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <div className="bg-card rounded-lg border-4 border-foreground p-8 neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgb(0,0,0,0.9)] transition-all">
-            <h4 className="text-2xl font-black mb-3 text-primary">Actually Building Things</h4>
-            <p className="font-bold text-foreground/80 text-lg">
-              Not watching another "complete guide" — you'll have real projects in your portfolio that prove you know your stuff.
+            <div className="flex items-center justify-between mb-6">
+              <div className="text-5xl font-black text-primary/20">01</div>
+              <div className="bg-primary rounded-full p-4 border-2 border-foreground">
+                <Rocket className="h-8 w-8 text-foreground" />
+              </div>
+            </div>
+            
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="bg-foreground/10 rounded px-2 py-1 text-xs font-bold">BEFORE</div>
+                <span className="text-sm font-bold text-foreground/60 line-through">Tutorial Hell</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="bg-primary rounded px-2 py-1 text-xs font-bold text-foreground">AFTER</div>
+                <span className="text-sm font-black">Just Shipped It</span>
+              </div>
+            </div>
+            
+            <h4 className="text-xl font-black mb-3">Ship Real Projects</h4>
+            <p className="font-medium text-foreground/70 text-sm mb-4">
+              That side project? Live. That feature? Done. Muscle memory: activated.
             </p>
+            
+            <div className="flex items-center gap-2 pt-4 border-t border-foreground/10">
+              <img src="/sarah.png" alt="Sarah" className="w-8 h-8 rounded-full border-2 border-foreground" />
+              <div className="flex-1">
+                <div className="text-xs font-bold text-foreground/60 italic">
+                  "Week 3: first app deployed!" - Sarah
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="bg-card rounded-lg border-4 border-foreground p-8 neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgb(0,0,0,0.9)] transition-all">
-            <h4 className="text-2xl font-black mb-3 text-secondary">Answering Questions Confidently</h4>
-            <p className="font-bold text-foreground/80 text-lg">
-              No more imposter syndrome. You'll understand the why behind the what, ready for any interview or challenge.
+            <div className="flex items-center justify-between mb-6">
+              <div className="text-5xl font-black text-secondary/20">02</div>
+              <div className="bg-secondary rounded-full p-4 border-2 border-foreground">
+                <Brain className="h-8 w-8 text-foreground" />
+              </div>
+            </div>
+            
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="bg-foreground/10 rounded px-2 py-1 text-xs font-bold">BEFORE</div>
+                <span className="text-sm font-bold text-foreground/60 line-through">I Think I Know</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="bg-secondary rounded px-2 py-1 text-xs font-bold text-foreground">AFTER</div>
+                <span className="text-sm font-black">Let Me Explain</span>
+              </div>
+            </div>
+            
+            <h4 className="text-xl font-black mb-3">Master Concepts</h4>
+            <p className="font-medium text-foreground/70 text-sm mb-4">
+              Be the go-to person. Understand the why, not just the how.
             </p>
+            
+            <div className="flex items-center gap-2 pt-4 border-t border-foreground/10">
+              <img src="/mike.png" alt="Mike" className="w-8 h-8 rounded-full border-2 border-foreground" />
+              <div className="flex-1">
+                <div className="text-xs font-bold text-foreground/60 italic">
+                  "Coworkers think I'm a genius now" - Mike
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="bg-card rounded-lg border-4 border-foreground p-8 neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgb(0,0,0,0.9)] transition-all">
-            <h4 className="text-2xl font-black mb-3 text-accent">Ready for What's Next</h4>
-            <p className="font-bold text-foreground/80 text-lg">
-              With a solid foundation and learning system that works, you'll tackle advanced topics without the fear.
+            <div className="flex items-center justify-between mb-6">
+              <div className="text-5xl font-black text-accent/20">03</div>
+              <div className="bg-accent rounded-full p-4 border-2 border-foreground">
+                <Trophy className="h-8 w-8 text-foreground" />
+              </div>
+            </div>
+            
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="bg-foreground/10 rounded px-2 py-1 text-xs font-bold">BEFORE</div>
+                <span className="text-sm font-bold text-foreground/60 line-through">Maybe Someday</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="bg-accent rounded px-2 py-1 text-xs font-bold text-foreground">AFTER</div>
+                <span className="text-sm font-black">Check My GitHub</span>
+              </div>
+            </div>
+            
+            <h4 className="text-xl font-black mb-3">Build Your Portfolio</h4>
+            <p className="font-medium text-foreground/70 text-sm mb-4">
+              Real skills. Real projects. Real opportunities coming your way.
             </p>
+            
+            <div className="flex items-center gap-2 pt-4 border-t border-foreground/10">
+              <img src="/alex.png" alt="Alex" className="w-8 h-8 rounded-full border-2 border-foreground" />
+              <div className="flex-1">
+                <div className="text-xs font-bold text-foreground/60 italic">
+                  "3 interviews from my projects!" - Alex
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Visual Progress Bar */}
+        <div className="max-w-4xl mx-auto mt-16 mb-12">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t-4 border-dashed border-foreground/20"></div>
+            </div>
+            <div className="relative flex justify-between">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-background border-4 border-foreground rounded-full flex items-center justify-center font-black">
+                  0
+                </div>
+                <span className="text-xs font-bold mt-2">Today</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-primary border-4 border-foreground rounded-full flex items-center justify-center font-black">
+                  7
+                </div>
+                <span className="text-xs font-bold mt-2">First Win</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-secondary border-4 border-foreground rounded-full flex items-center justify-center font-black">
+                  14
+                </div>
+                <span className="text-xs font-bold mt-2">Momentum</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-accent border-4 border-foreground rounded-full flex items-center justify-center font-black">
+                  30
+                </div>
+                <span className="text-xs font-bold mt-2">Transformed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <p className="text-xl font-bold text-foreground/70 mb-6">
+            Join <span className="text-primary font-black">23 learners</span> who said "this month is different"—and were actually right.
+          </p>
+          <Button 
+            size="lg" 
+            onClick={() => navigate('/auth')} 
+            className="text-xl px-10 py-7 font-black"
+          >
+            Start Your 30-Day Transformation
+            <ArrowRight className="ml-3 h-6 w-6" />
+          </Button>
+        </div>
+      </section>
+
+      {/* What Can You Learn Section */}
+      <section className="container mx-auto px-4 lg:px-8 py-16 overflow-hidden">
+        <h3 className="text-4xl lg:text-5xl font-black text-center mb-4">
+          Learn{' '}
+          <span className="relative inline-block">
+            <span className="absolute inset-0 bg-primary/40 -skew-x-12 scale-x-110 scale-y-75 translate-y-1"></span>
+            <span className="relative">Literally Anything</span>
+          </span>
+        </h3>
+        <p className="text-xl font-bold text-center text-foreground/70 mb-12">
+          From quantum physics to sourdough baking. If you can Google it, we can teach it.
+        </p>
+
+        {/* Grid of Learning Cards */}
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {/* Tech & Programming */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">💻</div>
+              <h4 className="font-black text-lg mb-1">Full-Stack Dev</h4>
+              <p className="text-sm font-medium text-foreground/70">React, APIs, Databases</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-primary"></div>
+                <span className="text-xs font-bold">Sarah, 24</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Academic */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🧮</div>
+              <h4 className="font-black text-lg mb-1">AP Calculus</h4>
+              <p className="text-sm font-medium text-foreground/70">Ace that exam</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-secondary"></div>
+                <span className="text-xs font-bold">Jake, 17</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Creative */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🎨</div>
+              <h4 className="font-black text-lg mb-1">Digital Art</h4>
+              <p className="text-sm font-medium text-foreground/70">Procreate mastery</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-accent"></div>
+                <span className="text-xs font-bold">Luna, 26</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Language */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🌍</div>
+              <h4 className="font-black text-lg mb-1">Spanish</h4>
+              <p className="text-sm font-medium text-foreground/70">Fluent in 30 days</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-primary"></div>
+                <span className="text-xs font-bold">David, 22</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Music */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🎸</div>
+              <h4 className="font-black text-lg mb-1">Guitar</h4>
+              <p className="text-sm font-medium text-foreground/70">Zero to hero</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-secondary"></div>
+                <span className="text-xs font-bold">Alex, 31</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Cooking */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🍰</div>
+              <h4 className="font-black text-lg mb-1">Baking</h4>
+              <p className="text-sm font-medium text-foreground/70">French pastries</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-accent"></div>
+                <span className="text-xs font-bold">Maria, 45</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Science */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🧬</div>
+              <h4 className="font-black text-lg mb-1">Biology</h4>
+              <p className="text-sm font-medium text-foreground/70">AP & beyond</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-primary"></div>
+                <span className="text-xs font-bold">Dr. Kim, 34</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Business */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">📈</div>
+              <h4 className="font-black text-lg mb-1">Marketing</h4>
+              <p className="text-sm font-medium text-foreground/70">Growth hacking</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-secondary"></div>
+                <span className="text-xs font-bold">Raj, 28</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Fitness */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🧘‍♀️</div>
+              <h4 className="font-black text-lg mb-1">Yoga</h4>
+              <p className="text-sm font-medium text-foreground/70">Mind & body</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-accent"></div>
+                <span className="text-xs font-bold">Priya, 38</span>
+              </div>
+            </div>
+          </div>
+
+          {/* History */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">🏛️</div>
+              <h4 className="font-black text-lg mb-1">History</h4>
+              <p className="text-sm font-medium text-foreground/70">Ancient civilizations</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-primary"></div>
+                <span className="text-xs font-bold">Prof. Chen, 52</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Photography */}
+          <div className="group relative">
+            <div className="bg-white rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3">📸</div>
+              <h4 className="font-black text-lg mb-1">Photography</h4>
+              <p className="text-sm font-medium text-foreground/70">Pro techniques</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-secondary"></div>
+                <span className="text-xs font-bold">Maya, 29</span>
+              </div>
+            </div>
+          </div>
+
+          {/* More */}
+          <div className="group relative">
+            <div className="bg-foreground rounded-lg border-3 border-foreground p-6 h-full neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_rgb(0,0,0,0.9)] transition-all cursor-pointer">
+              <div className="text-4xl mb-3 brightness-0 invert">✨</div>
+              <h4 className="font-black text-lg mb-1 text-background">And More...</h4>
+              <p className="text-sm font-medium text-background/80">Literally anything</p>
+              <div className="mt-3 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-background"></div>
+                <span className="text-xs font-bold text-background">You!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick stats */}
+        <div className="flex justify-center gap-8 mt-16">
+          <div className="text-center">
+            <div className="text-4xl font-black text-primary">∞</div>
+            <div className="text-sm font-bold text-foreground/70">Topics</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-black text-secondary">24/7</div>
+            <div className="text-sm font-bold text-foreground/70">Available</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-black text-accent">1-on-1</div>
+            <div className="text-sm font-bold text-foreground/70">Personalized</div>
           </div>
         </div>
       </section>
 
-      {/* The Difference Section */}
+      {/* Why Not Just Use ChatGPT? */}
       <section className="container mx-auto px-4 lg:px-8 py-16 bg-card border-y-4 border-foreground">
         <h3 className="text-4xl lg:text-5xl font-black text-center mb-12">
           "Why Not Just Use ChatGPT?"
@@ -282,22 +708,36 @@ export function LandingPage() {
         
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="text-center">
-              <div className="text-6xl mb-4">😵‍💫</div>
-              <h4 className="text-2xl font-black mb-3">ChatGPT Alone</h4>
-              <p className="font-bold text-foreground/80">
-                Ask → Get answer → Forget → Ask again → Different answer → 
-                Give up → "Maybe I'm not cut out for this"
-              </p>
+            <div className="bg-card rounded-lg border-4 border-foreground p-8 neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgb(0,0,0,0.9)] transition-all">
+              <div className="text-center">
+                <div className="text-6xl mb-4">😵</div>
+                <h4 className="text-2xl font-black mb-3">
+                  <span className="relative inline-block">
+                    <span className="absolute inset-0 bg-red-400/40 -skew-x-12 scale-x-110 scale-y-75 translate-y-1"></span>
+                    <span className="relative">ChatGPT Alone</span>
+                  </span>
+                </h4>
+                <p className="font-bold text-foreground/80">
+                  "Explain X" → Copy/Paste → Works! → Next day: "Wait, how did that work?" → 
+                  <span className="text-accent font-black">Start Over</span>
+                </p>
+              </div>
             </div>
             
-            <div className="text-center">
-              <div className="text-6xl mb-4">🚀</div>
-              <h4 className="text-2xl font-black mb-3">With Structure</h4>
-              <p className="font-bold text-foreground/80">
-                Day 1 → Day 2 → Build → Practice → Remember → 
-                Day 30 → "Holy shit, I actually know this"
-              </p>
+            <div className="bg-card rounded-lg border-4 border-foreground p-8 neo-brutal-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_0_rgb(0,0,0,0.9)] transition-all">
+              <div className="text-center">
+                <div className="text-6xl mb-4">🚀</div>
+                <h4 className="text-2xl font-black mb-3">
+                  <span className="relative inline-block">
+                    <span className="absolute inset-0 bg-green-400/40 -skew-x-12 scale-x-110 scale-y-75 translate-y-1"></span>
+                    <span className="relative">With Onemonth.dev</span> 
+                  </span>
+                </h4>
+                <p className="font-bold text-foreground/80">
+                  Day 1 → Day 2 → Build → Practice → Remember → 
+                  <span className="text-primary font-black">Ship It!</span>
+                </p>
+              </div>
             </div>
           </div>
           
@@ -313,8 +753,7 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Social Proof Section */}
+      {/* Social Proof Section
       <section className="container mx-auto px-4 lg:px-8 py-16 bg-secondary/10">
         <h3 className="text-4xl lg:text-5xl font-black text-center mb-12">
           Trusted by <span className="text-secondary underline decoration-4">Ambitious Learners</span>
@@ -373,6 +812,7 @@ export function LandingPage() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Pricing Section */}
       <section className="container mx-auto px-4 lg:px-8 py-16 bg-primary/5">
@@ -479,7 +919,7 @@ export function LandingPage() {
               Ready to level up?
             </h3>
             <p className="text-xl lg:text-2xl font-bold mb-10 text-primary-foreground/90">
-              Join thousands crushing their learning goals with AI
+              Join others crushing their learning goals with AI
             </p>
             <Button 
               size="lg"
@@ -504,7 +944,7 @@ export function LandingPage() {
                 Master any subject in 30 days with AI-powered personalized learning.
               </p>
             </div>
-            
+            {/*
             <div>
               <h6 className="text-lg font-black mb-4">Product</h6>
               <ul className="space-y-2">
@@ -533,7 +973,9 @@ export function LandingPage() {
                 <li><a href="#" className="font-bold opacity-80 hover:opacity-100">Cookie Policy</a></li>
               </ul>
             </div>
+            */}
           </div>
+          
           
           <div className="border-t border-background/20 pt-8 text-center">
             <p className="font-bold opacity-80">
