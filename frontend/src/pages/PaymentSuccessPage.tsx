@@ -21,7 +21,7 @@ export default function PaymentSuccessPage() {
       // Redirect to dashboard
       navigate('/dashboard', { replace: true })
     }
-    
+
     handleSuccess()
   }, [navigate, clearSubscription, checkSubscription])
 

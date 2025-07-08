@@ -75,7 +75,7 @@ export default function AuthPage() {
         
         // If signup successful and user is confirmed, sign them in and redirect to onboarding
         if (data.user && !data.user.email_confirmed_at) {
-          toast.success('Check your email to confirm your account!')
+        toast.success('Check your email to confirm your account!')
         } else if (data.user) {
           // Auto sign in after signup if email is already confirmed (e.g., for some providers)
           navigate('/onboarding')
