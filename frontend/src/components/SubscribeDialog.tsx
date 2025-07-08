@@ -3,6 +3,7 @@ import { Dialog } from '@headlessui/react'
 import { Button } from '@/components/ui/button'
 import api from '@/lib/api'
 import { toast } from 'sonner'
+import { X } from 'lucide-react'
 
 interface Props {
   open: boolean
@@ -37,7 +38,14 @@ export default function SubscribeDialog({ open, onClose }: Props) {
     <Dialog open={open} onClose={onClose} className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="fixed inset-0 bg-black/50" />
       <div className="bg-background rounded-lg border-4 border-foreground neo-brutal-shadow-xl max-w-md w-full p-6 relative z-50">
-        <Dialog.Title className="text-2xl font-black mb-2">Subscribe to unlock AI features</Dialog.Title>
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-lg hover:bg-foreground/10 transition-colors"
+          aria-label="Close dialog"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <Dialog.Title className="text-2xl font-black mb-2 pr-8">Subscribe to unlock AI features</Dialog.Title>
         <Dialog.Description className="text-foreground/70 mb-6">
           Your personalised curricula, AI chat, practice problems, and project regeneration are available with an active subscription.
         </Dialog.Description>

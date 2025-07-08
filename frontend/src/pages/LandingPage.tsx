@@ -331,10 +331,10 @@ export function LandingPage() {
                             }}
                           ></div>
                         </div>
-                      </div>
-                    </div>
+                  </div>
+                  </div>
                   ))}
-                </div>
+                  </div>
                 <div className="mt-6 p-4 bg-primary rounded-md border-2 border-foreground neo-brutal-shadow">
                   <p className="font-bold text-sm text-foreground">"{currentExample.progress.testimonial}"</p>
                   <p className="font-black text-sm mt-2 text-foreground">- {currentExample.progress.author}</p>

@@ -4,6 +4,9 @@ import { Book, CreditCard, CheckCircle, RefreshCw, LogOut, LayoutDashboard, Grad
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore'
+import { useSubscribeModal } from '@/stores/useSubscribeModal'
+import { useState } from 'react'
+import { ManageSubscriptionDialog } from '@/components/ManageSubscriptionDialog'
 
 interface NavbarProps {
   showSubscriptionStatus?: boolean
@@ -29,6 +32,8 @@ export function Navbar({
   const navigate = useNavigate()
   const location = useLocation()
   const { status, isSubscribed, checkSubscription } = useSubscriptionStore()
+  const subscribeModal = useSubscribeModal()
+  const [manageSubscriptionDialogOpen, setManageSubscriptionDialogOpen] = useState(false)
 
   async function handleSignOut() {
     // Add confirmation dialog
@@ -93,23 +98,30 @@ export function Navbar({
           {showSubscriptionStatus && status && (
             <>
               <div className="h-8 w-px bg-foreground/20" />
-              <div className={`flex items-center gap-2 px-4 py-2 rounded-md border-2 border-foreground font-black ${
-                isSubscribed() 
-                  ? 'bg-green-100 text-green-800 shadow-[4px_4px_0_0_rgb(0,0,0,0.9)]' 
-                  : 'bg-background text-foreground'
-              }`}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (isSubscribed()) {
+                    setManageSubscriptionDialogOpen(true)
+                  } else {
+                    subscribeModal.open()
+                  }
+                }}
+                className={`font-black ${
+                  isSubscribed() 
+                    ? 'bg-green-100 text-green-800 border-green-800 hover:bg-green-200 shadow-[4px_4px_0_0_rgb(0,0,0,0.9)]' 
+                    : 'bg-card hover:bg-background border-foreground text-foreground'
+                }`}
+              >
                 {isSubscribed() ? (
-                  <>
-                    <CheckCircle className="h-4 w-4" />
-                    <span className="text-sm">PREMIUM</span>
-                  </>
+                  <CheckCircle className="mr-2 h-4 w-4" />
                 ) : (
-                  <>
-                    <CreditCard className="h-4 w-4" />
-                    <span className="text-sm">FREE</span>
-                  </>
+                  <CreditCard className="mr-2 h-4 w-4" />
                 )}
-              </div>
+                <span className="text-sm">
+                  {isSubscribed() ? 'PREMIUM' : 'FREE'}
+                </span>
+              </Button>
             </>
           )}
           
@@ -129,6 +141,10 @@ export function Navbar({
           )}
         </div>
       </div>
+      <ManageSubscriptionDialog 
+        isOpen={manageSubscriptionDialogOpen} 
+        onClose={() => setManageSubscriptionDialogOpen(false)} 
+      />
     </header>
   )
 } 

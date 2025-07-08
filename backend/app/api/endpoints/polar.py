@@ -5,13 +5,19 @@ import logging
 import os
 from datetime import datetime
 
+import httpx
+from app.api.dependencies import get_current_user
+from app.core.config import settings
 from app.db.supabase_client import supabase
-from fastapi import APIRouter, Header, HTTPException, Request, Response, status
+from fastapi import (APIRouter, Depends, Header, HTTPException, Request,
+                     Response, status)
 from starlette.requests import ClientDisconnect
 
 router = APIRouter()
 
 POLAR_WEBHOOK_SECRET = os.getenv("POLAR_WEBHOOK_SECRET", "")
+POLAR_ACCESS_TOKEN = settings.polar_access_token or ""
+POLAR_API_URL = os.getenv("POLAR_API_URL", "https://api.polar.sh/v1/")
 
 @router.post("/polar", status_code=204)
 async def polar_webhook(request: Request, polar_signature: str = Header(None)):
@@ -187,3 +193,67 @@ async def test_activation(user_id: str, customer_id: str = "test_customer"):
         return {"success": True, "result": result.data}
     except Exception as e:
         return {"success": False, "error": str(e)} 
+
+@router.get("/polar/customer-portal")
+async def get_customer_portal_url(current_user = Depends(get_current_user)):
+    """Get the customer portal URL for the current user."""
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Get the customer_id from subscription_status
+        result = supabase.table("subscription_status").select("customer_id").eq("user_id", str(current_user.id)).maybe_single().execute()
+        
+        customer_id = None
+        if result.data and result.data.get("customer_id"):
+            customer_id = result.data["customer_id"]
+        else:
+            # Try to find customer_id from Polar using email
+            async with httpx.AsyncClient(follow_redirects=True) as client:
+                customers_response = await client.get(
+                    f"{POLAR_API_URL}customers",
+                    headers={
+                        "Authorization": f"Bearer {POLAR_ACCESS_TOKEN}",
+                    },
+                    params={"email": current_user.email}
+                )
+                
+                if customers_response.status_code == 200:
+                    customers_data = customers_response.json()
+                    if customers_data.get("items") and len(customers_data["items"]) > 0:
+                        customer_id = customers_data["items"][0]["id"]
+                        
+                        # Update the subscription_status table with the customer_id
+                        supabase.table("subscription_status").update({
+                            "customer_id": customer_id,
+                            "updated_at": datetime.utcnow().isoformat()
+                        }).eq("user_id", str(current_user.id)).execute()
+                        logger.info(f"Updated customer_id for user {current_user.id}")
+                
+                if not customer_id:
+                    raise HTTPException(status_code=404, detail="No customer found for this email")
+        
+        logger.info(f"Creating customer session for customer_id: {customer_id}")
+        
+        # Create a customer session with Polar
+        async with httpx.AsyncClient(follow_redirects=True) as client:
+            response = await client.post(
+                f"{POLAR_API_URL}customer-sessions",
+                headers={
+                    "Authorization": f"Bearer {POLAR_ACCESS_TOKEN}",
+                    "Content-Type": "application/json"
+                },
+                json={"customer_id": customer_id}
+            )
+            
+            if response.status_code != 201:
+                logger.error(f"Failed to create customer session: {response.text}")
+                raise HTTPException(status_code=500, detail="Failed to create customer portal session")
+            
+            session_data = response.json()
+            return {"customer_portal_url": session_data.get("customer_portal_url")}
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating customer portal session: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error") 
