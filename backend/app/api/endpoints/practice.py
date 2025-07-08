@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional
 from uuid import UUID
 
 from app.agents.curriculum_agent import CurriculumAgent
+from app.api.dependencies import require_subscription
 from app.core.auth import get_current_user
 from app.core.config import settings
 from app.db.supabase_client import get_supabase_client
@@ -50,7 +51,7 @@ class SubmitResponseResponse(BaseModel):
 @router.post("/generate", response_model=GeneratePracticeResponse)
 async def generate_practice_problems(
     request: GeneratePracticeRequest,
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Generate practice problems for a specific curriculum day"""
     supabase = get_supabase_client()
@@ -99,7 +100,7 @@ async def generate_practice_problems(
 @router.post("/submit", response_model=SubmitResponseResponse)
 async def submit_practice_responses(
     request: SubmitResponseRequest,
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Submit responses to practice problems and get feedback"""
     supabase = get_supabase_client()
@@ -199,7 +200,7 @@ async def submit_practice_responses(
 @router.get("/history/{curriculum_id}")
 async def get_practice_history(
     curriculum_id: UUID,
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Get practice history for a curriculum"""
     supabase = get_supabase_client()

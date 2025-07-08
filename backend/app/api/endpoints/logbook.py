@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
+from app.api.dependencies import require_subscription
 from app.core.auth import get_current_user
 from app.db.supabase_client import get_supabase_client
 from app.models.user import AuthenticatedUser
@@ -65,7 +66,7 @@ class LogbookEntriesResponse(BaseModel):
 @router.post("/entries", response_model=LogbookEntryResponse)
 async def create_logbook_entry(
     request: CreateLogbookEntryRequest,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
 ):
     """Create a new logbook entry."""
     supabase = get_supabase_client()
@@ -102,7 +103,7 @@ async def create_logbook_entry(
 
 @router.get("/entries", response_model=LogbookEntriesResponse)
 async def get_logbook_entries(
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     curriculum_id: Optional[UUID] = Query(None),
     day_id: Optional[UUID] = Query(None),
     entry_type: Optional[str] = Query(None),
@@ -180,7 +181,7 @@ async def get_logbook_entries(
 @router.get("/entries/{entry_id}", response_model=LogbookEntryResponse)
 async def get_logbook_entry(
     entry_id: UUID,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
 ):
     """Get a specific logbook entry."""
     supabase = get_supabase_client()
@@ -211,7 +212,7 @@ async def get_logbook_entry(
 async def update_logbook_entry(
     entry_id: UUID,
     request: UpdateLogbookEntryRequest,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
 ):
     """Update a logbook entry."""
     supabase = get_supabase_client()
@@ -292,7 +293,7 @@ async def update_logbook_entry(
 @router.delete("/entries/{entry_id}")
 async def delete_logbook_entry(
     entry_id: UUID,
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
 ):
     """Delete a logbook entry."""
     supabase = get_supabase_client()
@@ -318,7 +319,7 @@ async def delete_logbook_entry(
 
 @router.get("/stats")
 async def get_logbook_stats(
-    current_user: AuthenticatedUser = Depends(get_current_user),
+    current_user: AuthenticatedUser = Depends(require_subscription),
     curriculum_id: Optional[UUID] = Query(None),
 ):
     """Get statistics about user's logbook entries."""

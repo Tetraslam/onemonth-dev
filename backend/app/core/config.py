@@ -57,6 +57,7 @@ class Settings(BaseSettings):
     # Payments
     polar_access_token: Optional[str] = Field(None, env="POLAR_ACCESS_TOKEN")
     polar_webhook_secret: Optional[str] = Field(None, env="POLAR_WEBHOOK_SECRET")
+    polar_product_id: Optional[str] = Field(None, env="POLAR_PRODUCT_ID")
     
     # LLM Providers
     gemini_api_key: Optional[str] = Field(None, env="GEMINI_API_KEY")

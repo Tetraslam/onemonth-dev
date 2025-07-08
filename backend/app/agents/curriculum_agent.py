@@ -202,10 +202,30 @@ class CurriculumAgent:
             system_prompt = "You are a friendly and helpful AI learning assistant. Respond to the user\'s greeting with a short, friendly greeting of your own. For example, if the user says 'hi', you could say 'Hello there!' or 'Hi! How can I help you today?'. Keep it concise."
             user_prompt_content = user_query_from_context
         elif intent == "create_curriculum":
-            system_prompt = "You are an expert curriculum designer. Your task is to generate a comprehensive, day-by-day learning plan based *strictly* on the user\'s detailed preferences and the provided supporting research. The user\'s message will outline the desired curriculum structure, including specific sections for each day (like Introduction, Learning Objectives, Key Concepts, Examples, Summary) and the required TipTap/ProseMirror JSON format for the 'content' field. Adhere meticulously to this structure and all formatting requirements. Ensure the output is a single, valid JSON object as specified."
+            system_prompt = """You are an expert curriculum designer. Your task is to generate a comprehensive, day-by-day learning plan based *strictly* on the user's detailed preferences and the provided supporting research.
+
+CRITICAL OUTPUT FORMATTING RULES:
+1. Output ONLY the JSON object, wrapped in markdown code blocks like this:
+```json
+{your JSON here}
+```
+2. Do NOT include ANY text before the opening ```json or after the closing ```
+3. Do NOT include explanations, comments, or any other text outside the code block
+4. The JSON must be a single, valid JSON object as specified in the user's message
+
+The user's message will outline the desired curriculum structure, including specific sections for each day (like Introduction, Learning Objectives, Key Concepts, Examples, Summary) and the required TipTap/ProseMirror JSON format for the 'content' field. Adhere meticulously to this structure and all formatting requirements."""
             user_prompt_content = f"User Preferences and Structure for CURRICULUM (MUST FOLLOW EXACTLY): {user_query_from_context}\nSupporting Research (USE THIS TO FILL IN DETAILS): {self._format_tool_results(state.get("tools_output", []))}"
         elif intent == "regenerate_day":
-            system_prompt = "You are an expert curriculum designer. Regenerate the curriculum day content based on the user's feedback and improvements. Return a JSON object with 'title', 'content' (in TipTap/ProseMirror JSON format), and 'resources' array fields."
+            system_prompt = """You are an expert curriculum designer. Regenerate the curriculum day content based on the user's feedback and improvements.
+
+CRITICAL OUTPUT FORMATTING RULES:
+1. Output ONLY the JSON object, wrapped in markdown code blocks like this:
+```json
+{your JSON here}
+```
+2. Do NOT include ANY text before the opening ```json or after the closing ```
+3. Do NOT include explanations, comments, or any other text outside the code block
+4. The JSON must contain 'title', 'content' (in TipTap/ProseMirror JSON format), and 'resources' array fields."""
             user_prompt_content = f"{user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}"
         else:
             user_prompt_content = f"User Query: {user_query_from_context}\nSupporting Research: {self._format_tool_results(state.get("tools_output", []))}\nProvide a concise plain text response."
@@ -228,9 +248,8 @@ class CurriculumAgent:
             "temperature": 0.6,
             "max_tokens": 150_000 if intent not in ["create_curriculum", "regenerate_day"] else 150_000,
             "stream": False, # For this non-streaming version that updates graph state
-            "response_format": {"type": "json_object"} if intent in ["create_curriculum", "regenerate_day"] else None 
+            # REMOVED response_format due to Gemini unicode bug - using markdown code blocks instead
         }
-        if payload["response_format"] is None: del payload["response_format"]
 
         print(f"[AGENT _generate_response] Calling Gemini API ({payload['model']}) for intent '{intent}' with stream=False")
         
@@ -467,7 +486,9 @@ For each problem, identify:
 2. The difficulty level (easy, medium, or hard)
 3. A clear explanation of the correct answer
 
-Return the problems in this JSON format:
+Return the problems in this exact JSON format, wrapped in markdown code blocks:
+
+```json
 {{
     "problems": [
         {{
@@ -480,7 +501,10 @@ Return the problems in this JSON format:
             "difficulty": "easy|medium|hard"
         }}
     ]
-}}"""
+}}
+```
+
+CRITICAL: Output ONLY the JSON inside markdown code blocks. Do NOT include any text before or after."""
 
             # Use Gemini API directly for practice problems
             api_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
@@ -493,12 +517,12 @@ Return the problems in this JSON format:
             payload = {
                 "model": model_name,
                 "messages": [
-                    {"role": "system", "content": "You are an expert educator creating practice problems for students."},
+                    {"role": "system", "content": "You are an expert educator creating practice problems for students. Always output JSON wrapped in markdown code blocks."},
                     {"role": "user", "content": prompt}
                 ],
                 "temperature": 0.8,
                 "max_tokens": 4000,
-                "response_format": {"type": "json_object"}
+                # REMOVED response_format due to Gemini unicode bug
             }
             
             timeout = aiohttp.ClientTimeout(total=60)
@@ -507,6 +531,17 @@ Return the problems in this JSON format:
                     if response.status == 200:
                         data = await response.json()
                         result = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                        
+                        # Extract JSON from markdown code block
+                        if "```json" in result:
+                            start_idx = result.find("```json") + 7
+                            end_idx = result.find("```", start_idx)
+                            if end_idx != -1:
+                                result = result[start_idx:end_idx].strip()
+                        else:
+                            # Clean up any markdown formatting
+                            result = result.replace("```json", "").replace("```", "").strip()
+                        
                         result_json = json.loads(result)
                         
                         # Validate the structure

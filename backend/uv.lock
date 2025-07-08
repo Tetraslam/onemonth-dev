@@ -151,6 +151,7 @@ dependencies = [
     { name = "arxiv" },
     { name = "fastapi" },
     { name = "httpx" },
+    { name = "json-repair" },
     { name = "json5" },
     { name = "langchain" },
     { name = "langchain-community" },
@@ -170,6 +171,7 @@ dependencies = [
     { name = "resend" },
     { name = "sentry-sdk" },
     { name = "supabase" },
+    { name = "tenacity" },
     { name = "typesense" },
     { name = "uvicorn" },
     { name = "wikipedia-api" },
@@ -192,6 +194,7 @@ requires-dist = [
     { name = "arxiv", specifier = ">=2.2.0" },
     { name = "fastapi", specifier = ">=0.115.13" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "json-repair", specifier = ">=0.47.6" },
     { name = "json5", specifier = ">=0.12.0" },
     { name = "langchain", specifier = ">=0.3.26" },
     { name = "langchain-community", specifier = ">=0.3.26" },
@@ -211,6 +214,7 @@ requires-dist = [
     { name = "resend", specifier = ">=2.10.0" },
     { name = "sentry-sdk", specifier = ">=2.31.0" },
     { name = "supabase", specifier = ">=2.16.0" },
+    { name = "tenacity", specifier = ">=9.1.2" },
     { name = "typesense", specifier = ">=1.1.1" },
     { name = "uvicorn", specifier = ">=0.34.3" },
     { name = "wikipedia-api", specifier = ">=0.8.1" },
@@ -889,6 +893,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/d8/b3/2bd02071c5a2430d0b70403a34411fc519c2f227da7b03da9ba6a956f931/jiter-0.10.0-cp314-cp314-win32.whl", hash = "sha256:ac509f7eccca54b2a29daeb516fb95b6f0bd0d0d8084efaf8ed5dfc7b9f0b357", size = 210127 },
     { url = "https://files.pythonhosted.org/packages/03/0c/5fe86614ea050c3ecd728ab4035534387cd41e7c1855ef6c031f1ca93e3f/jiter-0.10.0-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:5ed975b83a2b8639356151cef5c0d597c68376fc4922b45d0eb384ac058cfa00", size = 318527 },
     { url = "https://files.pythonhosted.org/packages/b3/4a/4175a563579e884192ba6e81725fc0448b042024419be8d83aa8a80a3f44/jiter-0.10.0-cp314-cp314t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3aa96f2abba33dc77f79b4cf791840230375f9534e5fac927ccceb58c5e604a5", size = 354213 },
+]
+
+[[package]]
+name = "json-repair"
+version = "0.47.6"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/9e/e8bcda4fd47b16fcd4f545af258d56ba337fa43b847beb213818d7641515/json_repair-0.47.6.tar.gz", hash = "sha256:4af5a14b9291d4d005a11537bae5a6b7912376d7584795f0ac1b23724b999620", size = 34400 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bb/f8/f464ce2afc4be5decf53d0171c2d399d9ee6cd70d2273b8e85e7c6d00324/json_repair-0.47.6-py3-none-any.whl", hash = "sha256:1c9da58fb6240f99b8405f63534e08f8402793f09074dea25800a0b232d4fb19", size = 25754 },
 ]
 
 [[package]]

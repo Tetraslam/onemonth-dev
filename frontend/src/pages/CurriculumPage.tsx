@@ -5,6 +5,7 @@ import { FileTree } from '@/components/FileTree'
 import { ContentView } from '@/components/ContentView'
 import { ChatPanel } from '@/components/ChatPanel'
 import { CurriculumCreationForm } from '@/components/CurriculumCreationForm'
+import { PaywallGate } from '@/components/PaywallGate'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
@@ -41,12 +42,22 @@ export default function CurriculumPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (id && id !== 'new') {
-      fetchCurriculum()
-    } else if (id === 'new') {
-      setLoading(false)
+    const initPage = async () => {
+      // Check authentication first
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        navigate('/auth')
+        return
+      }
+      
+      if (id && id !== 'new') {
+        fetchCurriculum()
+      } else if (id === 'new') {
+        setLoading(false)
+      }
     }
-  }, [id])
+    initPage()
+  }, [id, navigate])
 
   const fetchCurriculum = async () => {
     setLoading(true)
@@ -311,10 +322,12 @@ export default function CurriculumPage() {
 
       {/* Chat Panel */}
       <div className="w-[400px] bg-card border-l-4 border-foreground">
-        <ChatPanel 
-          curriculum={curriculum} 
-          currentDay={selectedDay}
-        />
+        <PaywallGate feature="AI chat assistant" showInline>
+          <ChatPanel 
+            curriculum={curriculum} 
+            currentDay={selectedDay}
+          />
+        </PaywallGate>
       </div>
     </div>
   )

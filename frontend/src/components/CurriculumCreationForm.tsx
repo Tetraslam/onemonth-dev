@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,11 +7,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Card } from '@/components/ui/card'
 import { ArrowRight, ArrowLeft, Loader2, Sparkles, Clock, Target, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import api from '@/lib/api'
 import { toast } from 'sonner'
-import axios from 'axios'
-import { useSubscription } from '@/lib/subscription'
-import SubscribeDialog from '@/components/SubscribeDialog'
 
 interface CurriculumFormData {
   title: string
@@ -29,10 +26,10 @@ interface PreviewModalProps {
   formData: any
   onGenerate: () => void
   onBack: () => void
-  loading: boolean
+  isLoading: boolean
 }
 
-function PreviewModal({ formData, onGenerate, onBack, loading }: PreviewModalProps) {
+function PreviewModal({ formData, onGenerate, onBack, isLoading }: PreviewModalProps) {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
@@ -97,7 +94,7 @@ function PreviewModal({ formData, onGenerate, onBack, loading }: PreviewModalPro
           type="button"
           variant="outline"
           onClick={onBack}
-          disabled={loading}
+          disabled={isLoading}
           className="flex-1 border-2 border-foreground shadow-[2px_2px_0_0_rgb(0,0,0)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0_0_rgb(0,0,0)]"
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
@@ -105,10 +102,10 @@ function PreviewModal({ formData, onGenerate, onBack, loading }: PreviewModalPro
         </Button>
         <Button
           onClick={onGenerate}
-          disabled={loading}
+          disabled={isLoading}
           className="flex-1 bg-primary text-primary-foreground border-2 border-foreground shadow-[4px_4px_0_0_rgb(0,0,0)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_rgb(0,0,0)]"
         >
-          {loading ? (
+          {isLoading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Generating...
@@ -127,11 +124,6 @@ function PreviewModal({ formData, onGenerate, onBack, loading }: PreviewModalPro
 
 export function CurriculumCreationForm() {
   const navigate = useNavigate()
-  const [step, setStep] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [generatingCurriculumId, setGeneratingCurriculumId] = useState<string | null>(null)
-  const [generationProgress, setGenerationProgress] = useState('')
-  
   const [formData, setFormData] = useState<CurriculumFormData>({
     title: '',
     description: '',
@@ -143,56 +135,39 @@ export function CurriculumCreationForm() {
     learningStyle: 'balanced',
     numProjects: 1
   })
+  const [step, setStep] = useState(1)
+  const [loading, setLoading] = useState(false)
 
   const totalSteps = 5
 
-  const { status } = useSubscription()
-  const [showSubscribe, setShowSubscribe] = useState(false)
+  const handleSubmit = async () => {
+    setLoading(true)
+    try {
+      const response = await api.post('/api/curricula/', {
+        title: formData.title || `Learning ${formData.learningGoal}`,
+        description: formData.description || formData.learningGoal,
+        learning_goal: formData.learningGoal,
+        estimated_duration_days: parseInt(formData.duration),
+        difficulty_level: formData.difficulty,
+        prerequisites: formData.priorKnowledge,
+        daily_time_commitment_minutes: parseInt(formData.timePerDay),
+        learning_style: formData.learningStyle,
+        num_projects: formData.numProjects,
+      })
 
-  // Poll for generation status
-  useEffect(() => {
-    if (!generatingCurriculumId) return
-
-    const pollStatus = async () => {
-      try {
-        const session = await supabase.auth.getSession()
-        const token = session.data.session?.access_token
-
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${generatingCurriculumId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        )
-
-        const curriculum = response.data
-        
-        if (curriculum.generation_status === 'completed') {
-          toast.success('Curriculum created successfully!')
-          navigate(`/curriculum/${generatingCurriculumId}`)
-        } else if (curriculum.generation_status === 'failed') {
-          toast.error('Failed to generate curriculum')
-          setLoading(false)
-          setGeneratingCurriculumId(null)
-        } else {
-          // Update progress message
-          setGenerationProgress(curriculum.generation_progress || 'Generating curriculum...')
-        }
-      } catch (error) {
-        console.error('Error polling status:', error)
+      if (response.data.curriculum_id) {
+        toast.success("Curriculum generation started!")
+        navigate('/dashboard')
       }
+    } catch (error: any) {
+      if (error.response?.status !== 403) {
+        toast.error(error.response?.data?.detail || "Failed to start generation.")
+      }
+      // 403 is handled by the global interceptor, which opens the subscribe modal.
+    } finally {
+      setLoading(false)
     }
-
-    // Poll every 2 seconds
-    const interval = setInterval(pollStatus, 2000)
-    
-    // Initial poll
-    pollStatus()
-
-    return () => clearInterval(interval)
-  }, [generatingCurriculumId, navigate])
+  }
 
   const updateFormData = (field: keyof CurriculumFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -204,55 +179,6 @@ export function CurriculumCreationForm() {
 
   const prevStep = () => {
     if (step > 1) setStep(step - 1)
-  }
-
-  const handleSubmit = async () => {
-    if (status !== 'active') { setShowSubscribe(true); setLoading(false); return }
-
-    setLoading(true)
-    setGenerationProgress('Initializing curriculum generation...')
-
-    try {
-      const session = await supabase.auth.getSession()
-      const token = session.data.session?.access_token
-
-      // Create curriculum via API
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/`,
-        {
-          title: formData.title || `Learning ${formData.learningGoal}`,
-          description: formData.description || formData.learningGoal,
-          learning_goal: formData.learningGoal,
-          estimated_duration_days: parseInt(formData.duration),
-          difficulty_level: formData.difficulty,
-          prerequisites: formData.priorKnowledge,
-          daily_time_commitment_minutes: parseInt(formData.timePerDay),
-          learning_style: formData.learningStyle,
-          num_projects: formData.numProjects,
-          is_public: false,
-          is_prebuilt: false
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-
-      if (response.data.id) {
-        // Start polling for generation status
-        setGeneratingCurriculumId(response.data.id)
-      }
-    } catch (error: any) {
-      console.error('Error creating curriculum:', error)
-      if (error.response?.status === 403) {
-        toast.error('Please subscribe to generate curricula')
-        // TODO: Redirect to payment page
-      } else {
-        toast.error('Failed to create curriculum')
-      }
-      setLoading(false)
-    }
   }
 
   const renderStep = () => {
@@ -489,7 +415,6 @@ export function CurriculumCreationForm() {
         )
 
       case 5:
-        // Map formData to the format expected by PreviewModal
         const previewData = {
           learning_goal: formData.learningGoal,
           title: formData.title,
@@ -505,7 +430,7 @@ export function CurriculumCreationForm() {
             formData={previewData}
             onGenerate={handleSubmit}
             onBack={prevStep}
-            loading={loading}
+            isLoading={loading}
           />
         )
     }
@@ -513,7 +438,7 @@ export function CurriculumCreationForm() {
 
   return (
     <Card className="max-w-2xl mx-auto p-8">
-      {!loading || step < 5 ? (
+      {step < 5 ? (
         <>
           {/* Progress indicator */}
           <div className="mb-8">
@@ -555,14 +480,8 @@ export function CurriculumCreationForm() {
           )}
         </>
       ) : (
-        <div className="text-center py-12">
-          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4 text-primary" />
-          <h3 className="text-xl font-semibold text-foreground mb-2">Creating your curriculum...</h3>
-          <p className="text-muted-foreground">{generationProgress}</p>
-        </div>
+        <PreviewModal formData={formData} onGenerate={handleSubmit} onBack={prevStep} isLoading={loading} />
       )}
-
-      {showSubscribe && <SubscribeDialog open={showSubscribe} onClose={()=>setShowSubscribe(false)} /> }
     </Card>
   )
 } 

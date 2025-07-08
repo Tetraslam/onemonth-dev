@@ -5,6 +5,7 @@ import httpx
 from app.core.auth import get_current_user
 from app.core.config import settings
 from app.db.supabase_client import supabase
+from app.models.user import AuthenticatedUser
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
@@ -12,10 +13,78 @@ from pydantic import BaseModel, EmailStr
 router = APIRouter()
 
 
+@router.post("/activate-subscription-test")
+async def activate_subscription_test(user: AuthenticatedUser = Depends(get_current_user)):
+    """Temporary endpoint to manually activate subscription for testing."""
+    from datetime import datetime
+
+    # Only allow in development
+    if settings.environment != "development":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="This endpoint is only available in development"
+        )
+    
+    # Update subscription status
+    supabase.table("subscription_status").upsert({
+        "user_id": str(user.id),
+        "status": "active",
+        "customer_id": f"test_customer_{user.id}",
+        "updated_at": datetime.utcnow().isoformat()
+    }).execute()
+    
+    return {"message": "Subscription activated for testing"}
+
 @router.get("/me")
-async def get_current_user_profile(current_user: Dict[str, Any] = Depends(get_current_user)):
-    """Get the current user's profile."""
-    return {"user": current_user}
+async def get_me(user: AuthenticatedUser = Depends(get_current_user)):
+    """
+    Get the current authenticated user's profile and subscription status.
+    This is the single source of truth for the frontend.
+    """
+    subscription_status = "none"
+    try:
+        if settings.polar_access_token:
+            async with httpx.AsyncClient() as client:
+                # Get customer ID by email
+                customers_response = await client.get(
+                    "https://api.polar.sh/v1/customers",
+                    headers={"Authorization": f"Bearer {settings.polar_access_token}"},
+                    params={"email": user.email},
+                    follow_redirects=True,
+                )
+                if customers_response.status_code == 200:
+                    customers_data = customers_response.json()
+                    if customers_data.get("items"):
+                        customer_id = customers_data["items"][0]["id"]
+                        # Get active subscriptions for this customer
+                        subs_response = await client.get(
+                            "https://api.polar.sh/v1/subscriptions",
+                            headers={"Authorization": f"Bearer {settings.polar_access_token}"},
+                            params={"customer_id": customer_id, "status": "active"},
+                            follow_redirects=True,
+                        )
+                        if subs_response.status_code == 200 and subs_response.json().get("items"):
+                            subscription_status = "active"
+                            # Update DB for next time
+                            supabase.table("subscription_status").upsert({
+                                "user_id": str(user.id),
+                                "status": "active",
+                                "customer_id": customer_id,
+                                "updated_at": datetime.utcnow().isoformat()
+                            }).execute()
+    except Exception as e:
+        print(f"Error checking Polar subscription for {user.email}: {e}")
+    
+    # Construct the final user object for the frontend
+    user_payload = {
+        "id": str(user.id),
+        "email": user.email,
+        "subscription": {
+            "status": subscription_status
+        }
+    }
+    
+    return {"user": user_payload}
 
 @router.get("/me/subscription")
 async def get_subscription_status(user = Depends(get_current_user)):
@@ -120,3 +189,44 @@ async def get_subscription_status(user = Depends(get_current_user)):
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Failed to check subscription status"
             ) 
+
+@router.get("/subscription-status")
+async def get_subscription_status(
+    current_user: AuthenticatedUser = Depends(get_current_user)
+):
+    """Get the current user's subscription status."""
+    try:
+        # First check the database
+        result = supabase.table("subscription_status").select("*").eq("user_id", str(current_user.id)).maybe_single().execute()
+        
+        if result.data:
+            return {
+                "status": result.data.get("status", "none"),
+                "customer_id": result.data.get("customer_id"),
+                "updated_at": result.data.get("updated_at"),
+                "is_active": result.data.get("status") == "active"
+            }
+        else:
+            # No record exists, create one with 'none' status
+            supabase.table("subscription_status").insert({
+                "user_id": str(current_user.id),
+                "status": "none",
+                "updated_at": datetime.utcnow().isoformat()
+            }).execute()
+            
+            return {
+                "status": "none",
+                "customer_id": None,
+                "updated_at": datetime.utcnow().isoformat(),
+                "is_active": False
+            }
+            
+    except Exception as e:
+        print(f"Error fetching subscription status: {e}")
+        # Return a safe default
+        return {
+            "status": "none",
+            "customer_id": None,
+            "updated_at": None,
+            "is_active": False
+        } 

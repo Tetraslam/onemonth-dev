@@ -3,8 +3,8 @@ from typing import Optional
 
 import redis.asyncio as redis
 from app.api.endpoints import polar  # New: webhook endpoint
-from app.api.endpoints import (auth, chat, curricula, logbook, notifications,
-                               practice, users)
+from app.api.endpoints import (auth, chat, checkout, curricula, logbook,
+                               notifications, practice, users)
 from app.core.config import settings
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -95,6 +95,7 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(curricula.router, prefix="/api/curricula", tags=["curricula"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
+app.include_router(checkout.router, prefix="/api/checkout", tags=["checkout"])
 app.include_router(logbook.router, prefix="/api/logbook", tags=["logbook"])
 app.include_router(notifications.router, prefix="/api/notifications", tags=["notifications"])
 app.include_router(practice.router, prefix="/api/practice", tags=["practice"])

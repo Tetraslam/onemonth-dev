@@ -5,13 +5,15 @@ import { Textarea } from '@/components/ui/textarea'
 import { CheckCircle2, Clock, ExternalLink, BookmarkPlus, BookOpenText, Sparkles, Loader2, Copy, Edit, Save, X, RefreshCw, ArrowLeft, Brain, NotebookPen } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import axios from 'axios'
+import api from '@/lib/api'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import { PracticeProblems } from '@/components/PracticeProblems'
 import { PracticeHistory } from '@/components/PracticeHistory'
 import { LogbookPromptModal } from '@/components/LogbookPromptModal'
-import { useSubscription } from '@/lib/subscription'
+import { PaywallGate } from '@/components/PaywallGate'
+import { useSubscribeModal } from '@/stores/useSubscribeModal'
+import { useSubscriptionStore } from '@/stores/useSubscriptionStore'
 import SubscribeDialog from '@/components/SubscribeDialog'
 
 interface Day {
@@ -434,8 +436,8 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
   const [regeneratePrompt, setRegeneratePrompt] = useState('');
   const [showPractice, setShowPractice] = useState(false);
   const [showLogbookPrompts, setShowLogbookPrompts] = useState(false);
-  const { status } = useSubscription()
-  const [showSubscribe,setShowSubscribe]=useState(false)
+  const { open } = useSubscribeModal()
+  const { isSubscribed } = useSubscriptionStore()
 
   // Initialize edit content when day changes or edit mode starts
   useEffect(() => {
@@ -460,7 +462,7 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
 
       const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${curriculum.id}/days/${day.id}/complete`;
       
-      await axios.post(apiUrl, {}, {
+      await api.post(apiUrl, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -489,7 +491,7 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
         title: editedTitle
       };
 
-      await axios.patch(
+      await api.patch(
         `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${curriculum.id}/days/${day.id}`,
         contentUpdate,
         {
@@ -512,7 +514,6 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
   };
 
   const handleRegenerate = async () => {
-    if (status !== 'active') { setShowSubscribe(true); return }
     if (!day || !curriculum || !regeneratePrompt.trim()) return;
 
     setIsRegenerating(true);
@@ -520,7 +521,7 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
       const session = await supabase.auth.getSession();
       const token = session.data.session?.access_token;
 
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/curricula/${curriculum.id}/days/${day.id}/regenerate`,
         { improvement_prompt: regeneratePrompt },
         {
@@ -837,10 +838,7 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
                 variant="secondary" 
                 size="lg" 
                 className="font-black text-lg px-10 border-2 border-foreground"
-                onClick={() => {
-                  if(status!=='active') {setShowSubscribe(true);return}
-                  setShowPractice(true)
-                }}
+                onClick={() => isSubscribed() ? setShowPractice(true) : open()}
               >
                 <Brain className="w-5 h-5 mr-2" />
                 Start Practice Session
@@ -867,11 +865,13 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
                 </Button>
               </div>
               <div className="overflow-y-auto max-h-[calc(90vh-80px)]">
-                <PracticeProblems 
-                  curriculum={curriculum}
-                  currentDay={day}
-                  onClose={() => setShowPractice(false)}
-                />
+                <PaywallGate feature="practice problems">
+                  <PracticeProblems 
+                    curriculum={curriculum}
+                    currentDay={day}
+                    onClose={() => setShowPractice(false)}
+                  />
+                </PaywallGate>
               </div>
             </div>
           </div>
@@ -889,8 +889,6 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
             }}
           />
         )}
-
-        {showSubscribe && <SubscribeDialog open={showSubscribe} onClose={()=>setShowSubscribe(false)} /> }
       </div>
     </ScrollArea>
   )

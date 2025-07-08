@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Button } from '@/components/ui/button'
+import api from '@/lib/api'
+import { toast } from 'sonner'
 
 interface Props {
   open: boolean
@@ -7,7 +10,28 @@ interface Props {
 }
 
 export default function SubscribeDialog({ open, onClose }: Props) {
-  const link = import.meta.env.VITE_POLAR_PAYMENT_LINK as string
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubscribe = async () => {
+    setIsLoading(true)
+    try {
+      const response = await api.post('/api/checkout/session', {
+        success_url: `${window.location.origin}/payment-success`,
+        cancel_url: window.location.href,
+      })
+
+      if (response.data.url) {
+        window.location.href = response.data.url
+      } else {
+        throw new Error('No checkout URL received')
+      }
+    } catch (error) {
+      console.error('Failed to create checkout session:', error)
+      toast.error('Failed to start checkout. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <Dialog open={open} onClose={onClose} className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -17,8 +41,12 @@ export default function SubscribeDialog({ open, onClose }: Props) {
         <Dialog.Description className="text-foreground/70 mb-6">
           Your personalised curricula, AI chat, practice problems, and project regeneration are available with an active subscription.
         </Dialog.Description>
-        <Button asChild className="w-full font-black text-lg mb-3">
-          <a href={link} target="_blank" rel="noopener noreferrer">Subscribe – $10 / month</a>
+        <Button 
+          className="w-full font-black text-lg mb-3" 
+          onClick={handleSubscribe}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'Subscribe – $20 / month'}
         </Button>
         <Button variant="outline" className="w-full" onClick={onClose}>Maybe later</Button>
       </div>

@@ -120,6 +120,7 @@ The AI agent has access to:
     *   **LLM Integration**: `ChatGoogleGenerativeAI` with Gemini 2.5 Pro (via `langchain-google-genai`).
     *   **Memory**: `ConversationBufferWindowMemory` for chat history.
     *   **Agent Type**: `create_tool_calling_agent` with an `AgentExecutor` to enable tool usage.
+* **JSON Repair**: `json-repair` library to handle Gemini's known unicode corruption bug when generating large JSON responses. Structured output disabled to avoid the bug.
 * **Transactional Emails**: Resend (Integrated & Sending weekly recaps ✅).
 * **Vector Search (Planned)**: Qdrant.
 * **AI Provider**: Direct Google Generative AI API for Gemini 2.5 Pro.

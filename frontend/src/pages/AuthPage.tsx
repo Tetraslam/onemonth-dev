@@ -26,8 +26,40 @@ export default function AuthPage() {
     checkMobile()
     window.addEventListener('resize', checkMobile)
     
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+    // Listen for auth state changes (e.g., after email confirmation)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        // Check if this is a new user (no subscription status yet)
+        try {
+          const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/users/subscription-status`, {
+            headers: {
+              'Authorization': `Bearer ${session.access_token}`
+            }
+          })
+          
+          if (response.ok) {
+            const data = await response.json()
+            // If user has never had a subscription, redirect to onboarding
+            if (data.status === 'none' && !data.customer_id) {
+              navigate('/onboarding')
+            } else {
+              navigate('/dashboard')
+            }
+          } else {
+            navigate('/dashboard')
+          }
+        } catch (error) {
+          console.error('Error checking subscription status:', error)
+          navigate('/dashboard')
+        }
+      }
+    })
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      subscription.unsubscribe()
+    }
+  }, [navigate])
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,12 +67,19 @@ export default function AuthPage() {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { error, data } = await supabase.auth.signUp({
           email,
           password,
         })
         if (error) throw error
-        toast.success('Check your email to confirm your account!')
+        
+        // If signup successful and user is confirmed, sign them in and redirect to onboarding
+        if (data.user && !data.user.email_confirmed_at) {
+          toast.success('Check your email to confirm your account!')
+        } else if (data.user) {
+          // Auto sign in after signup if email is already confirmed (e.g., for some providers)
+          navigate('/onboarding')
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,

@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 import re
 import traceback
 from datetime import datetime
@@ -14,11 +15,27 @@ from app.db.supabase_client import supabase
 from app.models.curriculum import (Curriculum, CurriculumCreate, CurriculumDay,
                                    CurriculumDayCreate)
 from app.models.user import AuthenticatedUser
-from fastapi import APIRouter, Depends, HTTPException, status
+from app.services.validation_service import clean_and_validate_json
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 router = APIRouter()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Create a file handler for raw LLM responses
+try:
+    llm_handler = logging.FileHandler("llm_responses.log", encoding='utf-8')
+    llm_handler.setLevel(logging.INFO)
+    llm_logger = logging.getLogger("llm_responses")
+    llm_logger.addHandler(llm_handler)
+    llm_logger.propagate = False
+except Exception as e:
+    logger.error(f"Failed to configure file logger: {e}")
+    llm_logger = logger # Fallback to console logger
 
 class ProgressRecord(BaseModel):
     id: UUID
@@ -27,9 +44,10 @@ class ProgressRecord(BaseModel):
     day_id: UUID
     completed_at: datetime
 
-@router.post("/", response_model=Curriculum)
+@router.post("/", status_code=202)
 async def create_curriculum(
     curriculum_data: CurriculumCreate,
+    background_tasks: BackgroundTasks,
     current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Create a new curriculum for the current user."""
@@ -138,11 +156,17 @@ async def create_curriculum(
     agent_context = curriculum_data.model_dump()
     agent_context["curriculum_id"] = new_curriculum_id
 
+    background_tasks.add_task(generate_and_save_curriculum, new_curriculum_id, curriculum_data, agent_messages, agent_context)
+    
+    return {"curriculum_id": new_curriculum_id, "message": "Curriculum generation started."}
+
+async def generate_and_save_curriculum(curriculum_id: str, curriculum_data: CurriculumCreate, agent_messages: List, agent_context: Dict):
+    raw_agent_response = ""
     try:
         # Update status: Planning curriculum structure
         supabase.table("curricula").update({
             "generation_progress": "Planning curriculum structure and daily topics..."
-        }).eq("id", new_curriculum_id).execute()
+        }).eq("id", curriculum_id).execute()
 
         # Call the agent to generate the curriculum structure and content
         print(f"Calling agent with messages: {agent_messages[:100]}...")  # Log first 100 chars
@@ -150,10 +174,20 @@ async def create_curriculum(
         print(f"Agent response length: {len(raw_agent_response) if raw_agent_response else 0}")
         print(f"Agent response preview: {raw_agent_response[:500] if raw_agent_response else 'None'}...")
 
+        validated_data = await clean_and_validate_json(raw_agent_response)
+        
+        if not validated_data:
+            # If validation and repair fail, mark as failed
+            supabase.table("curricula").update({
+                "generation_status": "failed",
+                "generation_progress": "Failed to generate a valid curriculum after multiple repair attempts."
+            }).eq("id", curriculum_id).execute()
+            return
+
         # Update status: Processing content
         supabase.table("curricula").update({
             "generation_progress": "Creating day-by-day content and resources..."
-        }).eq("id", new_curriculum_id).execute()
+        }).eq("id", curriculum_id).execute()
         
         try:
             # First try to extract JSON from the response in case it's wrapped in markdown or other text
@@ -189,6 +223,9 @@ async def create_curriculum(
             # Remove stray ':a:' pattern typo
             json_str = re.sub(r'":a\s*:', '":', json_str)
             
+            # Add comma between closing and opening braces
+            json_str = re.sub(r'(?<=[}\]])\s*(?=["{])', ',', json_str)
+            
             # Try to parse the cleaned JSON (standard json), fallback to json5 for lenient parsing
             try:
                 generated_curriculum = json.loads(json_str)
@@ -220,16 +257,16 @@ async def create_curriculum(
             supabase.table("curricula").update({
                 "generation_status": "failed",
                 "generation_progress": f"Failed to parse curriculum content: {str(e)}"
-            }).eq("id", new_curriculum_id).execute()
+            }).eq("id", curriculum_id).execute()
             
-            return JSONResponse({"id": new_curriculum_id, "error": "parse_failed"})
+            return
 
         # Update curriculum with title and description from agent
         supabase.table("curricula").update({
             "title": curriculum_title,
             "description": curriculum_description,
             "generation_progress": f"Creating {len(generated_days_data)} days of content..."
-        }).eq("id", new_curriculum_id).execute()
+        }).eq("id", curriculum_id).execute()
 
         # 2. Create CurriculumDay entries for each day generated by the agent
         days_to_insert = []
@@ -238,7 +275,7 @@ async def create_curriculum(
             if i % 5 == 0:  # Update every 5 days to avoid too many DB calls
                 supabase.table("curricula").update({
                     "generation_progress": f"Processing day {i+1} of {len(generated_days_data)}..."
-                }).eq("id", new_curriculum_id).execute()
+                }).eq("id", curriculum_id).execute()
                 
             # Validate and create CurriculumDayCreate objects
             # The agent MUST provide data in the format CurriculumDayCreate expects
@@ -254,7 +291,7 @@ async def create_curriculum(
                 # Add to insert list with project fields
                 day_dict = day_create_obj.model_dump()
                 day_dict.update({
-                    "curriculum_id": new_curriculum_id,
+                    "curriculum_id": curriculum_id,
                     "id": str(uuid4()),
                     "is_project_day": is_project_day,
                     "project_data": project_data
@@ -268,7 +305,7 @@ async def create_curriculum(
         # Update status: Saving curriculum
         supabase.table("curricula").update({
             "generation_progress": "Saving curriculum to database..."
-        }).eq("id", new_curriculum_id).execute()
+        }).eq("id", curriculum_id).execute()
 
         if days_to_insert:
             created_days_response = supabase.table("curriculum_days").insert(days_to_insert).execute()
@@ -277,17 +314,17 @@ async def create_curriculum(
                 supabase.table("curricula").update({
                     "generation_status": "failed",
                     "generation_progress": "Failed to save curriculum days"
-                }).eq("id", new_curriculum_id).execute()
+                }).eq("id", curriculum_id).execute()
                 raise HTTPException(status_code=500, detail="Failed to create curriculum days")
         
         # Update status: Completed
         supabase.table("curricula").update({
             "generation_status": "completed",
             "generation_progress": "Curriculum generated successfully!"
-        }).eq("id", new_curriculum_id).execute()
+        }).eq("id", curriculum_id).execute()
         
         # Return only the ID – UI will poll /api/curricula/{id} for full data
-        return JSONResponse({"id": new_curriculum_id})
+        return
 
     except HTTPException as e: # Re-raise HTTPExceptions
         raise e
@@ -300,10 +337,21 @@ async def create_curriculum(
         supabase.table("curricula").update({
             "generation_status": "failed",
             "generation_progress": f"Unexpected error: {str(e)}"
-        }).eq("id", new_curriculum_id).execute()
+        }).eq("id", curriculum_id).execute()
         
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
+    finally:
+        # Log the raw LLM response
+        try:
+            llm_logger.info(f"--- New Curriculum Generation ---")
+            llm_logger.info(f"Curriculum ID: {curriculum_id}")
+            llm_logger.info(f"Timestamp: {datetime.utcnow().isoformat()}")
+            llm_logger.info("Raw Response:")
+            llm_logger.info(raw_agent_response)
+            llm_logger.info("--- End of Response ---\n")
+        except Exception as e:
+            logger.error(f"Failed to write to llm_responses.log: {e}")
 
 @router.get("/", response_model=List[Curriculum])
 async def list_curricula(current_user: AuthenticatedUser = Depends(get_current_user)):
@@ -450,7 +498,7 @@ async def update_day_content(
     curriculum_id: str,
     day_id: str,
     content_update: Dict[str, Any],
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Update the content of a specific curriculum day."""
     user_id = str(current_user.id)
@@ -486,7 +534,7 @@ async def update_day_content(
 async def reorder_days(
     curriculum_id: str,
     day_order: List[Dict[str, Any]],  # [{"id": "day_id", "day_number": 1}, ...]
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Reorder curriculum days by updating their day_numbers."""
     user_id = str(current_user.id)
@@ -533,7 +581,7 @@ async def reorder_days(
 async def add_custom_day(
     curriculum_id: str,
     day_data: CurriculumDayCreate,
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Add a custom day to a curriculum."""
     user_id = str(current_user.id)
@@ -572,7 +620,7 @@ async def add_custom_day(
 async def delete_day(
     curriculum_id: str,
     day_id: str,
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Delete a day from a curriculum."""
     user_id = str(current_user.id)
@@ -618,7 +666,7 @@ async def regenerate_day(
     curriculum_id: str,
     day_id: str,
     regenerate_request: Dict[str, str],
-    current_user: AuthenticatedUser = Depends(get_current_user)
+    current_user: AuthenticatedUser = Depends(require_subscription)
 ):
     """Regenerate a specific day with improvements."""
     user_id = str(current_user.id)
@@ -689,4 +737,12 @@ async def regenerate_day(
     except Exception as e:
         print(f"[REGENERATE ERROR] Unexpected error: {str(e)}")
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Failed to regenerate day: {str(e)}") 
+        raise HTTPException(status_code=500, detail=f"Failed to regenerate day: {str(e)}")
+
+@router.get("/{curriculum_id}/status")
+async def get_generation_status(curriculum_id: str, current_user: AuthenticatedUser = Depends(get_current_user)):
+    """Gets the generation status of a curriculum."""
+    response = supabase.table("curricula").select("generation_status, generation_progress, title").eq("id", curriculum_id).eq("user_id", str(current_user.id)).maybe_single().execute()
+    if not response.data:
+        raise HTTPException(status_code=404, detail="Curriculum not found")
+    return response.data 
