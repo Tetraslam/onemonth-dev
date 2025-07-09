@@ -235,28 +235,6 @@ export default function AuthPage() {
       <div className="absolute bottom-40 right-40 animate-float-delayed">
         <div className="w-8 h-8 bg-primary rounded-full border-2 border-foreground shadow-[2px_2px_0_0_rgb(0,0,0)]" />
       </div>
-
-      {/* Add floating animation styles */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(var(--rotate, 0deg)); }
-          50% { transform: translateY(-20px) rotate(var(--rotate, 0deg)); }
-        }
-        
-        @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px) rotate(var(--rotate, 0deg)); }
-          50% { transform: translateY(-15px) rotate(var(--rotate, 0deg)); }
-        }
-        
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-        
-        .animate-float-delayed {
-          animation: float-delayed 4s ease-in-out infinite;
-          animation-delay: 2s;
-        }
-      `}</style>
     </div>
   )
 } 
