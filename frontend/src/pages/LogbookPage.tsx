@@ -12,6 +12,7 @@ import { LogbookEntryCard } from '../components/LogbookEntryCard';
 import { LogbookStats } from '../components/LogbookStats';
 import { toast } from 'sonner';
 import { Navbar } from '@/components/Navbar';
+import { trackGoal } from '@/lib/utils';
 
 interface LogbookEntry {
   id: string;
@@ -213,6 +214,27 @@ export function LogbookPage() {
 
       if (response.ok) {
         toast.success(selectedEntry ? 'Entry updated!' : 'Entry created!');
+        
+        // Track logbook goals
+        if (!selectedEntry) {
+          trackGoal('logbook_entry_created')
+          
+          // Track entry type specific goals
+          if (entryDataToSave.entry_type) {
+            trackGoal(`logbook_${entryDataToSave.entry_type}_created`)
+          }
+          
+          // Track mood logging
+          if (entryDataToSave.mood) {
+            trackGoal('mood_logged')
+          }
+          
+          // Track hours logging
+          if (entryDataToSave.hours_spent && entryDataToSave.hours_spent > 0) {
+            trackGoal('study_hours_logged')
+          }
+        }
+        
         fetchEntries(); // Refetch entries to update the list
         fetchStats(); // Refetch stats
         setIsCreating(false);

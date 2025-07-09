@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card'
 import { ArrowRight, ArrowLeft, Loader2, Sparkles, Clock, Target, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react'
 import api from '@/lib/api'
 import { toast } from 'sonner'
+import { trackConversion } from '@/lib/utils'
 
 interface CurriculumFormData {
   title: string
@@ -157,6 +158,8 @@ export function CurriculumCreationForm() {
 
       if (response.data.curriculum_id) {
         toast.success("Curriculum generation started!")
+        // Track curriculum creation conversion
+        trackConversion('curriculum_created')
         navigate('/dashboard')
       }
     } catch (error: any) {

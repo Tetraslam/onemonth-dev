@@ -10,6 +10,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import SubscribeDialog from '@/components/SubscribeDialog'
 import { useSubscribeModal } from '@/stores/useSubscribeModal'
+import { trackGoal } from '@/lib/utils'
 
 interface ChatPanelProps {
   curriculum: any
@@ -182,6 +183,19 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
         content: draft,
         createdAt: new Date(),
     };
+    
+    // Track chat usage goals
+    trackGoal('chat_message_sent')
+    
+    // Track first chat message
+    if (messages.filter(m => m.role === 'user').length === 0) {
+      trackGoal('first_chat_message')
+    }
+    
+    // Track chat usage for specific day
+    if (currentDay?.day_number) {
+      trackGoal(`chat_day_${currentDay.day_number}`)
+    }
 
     // Add user message to UI immediately
     setMessages(prevMessages => [...prevMessages, userMessage]);

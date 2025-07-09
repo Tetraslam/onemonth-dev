@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Brain, ChevronRight, RotateCcw, CheckCircle, XCircle, Lightbulb, Loader2, ThumbsUp, ThumbsDown } from 'lucide-react'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
+import { cn, trackGoal } from '@/lib/utils'
 import { supabase } from '@/lib/supabase'
 
 interface PracticeProblem {
@@ -124,6 +124,20 @@ export function PracticeProblems({ curriculum, currentDay, onClose }: PracticePr
 
     setScore({ correct, total: session.problems.length })
     setSubmitted(true)
+    
+    // Track practice completion goals
+    trackGoal('practice_session_completed')
+    
+    // Track performance-based goals
+    const percentage = (correct / session.problems.length) * 100
+    if (percentage === 100) {
+      trackGoal('practice_perfect_score')
+    } else if (percentage >= 80) {
+      trackGoal('practice_high_score')
+    }
+    
+    // Track practice for specific day
+    trackGoal(`practice_day_${currentDay.day_number}`)
 
     // Save the session results
     try {

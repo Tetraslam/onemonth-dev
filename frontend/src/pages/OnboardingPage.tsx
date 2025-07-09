@@ -2,31 +2,27 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Brain, Zap, Sparkles, CheckCircle, ArrowRight } from 'lucide-react'
+import { CheckCircle, Star, Zap, BookOpen, Target, Sparkles, Trophy, Brain, Rocket, ArrowRight } from 'lucide-react'
+import { useSubscribeModal } from '@/stores/useSubscribeModal'
+import { useSubscriptionStore } from '@/stores/useSubscriptionStore'
+import { trackFunnelStep } from '@/lib/utils'
 import api from '@/lib/api'
 import { toast } from 'sonner'
-import { useSubscriptionStore } from '@/stores/useSubscriptionStore'
 
 export default function OnboardingPage() {
   const navigate = useNavigate()
+  const { open: openSubscribeModal } = useSubscribeModal()
+  const { checkSubscription, isSubscribed } = useSubscriptionStore()
+  const [currentStep, setCurrentStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
-  const { checkSubscription, isSubscribed } = useSubscriptionStore()
   
   useEffect(() => {
-    // Check if already subscribed
-    const checkStatus = async () => {
-      console.log('Checking subscription status in onboarding...')
-      await checkSubscription()
-      const subscribed = isSubscribed()
-      console.log('Is subscribed?', subscribed)
-      if (subscribed) {
-        console.log('User is subscribed, redirecting to dashboard')
-        navigate('/dashboard')
-      }
-    }
-    checkStatus()
-  }, [checkSubscription, isSubscribed, navigate])
+    // Track onboarding page visit
+    trackFunnelStep('onboarding')
+    
+    checkSubscription()
+  }, [checkSubscription])
   
   useEffect(() => {
     // Create checkout session on mount

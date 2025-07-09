@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import { toast } from 'sonner'
 import { ArrowLeft, Sparkles, Zap, Star } from 'lucide-react'
+import { trackFunnelStep } from '@/lib/utils'
 
 export default function AuthPage() {
   const [email, setEmail] = useState('')
@@ -19,6 +20,9 @@ export default function AuthPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    // Track auth page visit
+    trackFunnelStep('auth')
+    
     // Check viewport width for UI display
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024)

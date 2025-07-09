@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Loader2, CheckCircle2 } from 'lucide-react'
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore'
+import { trackConversion } from '@/lib/utils'
 
 export default function PaymentSuccessPage() {
   const navigate = useNavigate()
@@ -9,6 +10,9 @@ export default function PaymentSuccessPage() {
 
   useEffect(() => {
     const handleSuccess = async () => {
+      // Track subscription conversion
+      trackConversion('subscription')
+      
       // Clear cached subscription status to force a fresh check
       clearSubscription()
       

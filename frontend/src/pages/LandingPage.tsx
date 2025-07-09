@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
+import { trackInternalNavigation, trackFunnelStep, trackReferral } from '@/lib/utils'
 import { ArrowRight, CheckCircle, BookOpen, Zap, Target, Sparkles, Star, Rocket, Brain, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import Typed from 'typed.js'
@@ -7,6 +8,7 @@ import Typed from 'typed.js'
 export function LandingPage() {
   const navigate = useNavigate()
   const el = useRef<HTMLSpanElement>(null)
+  const typed = useRef<Typed | null>(null)
   const [currentExample, setCurrentExample] = useState({
     description: "You've bookmarked 47 tutorials. Bought 3 Udemy courses. Asked ChatGPT the same question 12 times.",
     stillHavent: "Still haven't built anything.",
@@ -128,6 +130,11 @@ export function LandingPage() {
   ];
 
   useEffect(() => {
+    // Track landing page visit
+    trackFunnelStep('landing')
+    // Track referral if present
+    trackReferral()
+
     const examples = [
       {
         description: "You've bookmarked 47 tutorials. Bought 3 Udemy courses. Asked ChatGPT the same question 12 times.",
@@ -209,7 +216,7 @@ export function LandingPage() {
     let currentIndex = 0
 
     if (el.current) {
-      const typed = new Typed(el.current, {
+      typed.current = new Typed(el.current, {
         strings: demographics.map(d => d.title),
         typeSpeed: 50,
         backSpeed: 30,
@@ -237,7 +244,7 @@ export function LandingPage() {
       })
 
       return () => {
-        typed.destroy()
+        typed.current?.destroy()
       }
     }
   }, [])
@@ -256,7 +263,9 @@ export function LandingPage() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-black">onemonth.dev</h1>
           <Button 
-            onClick={() => navigate('/auth')} 
+            onClick={() => {
+              navigate(trackInternalNavigation('landing-nav', '/auth', 'get-started'))
+            }} 
             className="font-black"
           >
             Get Started
@@ -284,7 +293,9 @@ export function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   size="lg" 
-                  onClick={() => navigate('/auth')}
+                  onClick={() => {
+                    navigate(trackInternalNavigation('landing-hero', '/auth', 'start-today'))
+                  }}
                   className="text-lg px-8 py-6 font-black"
                 >
                   Start Today - $19.99/mo
@@ -293,7 +304,9 @@ export function LandingPage() {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  onClick={() => navigate('/auth')}
+                  onClick={() => {
+                    navigate(trackInternalNavigation('landing-hero', '/auth', 'see-examples'))
+                  }}
                   className="text-lg px-8 py-6 font-black bg-card"
                 >
                   See Real Examples
@@ -502,7 +515,9 @@ export function LandingPage() {
           </p>
           <Button 
             size="lg" 
-            onClick={() => navigate('/auth')} 
+            onClick={() => {
+              navigate(trackInternalNavigation('landing-results', '/auth', 'start-transformation'))
+            }} 
             className="text-xl px-10 py-7 font-black"
           >
             Start Your 30-Day Transformation
@@ -860,7 +875,9 @@ export function LandingPage() {
             <Button 
               size="lg"
               variant="secondary"
-              onClick={() => navigate('/auth')}
+              onClick={() => {
+                navigate(trackInternalNavigation('landing-pricing', '/auth', 'start-journey'))
+              }}
               className="w-full text-lg lg:text-xl py-6 font-black border-2 border-foreground text-white"
             >
               Start Your Learning Journey
@@ -924,7 +941,9 @@ export function LandingPage() {
             <Button 
               size="lg"
               variant="secondary"
-              onClick={() => navigate('/auth')}
+              onClick={() => {
+                navigate(trackInternalNavigation('landing-cta', '/auth', 'start-learning'))
+              }}
               className="text-lg lg:text-xl px-12 py-6 font-black border-2 border-foreground text-white"
             >
               Start Learning Today

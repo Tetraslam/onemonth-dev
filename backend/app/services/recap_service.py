@@ -158,6 +158,8 @@ class RecapService:
                         break
             
             curriculum_url = f"{frontend_url}/curriculum/{curriculum_id}"
+            # Add UTM parameters for email tracking
+            curriculum_url += f"?utm_source=email&utm_medium=transactional&utm_campaign=weekly-recap&utm_content=cta-button"
 
             return WeeklyRecapData(
                 user_name=user_name,

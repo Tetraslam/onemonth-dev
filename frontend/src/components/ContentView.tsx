@@ -14,6 +14,7 @@ import { LogbookPromptModal } from '@/components/LogbookPromptModal'
 import { PaywallGate } from '@/components/PaywallGate'
 import { useSubscribeModal } from '@/stores/useSubscribeModal'
 import { useSubscriptionStore } from '@/stores/useSubscriptionStore'
+import { trackGoal, trackConversion } from '@/lib/utils'
 import SubscribeDialog from '@/components/SubscribeDialog'
 
 interface Day {
@@ -467,6 +468,29 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
       });
 
       onDayCompletionUpdate(day.id, true);
+      
+      // Track goal completion
+      trackGoal(`day_${day.day_number}_completed`)
+      
+      // Track first day completion as a special conversion
+      if (day.day_number === 1) {
+        trackConversion('first_day_completed')
+      }
+      
+      // Track milestone completions
+      if (day.day_number === 7) {
+        trackGoal('week_1_completed')
+      } else if (day.day_number === 14) {
+        trackGoal('week_2_completed')
+      } else if (day.day_number === 30) {
+        trackGoal('curriculum_completed')
+      }
+      
+      // Track project completions
+      if (day.is_project_day) {
+        trackGoal('project_completed')
+      }
+      
       toast.success("Day marked as complete!");
     } catch (error: any) {
       console.error("Error marking day complete:", error);
