@@ -861,7 +861,7 @@ export function LandingPage() {
               size="lg"
               variant="secondary"
               onClick={() => navigate('/auth')}
-              className="w-full text-lg lg:text-xl py-6 font-black border-2 border-foreground"
+              className="w-full text-lg lg:text-xl py-6 font-black border-2 border-foreground text-white"
             >
               Start Your Learning Journey
             </Button>
@@ -925,7 +925,7 @@ export function LandingPage() {
               size="lg"
               variant="secondary"
               onClick={() => navigate('/auth')}
-              className="text-lg lg:text-xl px-12 py-6 font-black border-2 border-foreground"
+              className="text-lg lg:text-xl px-12 py-6 font-black border-2 border-foreground text-white"
             >
               Start Learning Today
               <BookOpen className="ml-2 h-5 w-5" />

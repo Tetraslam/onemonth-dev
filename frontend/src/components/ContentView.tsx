@@ -811,7 +811,7 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
                   className="block bg-background rounded-md border-2 border-foreground neo-brutal-shadow-sm p-4 group transition-all hover:neo-brutal-shadow hover:-translate-x-1 hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-primary group-hover:underline">
+                    <h3 className="text-lg font-bold text-black group-hover:underline">
                       {resource.title}
                     </h3>
                     <ExternalLink className="w-5 h-5 text-foreground/50 group-hover:text-primary transition-colors flex-shrink-0" />
@@ -837,7 +837,7 @@ export function ContentView({ day, curriculum, onDayCompletionUpdate, onDayUpdat
               <Button 
                 variant="secondary" 
                 size="lg" 
-                className="font-black text-lg px-10 border-2 border-foreground"
+                className="font-black text-white text-lg px-10 border-2 border-foreground"
                 onClick={() => isSubscribed() ? setShowPractice(true) : open()}
               >
                 <Brain className="w-5 h-5 mr-2" />

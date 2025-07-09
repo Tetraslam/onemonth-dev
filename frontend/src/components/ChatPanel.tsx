@@ -442,7 +442,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                   variant="secondary"
                   size="sm"
                   onClick={() => handleSuggestionClick('Explain this concept in simple terms')}
-                  className="font-black w-full max-w-sm"
+                  className="font-black text-white w-full max-w-sm"
                   disabled={!isChatReady || isLoading} 
                 >
                   Explain this concept
@@ -451,7 +451,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                   variant="secondary" 
                   size="sm"
                   onClick={() => handleSuggestionClick('Give me an example of this')}
-                  className="font-black w-full max-w-sm"
+                  className="font-black text-white w-full max-w-sm"
                   disabled={!isChatReady || isLoading}
                 >
                   Give me an example
@@ -460,7 +460,7 @@ export function ChatPanel({ curriculum, currentDay }: ChatPanelProps) {
                   variant="secondary" 
                   size="sm"
                   onClick={() => handleSuggestionClick('Create a practice problem for me')}
-                  className="font-black w-full max-w-sm"
+                  className="font-black text-white w-full max-w-sm"
                   disabled={!isChatReady || isLoading}
                 >
                   Practice problem
