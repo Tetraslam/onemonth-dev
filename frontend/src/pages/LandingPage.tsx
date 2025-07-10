@@ -962,6 +962,9 @@ export function LandingPage() {
               <p className="font-bold opacity-80">
                 Master any subject in 30 days with AI-powered personalized learning.
               </p>
+              <p className="font-bold opacity-80 mt-4">
+                Questions? Email <a href="mailto:contact@onemonth.dev" className="underline hover:opacity-100">contact@onemonth.dev</a> :)
+              </p>
             </div>
             {/*
             <div>
@@ -998,7 +1001,7 @@ export function LandingPage() {
           
           <div className="border-t border-background/20 pt-8 text-center">
             <p className="font-bold opacity-80">
-              © 2025 onemonth.dev. All rights reserved. Built with ❤️ by learners, for learners.
+              © 2025 Tetracorp, Inc. All rights reserved. Built with ❤️ by <a href="https://tetraslam.world" target="_blank" className="underline hover:opacity-100">Shresht Bhowmick</a>
             </p>
           </div>
         </div>

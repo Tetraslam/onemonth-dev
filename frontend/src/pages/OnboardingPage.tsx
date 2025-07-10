@@ -105,20 +105,20 @@ export default function OnboardingPage() {
             </div>
           </div>
           
-          <div className="space-y-3 mb-8">
-            <div className="flex items-center gap-3">
+          <div className="space-y-3 mb-8 flex flex-col items-center justify-center">
+            <div className="flex items-center gap-3 w-full max-w-xs">
               <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
               <span className="font-bold">Unlimited AI-generated curricula</span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full max-w-xs">
               <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
               <span className="font-bold">Interactive practice problems</span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full max-w-xs">
               <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
               <span className="font-bold">Progress tracking & insights</span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full max-w-xs">
               <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
               <span className="font-bold">Cancel anytime</span>
             </div>
@@ -126,7 +126,7 @@ export default function OnboardingPage() {
           
           <div className="text-center">
             <div className="mb-4">
-              <span className="text-4xl font-black">$20</span>
+              <span className="text-4xl font-black">$19.99</span>
               <span className="text-xl font-bold text-foreground/70">/month</span>
             </div>
             
