@@ -38265,3 +38265,4023 @@ Raw Response:
 ```
 --- End of Response ---
 
+--- New Curriculum Generation ---
+Curriculum ID: c7e47137-0b9a-4cb5-af5d-11296359ebeb
+Timestamp: 2025-07-12T08:19:16.140719
+Raw Response:
+```json
+{
+  "curriculum_title": "Data Analytics",
+  "curriculum_description": "A 30-day comprehensive curriculum designed for beginners to master data analytics. This plan progresses from foundational SQL querying to advanced data manipulation with Python's Pandas library, culminating in the creation of automated data processing pipelines.",
+  "days": [
+    {
+      "day_number": 1,
+      "title": "Introduction to Databases and Basic SQL",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Understand the role of databases in data analytics and write your first SQL query to retrieve data from a table."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "What is a relational database and why is it structured?"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The basic syntax of a SQL query."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "SELECT"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to specify columns."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "FROM"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to specify the source table."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Data Analysis Using Python & SQL Full Course",
+          "url": "https://youtube.com/watch?v=woPRf0xb9bA&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 2,
+      "title": "Filtering Data with WHERE",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Learn to filter query results to find specific information using the WHERE clause and comparison operators."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "WHERE"
+                      },
+                      {
+                        "type": "text",
+                        "text": " clause for filtering rows."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Comparison operators: "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "="
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "!="
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "<"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ">"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "<="
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ">="
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Combining conditions with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "AND"
+                      },
+                      {
+                        "type": "text",
+                        "text": " and "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "OR"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "LIKE"
+                      },
+                      {
+                        "type": "text",
+                        "text": " for pattern matching in strings."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 3,
+      "title": "Sorting and Limiting Results",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Organize query outputs and retrieve top/bottom records using ORDER BY and LIMIT clauses."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Sorting results with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "ORDER BY"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Specifying ascending ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "ASC"
+                      },
+                      {
+                        "type": "text",
+                        "text": ") and descending ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "DESC"
+                      },
+                      {
+                        "type": "text",
+                        "text": ") order."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Restricting the number of rows returned with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "LIMIT"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Combining "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "ORDER BY"
+                      },
+                      {
+                        "type": "text",
+                        "text": " and "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "LIMIT"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to find top N records."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 4,
+      "title": "Combining Data with SQL JOINs",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Learn to query and combine data from multiple related tables using INNER and LEFT JOINs."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Understanding primary and foreign keys."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "INNER JOIN"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to retrieve matching records from two tables."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "LEFT JOIN"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to retrieve all records from the left table and matched records from the right."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "ON"
+                      },
+                      {
+                        "type": "text",
+                        "text": " clause to specify the join condition."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 5,
+      "title": "Aggregations and Grouping",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Perform calculations on groups of rows using aggregate functions and the GROUP BY clause."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Aggregate functions: "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "COUNT()"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "SUM()"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "AVG()"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "MIN()"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "MAX()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "GROUP BY"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to group rows that have the same values in specified columns into summary rows."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Filtering groups with the "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "HAVING"
+                      },
+                      {
+                        "type": "text",
+                        "text": " clause."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 6,
+      "title": "Advanced SQL: Subqueries and CASE",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Write more complex queries by nesting queries (subqueries) and using conditional logic with the CASE statement."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "What is a subquery (or inner query)?"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using subqueries in the "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "FROM"
+                      },
+                      {
+                        "type": "text",
+                        "text": " and "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "WHERE"
+                      },
+                      {
+                        "type": "text",
+                        "text": " clauses."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "CASE"
+                      },
+                      {
+                        "type": "text",
+                        "text": " statement for if-then-else logic within a query."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Creating custom columns and categories with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "CASE"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 7,
+      "title": "Project 1: SQL Database Querying",
+      "is_project_day": true,
+      "project_data": {
+        "title": "Sales Data Analysis with SQL",
+        "description": "You are a data analyst at an e-commerce company. Your task is to query the company's database to answer specific business questions about sales, customers, and products. You will use a provided sample database (e.g., Chinook or a custom sales schema).",
+        "objectives": [
+          "Apply fundamental SQL commands (SELECT, WHERE, ORDER BY, LIMIT).",
+          "Combine data from multiple tables using JOINs.",
+          "Perform calculations and summarize data using aggregate functions and GROUP BY.",
+          "Write complex queries to derive business insights."
+        ],
+        "requirements": [
+          "A SQL client (like DBeaver, DB Browser for SQLite, or an online SQL fiddle).",
+          "A sample database (e.g., a provided .sqlite file)."
+        ],
+        "deliverables": [
+          "A .sql file containing all the queries written to answer the business questions.",
+          "A brief summary (in a text file or markdown) explaining the findings from each query."
+        ],
+        "evaluation_criteria": [
+          "Correctness of SQL syntax and logic.",
+          "Accuracy of the query results.",
+          "Clarity and readability of the SQL code.",
+          "Insightfulness of the summary report."
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Project Day"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Today is dedicated to applying all the SQL skills you've learned over the past week. Use the provided project description to guide your work. Focus on writing clean, efficient queries to solve the given problems."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Data Analysis Using Python & SQL Full Course",
+          "url": "https://youtube.com/watch?v=woPRf0xb9bA&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 4
+    },
+    {
+      "day_number": 8,
+      "title": "Intro to Python & Setting Up Your Environment",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Transition from SQL to Python. Understand why Python is a powerful tool for data analytics and set up your local development environment."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Why use Python for data analysis?"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Installing Python and a package manager (pip)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Setting up a project environment, preferably with Anaconda."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type":="paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Introduction to Jupyter Notebooks for interactive analysis."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Analytics - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=wUSDVGivd-8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 9,
+      "title": "Python Basics: Variables, Data Types, and Lists",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Learn the fundamental building blocks of Python: variables, common data types (integers, strings, floats), and the versatile list data structure."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Creating variables to store data."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Numeric types ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "int"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "float"
+                      },
+                      {
+                        "type": "text",
+                        "text": ") and string type ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "str"
+                      },
+                      {
+                        "type": "text",
+                        "text": ")."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "What is a list and how to create one."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Accessing, adding, and removing elements from a list."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Science - Course for Beginners",
+          "url": "https://youtube.com/watch?v=LHBE6Q9XlzI&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 10,
+      "title": "Introduction to Pandas: Series and DataFrames",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Meet the core library for data analysis in Python: Pandas. Understand its two primary data structures, the Series and the DataFrame."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "What is Pandas and its role in the Python data ecosystem?"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The Pandas Series: a one-dimensional labeled array."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The Pandas DataFrame: a two-dimensional labeled data structure with columns of potentially different types (like a spreadsheet or SQL table)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Creating a DataFrame from scratch using a dictionary."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Learn how to use PANDAS in Python in 15 minutes",
+          "url": "https://youtube.com/watch?v=mkYBJwX_dMs&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        },
+        {
+          "title": "Data Analysis with Python - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=r-uOLxNrNk8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 11,
+      "title": "Loading Data into Pandas",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Learn how to load data from common file formats like CSV and Excel into a Pandas DataFrame, making it ready for analysis."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Importing the Pandas library."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "pd.read_csv()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to load data from a CSV file."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "pd.read_excel()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " to load data from an Excel file."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Common parameters like "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "filepath_or_buffer"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "sep"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", and "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "header"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Analytics - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=wUSDVGivd-8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 12,
+      "title": "Inspecting a DataFrame",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Once data is loaded, the first step is always to inspect it. Learn the essential Pandas methods for getting a quick overview of your DataFrame's structure and content."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Previewing the first few rows with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".head()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " and last few with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".tail()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Getting a concise summary with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".info()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " (column data types, non-null counts)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Generating descriptive statistics with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".describe()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Checking the dimensions of the DataFrame with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".shape"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Data Analysis with Python - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=r-uOLxNrNk8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 13,
+      "title": "Data Selection and Indexing",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Master the techniques for selecting specific subsets of your data, including rows, columns, and individual cells, using various indexing methods."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Selecting a single column (returns a Series)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Selecting multiple columns (returns a DataFrame)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Label-based selection with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".loc"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Integer-position based selection with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".iloc"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Boolean indexing for conditional filtering."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Analytics - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=wUSDVGivd-8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 14,
+      "title": "Project 2: Exploratory Data Analysis with Pandas",
+      "is_project_day": true,
+      "project_data": {
+        "title": "Exploratory Data Analysis on a Real-World Dataset",
+        "description": "Choose a dataset of interest (e.g., from Kaggle, data.gov). Your task is to perform an initial exploratory data analysis (EDA). This involves loading the data, inspecting its structure, calculating summary statistics, and answering some initial questions you formulate about the data.",
+        "objectives": [
+          "Practice loading data from a file into a Pandas DataFrame.",
+          "Use inspection methods to understand the dataset's characteristics.",
+          "Apply selection and filtering techniques to explore subsets of the data.",
+          "Formulate and answer at least 3-5 questions about the data using Pandas."
+        ],
+        "requirements": [
+          "Jupyter Notebook environment.",
+          "A CSV or Excel dataset of your choice."
+        ],
+        "deliverables": [
+          "A clean, well-commented Jupyter Notebook (.ipynb file) that walks through your EDA process.",
+          "The notebook should clearly state the questions you are investigating and show the code and output used to answer them."
+        ],
+        "evaluation_criteria": [
+          "Correctly loads and inspects the data.",
+          "Demonstrates effective use of Pandas for selection and filtering.",
+          "Code is readable and well-documented with markdown cells explaining the steps.",
+          "The analysis provides clear answers to the formulated questions."
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Project Day"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Time to put your foundational Pandas skills to the test. This project is all about exploration. There isn't always a single 'right' answer; the goal is to practice the process of interrogating a dataset to uncover initial insights."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Data Analysis with Python - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=r-uOLxNrNk8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 4
+    },
+    {
+      "day_number": 15,
+      "title": "Data Cleaning: Handling Missing Values",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Real-world data is messy. Learn one of the most critical data preparation tasks: identifying and handling missing values (NaNs) in your DataFrame."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Identifying missing values with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".isnull()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " and "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".isna()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Counting missing values per column."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Dropping rows or columns with missing values using "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".dropna()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Filling missing values (imputation) with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".fillna()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " using a static value, mean, median, or mode."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 16,
+      "title": "Data Cleaning: Data Types and Duplicates",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Continue with data cleaning by learning how to correct column data types (e.g., a number stored as a string) and how to find and remove duplicate rows."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Checking data types with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".dtypes"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Changing a column's data type with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".astype()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Identifying duplicate rows with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".duplicated()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Removing duplicate rows with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".drop_duplicates()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 17,
+      "title": "Merging and Joining DataFrames",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Learn the Pandas equivalents of SQL JOINs. Master combining multiple DataFrames based on common columns or indices."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Combining DataFrames with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "pd.merge()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " (similar to SQL JOINs)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Understanding merge types: "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "inner"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "outer"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "left"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "right"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Concatenating DataFrames (stacking them) with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "pd.concat()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Analytics - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=wUSDVGivd-8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 18,
+      "title": "Grouping and Aggregation in Pandas",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Master the powerful 'split-apply-combine' pattern using Pandas' .groupby() method to perform calculations on specific groups within your data."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".groupby()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " method."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Applying aggregate functions ("
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".sum()"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".mean()"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".count()"
+                      },
+                      {
+                        "type": "text",
+                        "text": ", etc.) to grouped data."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Grouping by multiple columns."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using the "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".agg()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " method to apply multiple aggregation functions at once."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Learn how to use PANDAS in Python in 15 minutes",
+          "url": "https://youtube.com/watch?v=mkYBJwX_dMs&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 19,
+      "title": "Intro to Data Visualization",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Understand the importance of data visualization and get introduced to the foundational plotting library Matplotlib and the high-level, statistically-focused library Seaborn."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Why visualize data? The Anscombe's quartet example."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Introduction to Matplotlib as the base for plotting in Python."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Introduction to Seaborn for creating more attractive and informative statistical plots."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The relationship between Pandas, Matplotlib, and Seaborn."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Data Analysis with Python - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=r-uOLxNrNk8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 20,
+      "title": "Creating Basic Plots",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Create your first data visualizations using Pandas, Matplotlib, and Seaborn. Learn to make bar charts, histograms, and scatter plots to understand distributions and relationships in your data."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Creating plots directly from Pandas DataFrames with "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".plot()"
+                      },
+                      {
+                        "type": "text",
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Bar charts for categorical data."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Histograms to understand the distribution of a single numerical variable."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Scatter plots to visualize the relationship between two numerical variables."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Customizing plots with titles, labels, and colors."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Science - Course for Beginners",
+          "url": "https://youtube.com/watch?v=LHBE6Q9XlzI&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 21,
+      "title": "Project 3: Data Cleaning and Visualization Report",
+      "is_project_day": true,
+      "project_data": {
+        "title": "Analysis of a Messy Dataset",
+        "description": "Find a 'messy' dataset (one with missing values, incorrect data types, etc.). Your goal is to take this raw dataset, clean it systematically, and then perform an exploratory analysis, this time with a strong focus on creating insightful visualizations to communicate your findings.",
+        "objectives": [
+          "Apply a systematic data cleaning process (handling nulls, duplicates, types).",
+          "Practice merging or reshaping data if necessary.",
+          "Use grouping and aggregation to create summary tables.",
+          "Create at least 3-4 different types of visualizations to explore the data.",
+          "Communicate findings effectively through a combination of code, text, and plots."
+        ],
+        "requirements": [
+          "Jupyter Notebook environment.",
+          "A messy dataset of your choice."
+        ],
+        "deliverables": [
+          "A Jupyter Notebook that documents your entire process from cleaning to visualization.",
+          "Markdown cells should explain your cleaning decisions and what each visualization shows."
+        ],
+        "evaluation_criteria": [
+          "Thoroughness and justification of the data cleaning steps.",
+          "Appropriateness of the chosen visualizations for the data.",
+          "Clarity and quality of the plots (titles, labels, etc.).",
+          "The narrative of the notebook effectively tells a story about the data."
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Project Day"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "This project combines the skills from the last two weeks. You'll perform a full, small-scale analysis: from messy raw data to a clean, visualized report. Focus on making smart decisions during the cleaning phase and choosing the right plots to tell your story."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Analytics - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=wUSDVGivd-8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 5
+    },
+    {
+      "day_number": 22,
+      "title": "Connecting Python to SQL Databases",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Bridge the gap between your SQL and Python skills. Learn how to establish a connection from a Python script to a SQL database."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Introduction to database connector libraries in Python."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using the built-in "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "sqlite3"
+                      },
+                      {
+                        "type": "text",
+                        "text": " library for simple, file-based databases."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Introduction to SQLAlchemy as a more robust database toolkit."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Creating a connection engine and executing a simple query."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Data Analysis Using Python & SQL Full Course",
+          "url": "https://youtube.com/watch?v=woPRf0xb9bA&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 23,
+      "title": "Reading SQL Queries into Pandas DataFrames",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Combine the power of SQL for data retrieval and Pandas for data manipulation by learning how to execute a SQL query and load its results directly into a DataFrame."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "pd.read_sql_query()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " function."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Passing a SQL query string and a connection object to the function."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Leveraging complex SQL (JOINs, aggregations) to pre-process data before it even enters Pandas."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 24,
+      "title": "Writing DataFrames back to SQL Databases",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Complete the cycle by learning how to take a cleaned, transformed DataFrame in Python and write it back to a new table in a SQL database."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": ".to_sql()"
+                      },
+                      {
+                        "type": "text",
+                        "text": " method on a DataFrame."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Specifying the table name and connection."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using the "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "if_exists"
+                      },
+                      {
+                        "type": "text",
+                        "text": " parameter to control behavior ('fail', 'replace', 'append')."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "index=False"
+                      },
+                      {
+                        "type": "text",
+                        "text": " parameter to avoid writing the DataFrame index as a column."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 25,
+      "title": "Introduction to Automation: Data Pipelines",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Understand the concept of a data pipeline and why automating repetitive data tasks is a crucial skill for a data analyst."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "What is a data pipeline? (Extract, Transform, Load - ETL)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Benefits of automation: consistency, efficiency, reliability."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Mapping our previous steps (Read from SQL -> Clean/Transform in Pandas -> Write to SQL) to a pipeline concept."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 1.5
+    },
+    {
+      "day_number": 26,
+      "title": "Writing Reusable Python Scripts",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Move beyond interactive Jupyter Notebooks and learn how to structure your data processing logic into a reusable Python script (.py file) that can be run from the command line."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Moving code from a notebook to a .py file."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Using functions to organize code blocks."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "The "
+                      },
+                      {
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "code"
+                          }
+                        ],
+                        "text": "if __name__ == '__main__':"
+                      },
+                      {
+                        "type": "text",
+                        "text": " block."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Running a Python script from your terminal."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 27,
+      "title": "Scheduling Scripts (Conceptual)",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Understand the concepts behind scheduling your Python script to run automatically at specific times or intervals."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Key Concepts"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "What is a task scheduler?"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Cron jobs on Linux/macOS: what they are and basic syntax."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Task Scheduler on Windows."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Cloud-based schedulers (e.g., GitHub Actions, AWS Lambda scheduled events) as a more advanced alternative."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 1.5
+    },
+    {
+      "day_number": 28,
+      "title": "Capstone Project Preparation",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Plan your capstone project. Define the problem you want to solve, identify the data sources, and map out the steps of your automated pipeline."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Tasks for Today"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Read the capstone project description for Day 30."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Select your data source(s). This could be a SQL database you create, a public API, or a set of CSV files."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Outline the steps of your pipeline: What data will you extract? What transformations are needed? Where will the final, clean data be loaded?"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Set up your project folder and any necessary files (e.g., the initial .py script, a local SQLite database)."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 29,
+      "title": "Capstone Project Work Day",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Today's Goal"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "A dedicated day to work on building your capstone project. Focus on writing the core logic of your data pipeline script. Test each part of your script (extraction, transformation, loading) individually."
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 3
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Focus Areas"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Write the Python functions for each step of your plan."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Connect to your data source and successfully extract the data."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Implement the data cleaning and transformation logic in Pandas."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Write the final, clean DataFrame to its destination (e.g., a new SQL table)."
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Debug any issues that arise."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [],
+      "estimated_hours": 4
+    },
+    {
+      "day_number": 30,
+      "title": "Project 4: Automated Data Processing Pipeline (Capstone)",
+      "is_project_day": true,
+      "project_data": {
+        "title": "Build an Automated ETL Pipeline",
+        "description": "This capstone project brings together everything you have learned. You will build a simple, end-to-end data pipeline in a Python script. The script should automatically extract data from a source, perform transformations and cleaning using Pandas, and load the clean data into a structured destination, such as a new table in a SQL database.",
+        "objectives": [
+          "Demonstrate understanding of the entire data analytics workflow.",
+          "Write a clean, modular, and reusable Python script for data processing.",
+          "Combine SQL and Pandas skills effectively in a single project.",
+          "Successfully create a pipeline that transforms raw data into a clean, analysis-ready format."
+        ],
+        "requirements": [
+          "A data source (e.g., a sample SQLite database with 'raw' tables, a CSV file that gets updated).",
+          "A data destination (e.g., a different SQLite database or new tables in the source DB).",
+          "A single Python script (.py) that executes the entire pipeline."
+        ],
+        "deliverables": [
+          "The complete Python script (.py file) for your ETL pipeline.",
+          "A README.md file that explains what the pipeline does, how to set it up (e.g., install dependencies), and how to run it.",
+          "The 'before' (raw) and 'after' (clean) data, or the SQL database file(s) used."
+        ],
+        "evaluation_criteria": [
+          "The script runs without errors and successfully processes the data.",
+          "Code is well-structured, commented, and follows best practices (e.g., uses functions).",
+          "The transformation logic is correct and achieves the desired cleaning/structuring.",
+          "The README file is clear and provides all necessary information to understand and run the project."
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2
+            },
+            "content": [
+              {
+                "type": "text",
+                "text": "Final Project Day"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Finalize your capstone project. Finish writing the code, test it thoroughly, and prepare your final deliverables. This is your opportunity to create a portfolio piece that showcases your ability to handle a data project from start to finish."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Data Analytics - Full Course for Beginners",
+          "url": "https://youtube.com/watch?v=wUSDVGivd-8&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        },
+        {
+          "title": "Data Analysis Using Python & SQL Full Course",
+          "url": "https://youtube.com/watch?v=woPRf0xb9bA&pp=ygXZAkdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IERhdGEgQW5hbHl0aWNzCi0gRGlmZmljdWx0eTogYmVnaW5uZXIKLSBEdXJhdGlvbjogMzAgZGF5cwotIFByb2plY3RzOiA0CgpSZXR1cm4gT05MWSB0aGUgSlNPTiBvYmplY3QgaW4gdGhlIGV4YWN0IHNjaGVtYSBmb3JtYXQgc3BlY2lmaWVkIGluIHRoZSBzeXN0ZW0gcHJvbXB0Lg%3D%3D"
+        }
+      ],
+      "estimated_hours": 5
+    }
+  ]
+}
+```
+--- End of Response ---
+
