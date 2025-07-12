@@ -99,6 +99,15 @@ async def clean_and_validate_json(json_str: str) -> Optional[Dict[str, Any]]:
         # json_repair.loads directly returns a Python object. It has no extra arguments.
         data = json_repair.loads(json_str)
         print(f"[VALIDATION] Successfully parsed and repaired JSON with json_repair")
+
+        # --- Post-process: ensure required optional fields are present ---
+        if isinstance(data, dict) and isinstance(data.get("days"), list):
+            for day in data["days"]:
+                # Ensure resources key exists and is a list
+                if "resources" not in day or day["resources"] is None:
+                    print(f"[VALIDATION] 'resources' missing for day {day.get('day_number')} – inserting []")
+                    day["resources"] = []
+        
     except Exception as e:
         print(f"[VALIDATION] json_repair failed: {str(e)}")
         # Log the failure

@@ -197,76 +197,23 @@ async def generate_and_save_curriculum(curriculum_id: str, curriculum_data: Curr
             "generation_progress": "Creating day-by-day content and resources..."
         }).eq("id", curriculum_id).execute()
         
-        try:
-            # First try to extract JSON from the response in case it's wrapped in markdown or other text
-            import re
-            json_match = re.search(r'\{.*\}', raw_agent_response, re.DOTALL)
-            if json_match:
-                json_str = json_match.group(0)
-                print(f"Extracted JSON from response, length: {len(json_str)}")
-            else:
-                json_str = raw_agent_response
-                print("Using raw response as JSON")
-            
-            # --- Robust JSON cleaning ---
-            # General fix for variations of "key" := "value", "key" :- "value", etc.
-            # This will replace `:-` or `:=` with just `:` when between a quote and another character.
-            json_str = re.sub(r'(?<=["\'])\s*:\s*[-=]\s*(?=["\'\d\[\{tfn])', ': ', json_str)
-            
-            # Fix for unquoted keys or keys with single quotes (less common but possible)
-            json_str = re.sub(r"([{,]\s*)'([^']*)'\s*:", r'\1"\2":', json_str)
-            
-            # Remove trailing commas before } or ]
-            json_str = re.sub(r',\s*([}\]])', r'\1', json_str)
-            
-            # Fix double commas
-            json_str = re.sub(r',\s*,', ',', json_str)
-            
-            # Escape stray backslashes that are not part of a valid escape sequence
-            json_str = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', json_str)
-            
-            # Replace raw backticks in JSON strings with their unicode escape to avoid invalid escapes
-            json_str = json_str.replace('`', '\\u0060')
-            
-            # Remove stray ':a:' pattern typo
-            json_str = re.sub(r'":a\s*:', '":', json_str)
-            
-            # Add comma between closing and opening braces
-            json_str = re.sub(r'(?<=[}\]])\s*(?=["{])', ',', json_str)
-            
-            # Try to parse the cleaned JSON (standard json), fallback to json5 for lenient parsing
-            try:
-                generated_curriculum = json.loads(json_str)
-            except json.JSONDecodeError as e1:
-                try:
-                    generated_curriculum = json5.loads(json_str)
-                except Exception as e2:
-                    raise e1
-            
-            curriculum_title = generated_curriculum.get("curriculum_title", curriculum_data.title or f"Learning {curriculum_data.learning_goal}")
-            curriculum_description = generated_curriculum.get("curriculum_description", curriculum_data.description or curriculum_data.learning_goal)
-            generated_days_data = generated_curriculum.get("days", [])
-            
-            print(f"Parsed curriculum with {len(generated_days_data)} days")
-            
-            if not isinstance(generated_days_data, list):
-                raise ValueError("Agent did not return a list of days.")
-        except (json.JSONDecodeError, ValueError) as e:
-            # If it still fails, try to find and log the specific error location
-            if isinstance(e, json.JSONDecodeError):
-                error_line = json_str.split('\n')[e.lineno - 1] if e.lineno else "Unknown"
-                print(f"JSON error at line {e.lineno}, col {e.colno}: {error_line}")
-                print(f"Error context: {json_str[max(0, e.pos-100):e.pos+100] if e.pos else 'Unknown'}")
-            
-            print(f"JSON parsing error: {str(e)}")
-            print(f"Raw response that failed to parse: {raw_agent_response[:1000]}...")
-            
-            # Update status to failed
+        # ---------------------------------------------
+        # Use already validated JSON instead of reparsing
+        # ---------------------------------------------
+
+        generated_curriculum = validated_data  # Comes from clean_and_validate_json
+
+        curriculum_title = generated_curriculum.get("curriculum_title", curriculum_data.title or f"Learning {curriculum_data.learning_goal}")
+        curriculum_description = generated_curriculum.get("curriculum_description", curriculum_data.description or curriculum_data.learning_goal)
+        generated_days_data = generated_curriculum.get("days", [])
+
+        print(f"Validated curriculum with {len(generated_days_data)} days")
+
+        if not isinstance(generated_days_data, list):
             supabase.table("curricula").update({
                 "generation_status": "failed",
-                "generation_progress": f"Failed to parse curriculum content: {str(e)}"
+                "generation_progress": "Agent did not return a list of days."
             }).eq("id", curriculum_id).execute()
-            
             return
 
         # Update curriculum with title and description from agent
