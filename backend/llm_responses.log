@@ -35190,3 +35190,3078 @@ Raw Response:
 ```
 --- End of Response ---
 
+
+
+=== PYDANTIC VALIDATION FAILED at 2025-07-12 00:58:50.995789 ===
+Error: 3 validation errors for CurriculumResponse
+curriculum_title
+  Field required [type=missing, input_value={'title': 'Learning Maste...waXBlbGluZXMpLi4%3D']}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+curriculum_description
+  Field required [type=missing, input_value={'title': 'Learning Maste...waXBlbGluZXMpLi4%3D']}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+days
+  Field required [type=missing, input_value={'title': 'Learning Maste...waXBlbGluZXMpLi4%3D']}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+Data keys: ['title', 'goal', 'duration', 'curriculum']
+--- New Curriculum Generation ---
+Curriculum ID: a5c9ca93-359c-4672-8bcc-103c0c1f5d00
+Timestamp: 2025-07-12T07:58:51.282825
+Raw Response:
+```json
+{
+  "title": "Learning Master Python-centred data analytics (SQL → Pandas → automation pipelines).",
+  "goal": "Master Python-centred data analytics (SQL → Pandas → automation pipelines).",
+  "duration": 30,
+  "curriculum": [
+    {
+      "day": 1,
+      "title": "Introduction to Data Analytics & Environment Setup",
+      "introduction": "Welcome to your data analytics journey! Today, we'll cover the foundational concepts of data analytics and set up the essential tools you'll need: Python, Jupyter Notebook, and a code editor.",
+      "learning_objectives": [
+        "Understand the data analytics lifecycle.",
+        "Install Python and the Anaconda distribution.",
+        "Become familiar with Jupyter Notebook for interactive coding.",
+        "Write and run your first Python 'Hello, World!' program."
+      ],
+      "key_concepts": [
+        "Data Analytics Lifecycle (Collection, Cleaning, Analysis, Visualization, Reporting)",
+        "Python as a Data Science Language",
+        "Anaconda Distribution",
+        "Jupyter Notebooks",
+        "Integrated Development Environment (IDE) like VS Code"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "The Data Analytics Workflow" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Data analytics is the process of inspecting, cleansing, transforming, and modeling data with the goal of discovering useful information, informing conclusions, and supporting decision-making. We will follow a structured path from fetching data with SQL to analyzing it with Python's Pandas library, and finally, automating the entire process." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Setting Up Your Environment" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "A consistent and powerful development environment is crucial. We recommend installing the Anaconda distribution, which bundles Python with many essential data science libraries and tools, including Jupyter Notebook and the conda package manager." }]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Download and install Anaconda from their official website." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Launch Anaconda Navigator and open a Jupyter Notebook." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Create a new notebook and explore its interface (cells, running code, markdown)." }] }]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Your first line of Python code in a Jupyter cell.",
+          "code": "print('Hello, Data Analytics World!')"
+        }
+      ],
+      "practice_activities": [
+        "Install Anaconda on your system.",
+        "Successfully launch a Jupyter Notebook.",
+        "Create a new notebook, add a markdown cell with a title, and a code cell that prints your name."
+      ],
+      "summary": "Today you took the first critical step by understanding the scope of data analytics and setting up your professional coding environment. You are now ready to start learning the tools of the trade.",
+      "resources": ["https://youtube.com/watch?v=r2tjwuG305E&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi7SBwkJ2AkBhyohjO8%3D", "https://youtube.com/watch?v=QOXFKi9ss8o&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 2,
+      "title": "SQL Fundamentals: SELECT, FROM, WHERE",
+      "introduction": "Structured Query Language (SQL) is the universal language for interacting with relational databases. Today, we'll learn the most fundamental commands for retrieving data: SELECT, FROM, and WHERE.",
+      "learning_objectives": [
+        "Understand the structure of a relational database (tables, columns, rows).",
+        "Write a SQL query to select specific columns from a table.",
+        "Use the WHERE clause to filter rows based on a condition."
+      ],
+      "key_concepts": [
+        "Relational Databases",
+        "Tables, Columns, Rows",
+        "SQL Syntax",
+        "SELECT statement",
+        "FROM clause",
+        "WHERE clause"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Querying with SELECT and FROM" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "SELECT" },
+              { "type": "text", "text": " statement is used to specify the columns you want to retrieve. The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "FROM" },
+              { "type": "text", "text": " clause specifies the table you are querying. To select all columns, you can use the asterisk " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "*" },
+              { "type": "text", "text": " wildcard." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Filtering with WHERE" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "WHERE" },
+              { "type": "text", "text": " clause is used to filter records and extract only those that fulfill a specific condition. You can use operators like " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "=" },
+              { "type": "text", "text": ", " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ">" },
+              { "type": "text", "text": ", " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "<" },
+              { "type": "text", "text": ", " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "LIKE" },
+              { "type": "text", "text": ", and " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "IN" },
+              { "type": "text", "text": "." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Select all columns from a 'customers' table.",
+          "code": "SELECT * FROM customers;"
+        },
+        {
+          "description": "Select specific columns for customers from 'USA'.",
+          "code": "SELECT customer_name, city FROM customers WHERE country = 'USA';"
+        }
+      ],
+      "practice_activities": [
+        "Using a sample online SQL editor (like SQLite Online), write a query to select all columns from a sample 'products' table.",
+        "Write a query to select the product name and price for all products that cost more than $50.",
+        "Write a query to find all employees with the job title 'Sales Rep'."
+      ],
+      "summary": "You've learned the cornerstone of SQL: how to select columns and filter rows. This is the foundation upon which all other SQL operations are built.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=y3CDecuUK_4&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 3,
+      "title": "SQL Filtering & Sorting: ORDER BY, LIMIT, DISTINCT",
+      "introduction": "Today we'll enhance our data retrieval skills by learning how to sort results, limit the number of rows returned, and select only unique values.",
+      "learning_objectives": [
+        "Sort query results using ORDER BY.",
+        "Control the number of returned rows with LIMIT.",
+        "Retrieve unique values from a column using DISTINCT."
+      ],
+      "key_concepts": [
+        "ORDER BY (ASC, DESC)",
+        "LIMIT",
+        "DISTINCT"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Sorting with ORDER BY" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "ORDER BY" },
+              { "type": "text", "text": " keyword is used to sort the result-set in ascending (ASC) or descending (DESC) order. By default, it sorts in ascending order." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Limiting Results with LIMIT" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "LIMIT" },
+              { "type": "text", "text": " clause is used to specify the number of records to return. It is particularly useful for finding top N or bottom N records." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Finding Unique Values with DISTINCT" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "DISTINCT" },
+              { "type": "text", "text": " keyword can be used to return only distinct (different) values from a column." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Find the 10 most expensive products.",
+          "code": "SELECT product_name, price FROM products ORDER BY price DESC LIMIT 10;"
+        },
+        {
+          "description": "List all unique countries where customers are located.",
+          "code": "SELECT DISTINCT country FROM customers ORDER BY country ASC;"
+        }
+      ],
+      "practice_activities": [
+        "Write a query to list all employees, sorted by their last name.",
+        "Write a query to find the 5 most recently hired employees.",
+        "Write a query to get a list of all unique job titles in the company."
+      ],
+      "summary": "You can now control the presentation of your query results by sorting them, limiting the output, and removing duplicates. These are essential skills for creating clean and readable reports.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 4,
+      "title": "SQL Aggregations: GROUP BY, COUNT, SUM, AVG",
+      "introduction": "Aggregation is the process of turning many rows of data into a single summary statistic. Today, you'll learn how to group data and perform calculations like counting rows, summing values, and finding averages.",
+      "learning_objectives": [
+        "Understand and use aggregate functions: COUNT, SUM, AVG, MIN, MAX.",
+        "Group rows that have the same values into summary rows using GROUP BY.",
+        "Filter grouped data using the HAVING clause."
+      ],
+      "key_concepts": [
+        "Aggregate Functions (COUNT, SUM, AVG, MIN, MAX)",
+        "GROUP BY clause",
+        "HAVING clause"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Aggregate Functions" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "SQL aggregate functions perform a calculation on a set of values and return a single value. Common functions include COUNT() to count rows, SUM() to add values, and AVG() to calculate the average." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Grouping with GROUP BY" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "GROUP BY" },
+              { "type": "text", "text": " statement groups rows that have the same values in specified columns into summary rows. It is often used with aggregate functions to report on categories of data." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Count the number of customers in each country.",
+          "code": "SELECT country, COUNT(customer_id) AS number_of_customers FROM customers GROUP BY country;"
+        },
+        {
+          "description": "Calculate the total sales for each product category.",
+          "code": "SELECT category, SUM(sale_amount) AS total_sales FROM sales GROUP BY category;"
+        },
+        {
+          "description": "Find countries with more than 10 customers.",
+          "code": "SELECT country, COUNT(customer_id) FROM customers GROUP BY country HAVING COUNT(customer_id) > 10;"
+        }
+      ],
+      "practice_activities": [
+        "Write a query to count the number of orders placed by each customer.",
+        "Write a query to find the average product price for each product category.",
+        "Write a query to find which sales representatives have generated more than $100,000 in total sales."
+      ],
+      "summary": "You have now unlocked one of the most powerful features of SQL: data aggregation. You can now move beyond simple data retrieval to generating meaningful business insights and summaries.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 5,
+      "title": "SQL Joins: INNER JOIN, LEFT JOIN",
+      "introduction": "Real-world data is often spread across multiple tables. JOINS are used to combine rows from two or more tables based on a related column between them. We will focus on the two most common types: INNER and LEFT joins.",
+      "learning_objectives": [
+        "Understand the concept of primary and foreign keys.",
+        "Combine data from two tables using INNER JOIN.",
+        "Combine data from two tables using LEFT JOIN, keeping all records from the left table."
+      ],
+      "key_concepts": [
+        "Primary Key",
+        "Foreign Key",
+        "INNER JOIN",
+        "LEFT JOIN (or LEFT OUTER JOIN)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "INNER JOIN" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "INNER JOIN" },
+              { "type": "text", "text": " keyword selects records that have matching values in both tables. It is the most common type of join." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "LEFT JOIN" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "LEFT JOIN" },
+              { "type": "text", "text": " keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side if there is no match." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Get a list of orders with the corresponding customer names (INNER JOIN).",
+          "code": "SELECT orders.order_id, customers.customer_name FROM orders INNER JOIN customers ON orders.customer_id = customers.customer_id;"
+        },
+        {
+          "description": "List all customers and any orders they might have placed (LEFT JOIN).",
+          "code": "SELECT customers.customer_name, orders.order_id FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id;"
+        }
+      ],
+      "practice_activities": [
+        "Write a query to join an 'employees' table with a 'departments' table to show which department each employee belongs to.",
+        "Write a query to list all products and the total quantity sold for each, joining 'products' and 'order_details' tables.",
+        "Use a LEFT JOIN to find all employees who have not been assigned to a department yet."
+      ],
+      "summary": "You can now combine data from different tables, a fundamental skill for working with relational databases. Understanding INNER and LEFT joins allows you to answer complex business questions.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 6,
+      "title": "Advanced SQL: Subqueries & CTEs",
+      "introduction": "Let's level up our SQL with more advanced techniques. Subqueries (queries within a query) and Common Table Expressions (CTEs) help you write cleaner, more readable, and more powerful queries for complex problems.",
+      "learning_objectives": [
+        "Write a subquery in a WHERE clause.",
+        "Define and use a Common Table Expression (CTE) with the WITH clause.",
+        "Understand when to use a subquery versus a CTE."
+      ],
+      "key_concepts": [
+        "Subquery (or Inner Query)",
+        "Common Table Expression (CTE)",
+        "WITH clause"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Subqueries" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "A subquery is a SQL query nested inside a larger query. It can be used in various places, such as the SELECT, FROM, or WHERE clause, to perform an intermediate calculation or filtering step." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Common Table Expressions (CTEs)" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "A CTE allows you to define a temporary, named result set that you can reference within a " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "SELECT" },
+              { "type": "text", "text": ", " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "INSERT" },
+              { "type": "text", "text": ", " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "UPDATE" },
+              { "type": "text", "text": ", or " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "DELETE" },
+              { "type": "text", "text": " statement. CTEs are defined using the " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "WITH" },
+              { "type": "text", "text": " clause and greatly improve the readability and modularity of complex queries." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Find all employees who work in the 'Sales' department using a subquery.",
+          "code": "SELECT employee_name FROM employees WHERE department_id = (SELECT department_id FROM departments WHERE department_name = 'Sales');"
+        },
+        {
+          "description": "Using a CTE to find the total sales per country.",
+          "code": "WITH CountrySales AS (\n  SELECT c.country, o.order_total\n  FROM orders o\n  JOIN customers c ON o.customer_id = c.customer_id\n)\nSELECT country, SUM(order_total) AS total_sales\nFROM CountrySales\nGROUP BY country;"
+        }
+      ],
+      "practice_activities": [
+        "Use a subquery to find all products that have a price higher than the average price of all products.",
+        "Rewrite the previous query using a CTE.",
+        "Use a CTE to first identify customers from 'Canada', then join that result to the 'orders' table to find their total order amount."
+      ],
+      "summary": "You've learned how to structure complex queries using subqueries and CTEs. CTEs are often preferred for their readability and are a hallmark of a proficient SQL user.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 7,
+      "title": "Week 1 Review & Mini-Project",
+      "introduction": "This week, you built a strong foundation in SQL. Today is about consolidating that knowledge through a mini-project where you'll apply everything you've learned to analyze a small database.",
+      "learning_objectives": [
+        "Review and reinforce all SQL concepts learned in Week 1.",
+        "Apply SQL skills to a cohesive set of business questions.",
+        "Practice writing complex queries involving joins, aggregations, and subqueries/CTEs."
+      ],
+      "key_concepts": [
+        "SELECT, FROM, WHERE",
+        "ORDER BY, LIMIT, DISTINCT",
+        "GROUP BY, HAVING, Aggregate Functions",
+        "INNER/LEFT JOINs",
+        "Subqueries/CTEs"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Project Goal" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Analyze a sample database (e.g., the classic 'Chinook' database) to answer several business questions. This will require you to combine all the SQL techniques you've learned." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Sample Tasks" }]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Find the top 5 customers by total spending." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Identify the best-selling music genre in the USA." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Determine which sales support agent has the most customers." }] }]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "A starting query: Find the total invoice amount for each customer.",
+          "code": "SELECT CustomerId, SUM(Total) AS TotalSpending\nFROM invoices\nGROUP BY CustomerId\nORDER BY TotalSpending DESC;"
+        }
+      ],
+      "practice_activities": [
+        "Download the Chinook database (available as a .sqlite file online).",
+        "Use a DB browser or an online tool to connect to the database.",
+        "Write and execute SQL queries to answer the sample tasks and any other questions you can think of.",
+        "Challenge: Find the artist who has earned the most money."
+      ],
+      "summary": "Congratulations on completing Week 1! You've gone from basic queries to complex analysis in SQL. This solid foundation is essential for the next step: using Python and Pandas to work with this data.",
+      "resources": ["https://youtube.com/watch?v=y3CDecuUK_4&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 8,
+      "title": "Introduction to Pandas: Series & DataFrames",
+      "introduction": "Welcome to Pandas! Pandas is the most popular Python library for data manipulation and analysis. Today, we'll learn about its two core data structures: the Series (a 1D array) and the DataFrame (a 2D table).",
+      "learning_objectives": [
+        "Understand the purpose and power of the Pandas library.",
+        "Create a Pandas Series from a list or dictionary.",
+        "Create a Pandas DataFrame from a dictionary or list of lists.",
+        "Understand the components of a DataFrame: index, columns, and data."
+      ],
+      "key_concepts": [
+        "Pandas Library",
+        "Series (1D data structure)",
+        "DataFrame (2D data structure)",
+        "Index"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "What is Pandas?" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Pandas provides high-performance, easy-to-use data structures and data analysis tools for Python. It's the de facto standard for working with tabular data in Python." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "The DataFrame" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "The DataFrame is the central data structure in Pandas. Think of it as a spreadsheet or a SQL table, but with powerful methods to manipulate and analyze the data. It consists of data, an index (for rows), and columns." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Creating a Pandas Series from a list.",
+          "code": "import pandas as pd\n\ns = pd.Series([10, 20, 30, 40], name='my_numbers')\nprint(s)"
+        },
+        {
+          "description": "Creating a Pandas DataFrame from a dictionary.",
+          "code": "import pandas as pd\n\ndata = {'Name': ['Alice', 'Bob', 'Charlie'], 'Age': [25, 30, 35]}\ndf = pd.DataFrame(data)\nprint(df)"
+        }
+      ],
+      "practice_activities": [
+        "In a Jupyter Notebook, import the pandas library with the alias 'pd'.",
+        "Create a Series representing the population of 5 different cities.",
+        "Create a DataFrame with columns for 'Product Name', 'Price', and 'In Stock' (boolean) for at least 3 products."
+      ],
+      "summary": "You've been introduced to Pandas and its fundamental building blocks, the Series and DataFrame. You can now create these structures from scratch, preparing you to load real-world data in the next lesson.",
+      "resources": ["https://youtube.com/watch?v=U_xMLEnGivg&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=QOXFKi9ss8o&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=0B_nZm6lgNs&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 9,
+      "title": "Loading Data with Pandas",
+      "introduction": "Manually creating DataFrames is good for learning, but in practice, you'll load data from external sources. Today, we'll focus on the most common methods: reading from CSV files, Excel files, and directly from a SQL database.",
+      "learning_objectives": [
+        "Load data from a CSV file into a DataFrame using `pd.read_csv()`.",
+        "Load data from an Excel file into a DataFrame using `pd.read_excel()`.",
+        "Execute a SQL query and load the results into a DataFrame using `pd.read_sql()`."
+      ],
+      "key_concepts": [
+        "pd.read_csv()",
+        "pd.read_excel()",
+        "pd.read_sql()",
+        "Database Connection (SQLAlchemy)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Reading CSV and Excel Files" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "CSV (Comma-Separated Values) is a very common format for storing tabular data. Pandas makes reading them incredibly simple with the " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "pd.read_csv()" },
+              { "type": "text", "text": " function. Similarly, " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "pd.read_excel()" },
+              { "type": "text", "text": " can be used for Excel files. You may need to install an extra library like " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "openpyxl" },
+              { "type": "text", "text": " for Excel support." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Querying Databases" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Bridging the gap from last week, you can execute a SQL query and load its results directly into a DataFrame. This requires a database connection object, often created using a library like " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "SQLAlchemy" },
+              { "type": "text", "text": "." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Read data from a local CSV file named 'sales.csv'.",
+          "code": "import pandas as pd\n\ndf = pd.read_csv('sales.csv')\nprint(df.head())"
+        },
+        {
+          "description": "Read data from a SQL database (requires setup).",
+          "code": "import pandas as pd\nfrom sqlalchemy import create_engine\n\n# Example for SQLite\nengine = create_engine('sqlite:///chinook.db')\nquery = 'SELECT * FROM artists;'\ndf_artists = pd.read_sql(query, engine)\nprint(df_artists.head())"
+        }
+      ],
+      "practice_activities": [
+        "Find a simple CSV dataset online (e.g., from Kaggle or data.gov) and download it.",
+        "Write code in a Jupyter Notebook to load the CSV file into a Pandas DataFrame.",
+        "If you have the Chinook database from last week, try to load the 'invoices' table into a DataFrame."
+      ],
+      "summary": "You are now able to ingest data from the most common sources (CSV, Excel, SQL) into a Pandas DataFrame. This skill is the starting point for nearly every data analysis project.",
+      "resources": ["https://youtube.com/watch?v=IR2D0rrF2ow&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=y3CDecuUK_4&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 10,
+      "title": "Data Inspection & Exploration",
+      "introduction": "Once your data is loaded, the first step is always to understand it. Pandas provides a suite of simple but powerful functions to quickly inspect the structure, content, and statistical properties of your DataFrame.",
+      "learning_objectives": [
+        "View the first and last few rows of a DataFrame using `.head()` and `.tail()`.",
+        "Get a concise summary of the DataFrame with `.info()`.",
+        "Generate descriptive statistics using `.describe()`.",
+        "Check the dimensions of the DataFrame with `.shape` and column names with `.columns`."
+      ],
+      "key_concepts": [
+        ".head() / .tail()",
+        ".info()",
+        ".describe()",
+        ".shape",
+        ".columns",
+        ".value_counts()"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "First Look at the Data" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".head(n)" },
+              { "type": "text", "text": " and " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".tail(n)" },
+              { "type": "text", "text": " are essential for peeking at your data without displaying the entire (potentially huge) DataFrame. The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".shape" },
+              { "type": "text", "text": " attribute tells you the number of rows and columns." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Summarizing the DataFrame" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".info()" },
+              { "type": "text", "text": " provides a technical summary, including the data type of each column and the number of non-null values. " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".describe()" },
+              { "type": "text", "text": " gives a statistical summary (count, mean, std, etc.) for numerical columns." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Load a CSV and inspect its first 5 rows.",
+          "code": "import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())"
+        },
+        {
+          "description": "Get a summary of data types and null values.",
+          "code": "df.info()"
+        },
+        {
+          "description": "Get statistical summary of numerical columns.",
+          "code": "print(df.describe())"
+        }
+      ],
+      "practice_activities": [
+        "Load the dataset you used yesterday.",
+        "Use `.head()` and `.tail()` to view the start and end of the data.",
+        "Use `.info()` to check for missing values and incorrect data types.",
+        "Use `.describe()` to understand the distribution of numerical features.",
+        "Use `.value_counts()` on a categorical column to see the frequency of each category."
+      ],
+      "summary": "You now have a toolkit of essential commands for the initial exploration of any dataset. This 'data profiling' step is crucial for planning your cleaning and analysis strategy.",
+      "resources": ["https://youtube.com/watch?v=nUxhQw3cojg&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi7SBwkJ2AkBhyohjO8%3D", "https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 11,
+      "title": "Selecting & Indexing Data",
+      "introduction": "A key part of data analysis is selecting subsets of your data to examine or modify. Today, we'll master the primary ways to select rows and columns in Pandas: label-based indexing with `.loc` and integer-based indexing with `.iloc`.",
+      "learning_objectives": [
+        "Select columns by name.",
+        "Select rows and columns by label using `.loc`.",
+        "Select rows and columns by integer position using `.iloc`.",
+        "Use boolean indexing to filter data based on conditions."
+      ],
+      "key_concepts": [
+        "Column Selection (`df['col_name']`)",
+        "Label-based indexing (`.loc`)",
+        "Integer-position based indexing (`.iloc`)",
+        "Boolean Indexing / Conditional Selection"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "loc vs. iloc" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "bold" }], "text": ".loc" },
+              { "type": "text", "text": " is primarily label-based. You use it with the names of your rows (index) and columns. The syntax is " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "df.loc[row_labels, column_labels]" },
+              { "type": "text", "text": "." }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "bold" }], "text": ".iloc" },
+              { "type": "text", "text": " is primarily integer position-based. You use it with the integer index of rows and columns. The syntax is " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "df.iloc[row_positions, column_positions]" },
+              { "type": "text", "text": "." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Boolean Indexing" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "This is a powerful technique where you filter the DataFrame based on a True/False condition, similar to the SQL WHERE clause. For example, `df[df['Age'] > 30]`." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Select the 'Age' column for all rows.",
+          "code": "ages = df['Age']"
+        },
+        {
+          "description": "Select rows with index labels 0 to 4, and columns 'Name' and 'Age' using .loc.",
+          "code": "subset = df.loc[0:4, ['Name', 'Age']]"
+        },
+        {
+          "description": "Select the first 5 rows and first 2 columns using .iloc.",
+          "code": "subset = df.iloc[0:5, 0:2]"
+        },
+        {
+          "description": "Select all rows where the country is 'Canada'.",
+          "code": "canadian_customers = df[df['Country'] == 'Canada']"
+        }
+      ],
+      "practice_activities": [
+        "Load your dataset.",
+        "Select two specific columns and store them in a new DataFrame.",
+        "Use `.iloc` to select the last 10 rows and the first 3 columns.",
+        "Use boolean indexing to create a new DataFrame containing only records that meet a certain condition (e.g., price > 100, year == 2023)."
+      ],
+      "summary": "You have mastered the essential techniques for slicing and dicing your data. The ability to efficiently select subsets of data with `.loc`, `.iloc`, and boolean indexing is fundamental to all subsequent analysis.",
+      "resources": ["https://youtube.com/watch?v=0GOomORRSoI&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 12,
+      "title": "Data Cleaning: Handling Missing Values",
+      "introduction": "Real-world data is rarely perfect. It often contains missing values (represented as `NaN` in Pandas). Today, we'll learn the common strategies for identifying and handling these missing values.",
+      "learning_objectives": [
+        "Identify missing values in a DataFrame using `.isnull()` and `.sum()`.",
+        "Remove rows or columns with missing values using `.dropna()`.",
+        "Fill missing values with a specific value, mean, median, or mode using `.fillna()`."
+      ],
+      "key_concepts": [
+        "NaN (Not a Number)",
+        ".isnull() / .isna()",
+        ".dropna()",
+        ".fillna()"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Detecting Missing Data" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The first step is to find out where the missing data is. Chaining " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".isnull().sum()" },
+              { "type": "text", "text": " on a DataFrame is a quick and effective way to get a count of missing values per column." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Strategies for Handling Missing Data" }]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  { "type": "paragraph", "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Dropping:" },
+                      { "type": "text", "text": " Using `.dropna()`, you can remove rows or columns that contain any null values. This is simple but can lead to data loss." }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  { "type": "paragraph", "content": [
+                      { "type": "text", "marks": [{ "type": "bold" }], "text": "Imputing/Filling:" },
+                      { "type": "text", "text": " Using `.fillna()`, you can replace `NaN` values with something else. For numerical data, using the column's mean or median is common. For categorical data, the mode or a constant like 'Unknown' can be used." }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Count missing values in each column.",
+          "code": "print(df.isnull().sum())"
+        },
+        {
+          "description": "Drop all rows that have any missing value.",
+          "code": "df_dropped = df.dropna()"
+        },
+        {
+          "description": "Fill missing 'Age' values with the mean age.",
+          "code": "mean_age = df['Age'].mean()\ndf['Age'].fillna(mean_age, inplace=True)"
+        }
+      ],
+      "practice_activities": [
+        "Load a dataset and check for missing values.",
+        "Decide on a strategy for each column with missing data (drop or fill).",
+        "For a numerical column, fill missing values with the median. Print the value counts before and after to see the change.",
+        "For a categorical column, fill missing values with the string 'Missing'.",
+        "Verify that there are no more missing values using `.isnull().sum()`."
+      ],
+      "summary": "You can now systematically detect and handle missing data, a critical step in preparing a dataset for analysis. Knowing when to drop versus when to fill is a key skill you'll develop with experience.",
+      "resources": ["https://youtube.com/watch?v=y3CDecuUK_4&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 13,
+      "title": "Data Cleaning: Data Types & Duplicates",
+      "introduction": "Continuing our data cleaning journey, today we'll tackle two more common issues: incorrect data types and duplicate records. Fixing these ensures the integrity and accuracy of your analysis.",
+      "learning_objectives": [
+        "Check column data types using `.dtypes`.",
+        "Convert column data types using `.astype()`.",
+        "Identify and remove duplicate rows using `.duplicated()` and `.drop_duplicates()`."
+      ],
+      "key_concepts": [
+        ".dtypes",
+        ".astype()",
+        "pd.to_datetime()",
+        ".duplicated()",
+        ".drop_duplicates()"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Correcting Data Types" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Sometimes numbers are read as strings or dates as generic objects. The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".astype()" },
+              { "type": "text", "text": " method allows you to convert a column to a specified type (e.g., 'int', 'float', 'category'). For dates, the specialized " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "pd.to_datetime()" },
+              { "type": "text", "text": " function is highly recommended." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Handling Duplicates" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Duplicate records can skew your analysis, especially aggregations. " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".duplicated()" },
+              { "type": "text", "text": " returns a boolean Series indicating which rows are duplicates, while " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".drop_duplicates()" },
+              { "type": "text", "text": " returns a DataFrame with the duplicates removed." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Convert a 'price_string' column (e.g., '$5.99') to a float.",
+          "code": "df['price_float'] = df['price_string'].replace('[\\$,]', '', regex=True).astype(float)"
+        },
+        {
+          "description": "Convert a 'date_string' column to datetime objects.",
+          "code": "df['date'] = pd.to_datetime(df['date_string'])"
+        },
+        {
+          "description": "Remove duplicate rows based on all columns.",
+          "code": "df_no_duplicates = df.drop_duplicates()"
+        },
+        {
+          "description": "Remove rows where the 'customer_id' is duplicated, keeping the first occurrence.",
+          "code": "df_unique_customers = df.drop_duplicates(subset=['customer_id'], keep='first')"
+        }
+      ],
+      "practice_activities": [
+        "Load your dataset and check the data types with `.dtypes`.",
+        "Identify any columns that have an incorrect type (e.g., a number column that is an 'object').",
+        "Use `.astype()` or `pd.to_datetime()` to fix them.",
+        "Check for duplicate rows in your dataset. How many are there?",
+        "Remove the duplicates and verify the new shape of the DataFrame."
+      ],
+      "summary": "You've added two more essential data cleaning skills to your repertoire: correcting data types and removing duplicates. Your data is now significantly cleaner and more reliable for analysis.",
+      "resources": ["https://youtube.com/watch?v=y3CDecuUK_4&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 14,
+      "title": "Week 2 Review & Mini-Project",
+      "introduction": "You've spent this week diving into the world of Pandas. Today, we'll bring it all together. You'll perform a complete data loading and cleaning exercise on a new dataset, applying all the skills from this week.",
+      "learning_objectives": [
+        "Reinforce all Pandas concepts learned in Week 2.",
+        "Perform a full data loading and cleaning workflow on a raw dataset.",
+        "Document the cleaning process and the state of the data before and after."
+      ],
+      "key_concepts": [
+        "Data Loading (read_csv)",
+        "Data Inspection (head, info, describe)",
+        "Data Selection (loc, iloc, boolean indexing)",
+        "Data Cleaning (dropna, fillna, astype, drop_duplicates)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Project Goal" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Find a messy, real-world dataset. Your task is to load it into a Pandas DataFrame and perform a comprehensive cleaning process. The end result should be a clean, tidy DataFrame ready for analysis." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Workflow" }]
+          },
+          {
+            "type": "orderedList",
+            "attrs": { "start": 1 },
+            "content": [
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Load the data." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Inspect the data (`.info()`, `.head()`, `.describe()`)." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Handle missing values." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Correct data types." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Remove duplicates." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Final verification (`.info()`) to confirm the data is clean." }] }]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "A template for your project notebook.",
+          "code": "# 1. Load Data\ndf = pd.read_csv('messy_data.csv')\n\n# 2. Initial Inspection\nprint('--- Before Cleaning ---')\ndf.info()\n\n# 3. Cleaning Steps (Missing Values, Types, Duplicates)\n# ... your code here ...\n\n# 4. Final Verification\nprint('\\n--- After Cleaning ---')\ndf.info()"
+        }
+      ],
+      "practice_activities": [
+        "Find a suitable dataset (Kaggle is a great source for datasets with known issues).",
+        "Create a new Jupyter Notebook for this project.",
+        "Follow the workflow described above, adding markdown cells to explain your decisions (e.g., 'I chose to fill missing age with the median because the distribution is skewed').",
+        "Save the cleaned DataFrame to a new CSV file named 'cleaned_data.csv'."
+      ],
+      "summary": "Fantastic work this week! You've transitioned from SQL to Pandas and can now confidently load, inspect, and clean real-world data. This is a massive step in your data analytics journey. Next week, we'll start analyzing this clean data.",
+      "resources": ["https://youtube.com/watch?v=U_xMLEnGivg&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=0GOomORRSoI&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=y3CDecuUK_4&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 15,
+      "title": "Grouping & Aggregation in Pandas",
+      "introduction": "Remember `GROUP BY` in SQL? Pandas has its own powerful and flexible version. Today you'll learn how to use the `.groupby()` method to split your data into groups, apply a function to each group, and combine the results.",
+      "learning_objectives": [
+        "Group a DataFrame by one or more columns using `.groupby()`.",
+        "Apply aggregate functions like `.sum()`, `.mean()`, `.count()` to grouped data.",
+        "Use the `.agg()` method for more complex aggregations."
+      ],
+      "key_concepts": [
+        "Split-Apply-Combine Strategy",
+        ".groupby()",
+        "Aggregate Functions (.sum, .mean, .size, .count)",
+        ".agg()"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "The Split-Apply-Combine Pattern" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "This is the core idea behind " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".groupby()" },
+              { "type": "text", "text": ". First, you " },
+              { "type": "text", "marks": [{ "type": "bold" }], "text": "split" },
+              { "type": "text", "text": " the data into groups based on some criteria. Then, you " },
+              { "type": "text", "marks": [{ "type": "bold" }], "text": "apply" },
+              { "type": "text", "text": " a function to each group independently (e.g., calculate the sum). Finally, you " },
+              { "type": "text", "marks": [{ "type": "bold" }], "text": "combine" },
+              { "type": "text", "text": " the results into a new data structure." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Advanced Aggregation with .agg()" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".agg()" },
+              { "type": "text", "text": " method allows you to apply multiple aggregation functions at once, and even apply different functions to different columns, giving you fine-grained control over your summary table." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Group by 'Category' and find the mean 'Price' for each.",
+          "code": "df.groupby('Category')['Price'].mean()"
+        },
+        {
+          "description": "Group by 'Region' and count the number of sales in each.",
+          "code": "df.groupby('Region')['Sale_ID'].count()"
+        },
+        {
+          "description": "Group by 'Department' and calculate the sum of 'Sales' and the mean of 'Quantity' for each.",
+          "code": "df.groupby('Department').agg(\n    total_sales=('Sales', 'sum'),\n    avg_quantity=('Quantity', 'mean')\n)"
+        }
+      ],
+      "practice_activities": [
+        "Load your cleaned dataset from the Week 2 project.",
+        "Group the data by a categorical column and calculate the average of a numerical column.",
+        "Group by two different columns and find the total sum for a third column.",
+        "Use `.agg()` to find the min, max, and sum of a numerical column for each group in your data."
+      ],
+      "summary": "You can now perform one of the most common and powerful data analysis tasks: grouping and aggregation. This skill, directly analogous to SQL's GROUP BY, allows you to derive high-level insights from detailed data.",
+      "resources": ["https://youtube.com/watch?v=nUxhQw3cojg&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi7SBwkJ2AkBhyohjO8%3D"]
+    },
+    {
+      "day": 16,
+      "title": "Merging, Joining, and Concatenating DataFrames",
+      "introduction": "Just like with SQL, data often lives in multiple tables (or DataFrames). Today, you'll learn the Pandas equivalents of SQL JOINs (`pd.merge`) and UNIONs (`pd.concat`) to combine data from different sources.",
+      "learning_objectives": [
+        "Combine DataFrames vertically using `pd.concat()`.",
+        "Combine DataFrames horizontally based on a key, similar to SQL joins, using `pd.merge()`.",
+        "Understand the different types of joins: inner, left, right, outer."
+      ],
+      "key_concepts": [
+        "pd.concat()",
+        "pd.merge()",
+        "Join Keys",
+        "Join Types (inner, left, right, outer)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Concatenating (Stacking)" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "code" }], "text": "pd.concat()" },
+              { "type": "text", "text": " is used to stack DataFrames on top of each other (axis=0) or side-by-side (axis=1). It's like a SQL UNION operation. The DataFrames should ideally have the same columns for vertical concatenation." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Merging (Joining)" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "code" }], "text": "pd.merge()" },
+              { "type": "text", "text": " is the Pandas equivalent of SQL JOINs. It combines DataFrames based on the values in one or more common columns (the 'keys'). You can specify the join type using the " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "how" },
+              { "type": "text", "text": " parameter: 'inner', 'left', 'right', or 'outer'." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Concatenate two DataFrames of sales data from different months.",
+          "code": "df_jan = pd.DataFrame(...)\ndf_feb = pd.DataFrame(...)\ndf_total = pd.concat([df_jan, df_feb])"
+        },
+        {
+          "description": "Merge a 'customers' DataFrame with an 'orders' DataFrame (inner join).",
+          "code": "merged_df = pd.merge(customers_df, orders_df, on='customer_id', how='inner')"
+        },
+        {
+          "description": "Merge 'customers' with 'orders', keeping all customers (left join).",
+          "code": "merged_df = pd.merge(customers_df, orders_df, on='customer_id', how='left')"
+        }
+      ],
+      "practice_activities": [
+        "Create two simple DataFrames: one with `customer_id` and `customer_name`, another with `order_id` and `customer_id`.",
+        "Use `pd.merge` to perform an inner join between them.",
+        "Perform a left join to see which customers have not placed an order.",
+        "Create a third DataFrame with the same columns as the orders data and use `pd.concat` to combine them."
+      ],
+      "summary": "You can now combine data from multiple DataFrames using concatenation and merging. This is a crucial skill for creating a single, comprehensive dataset for analysis from various sources.",
+      "resources": ["https://youtube.com/watch?v=0GOomORRSoI&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 17,
+      "title": "Applying Functions & Transformations",
+      "introduction": "Sometimes, you need to perform custom operations on your data that aren't covered by built-in functions. Today, you'll learn how to apply your own functions to DataFrames to create new columns or transform existing ones.",
+      "learning_objectives": [
+        "Create new columns based on existing column data.",
+        "Apply a function to each element of a Series using `.map()`.",
+        "Apply a function along an axis of a DataFrame using `.apply()`.",
+        "Use lambda functions for concise, one-off operations."
+      ],
+      "key_concepts": [
+        "Feature Engineering",
+        ".map()",
+        ".apply()",
+        "Lambda Functions"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Creating New Columns" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "The simplest transformation is creating a new column by performing a vectorized operation on existing columns, like `df['Revenue'] = df['Price'] * df['Quantity']`." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Using .apply() for Complex Logic" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "For more complex, row-wise logic, you can use " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".apply()" },
+              { "type": "text", "text": ". You define a function that takes a row as input and returns a single value. Then, you apply this function to the DataFrame to create a new column." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Create a new column 'Price_Category' based on 'Price'.",
+          "code": "def categorize_price(price):\n    if price > 100:\n        return 'High'\n    elif price > 50:\n        return 'Medium'\n    else:\n        return 'Low'\n\ndf['Price_Category'] = df['Price'].apply(categorize_price)"
+        },
+        {
+          "description": "Use a lambda function with .apply() to calculate the profit margin.",
+          "code": "df['Profit_Margin'] = df.apply(lambda row: (row['Price'] - row['Cost']) / row['Price'], axis=1)"
+        }
+      ],
+      "practice_activities": [
+        "Load your cleaned dataset.",
+        "Create a new column that is the result of a simple arithmetic operation on two existing columns.",
+        "Write a function that takes a value from a column and returns a categorized string (e.g., 'Small', 'Medium', 'Large'). Use `.apply()` to create a new category column.",
+        "Rewrite the previous step using a lambda function."
+      ],
+      "summary": "You can now go beyond built-in functions and apply custom logic to transform your data. This is key for feature engineering—creating new, informative features that can improve your analysis and models.",
+      "resources": ["https://youtube.com/watch?v=nUxhQw3cojg&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi7SBwkJ2AkBhyohjO8%3D"]
+    },
+    {
+      "day": 18,
+      "title": "Intro to Data Visualization with Matplotlib/Seaborn",
+      "introduction": "A picture is worth a thousand words, and in data analysis, a plot is worth a thousand rows. Today we'll introduce two key Python visualization libraries: Matplotlib (the foundation) and Seaborn (a high-level, statistically-focused library built on top).",
+      "learning_objectives": [
+        "Understand the roles of Matplotlib and Seaborn.",
+        "Create a simple plot directly from a Pandas DataFrame.",
+        "Understand the basic components of a plot: figure, axes, title, labels."
+      ],
+      "key_concepts": [
+        "Data Visualization",
+        "Matplotlib",
+        "Seaborn",
+        "Figure and Axes",
+        "Plotting directly from Pandas (`.plot()`)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Matplotlib and Seaborn" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Matplotlib is the original, powerful, and highly customizable plotting library in Python. Seaborn is built on top of Matplotlib and provides a simpler, more attractive interface for creating common statistical plots. We will often use them together." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Basic Plotting with Pandas" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Pandas DataFrames have a built-in " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".plot()" },
+              { "type": "text", "text": " method which is a wrapper around Matplotlib. It's a quick and easy way to generate basic plots without importing the plotting libraries directly." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Create a simple line plot from a Pandas Series.",
+          "code": "import pandas as pd\nimport matplotlib.pyplot as plt\n\ns = pd.Series([1, 3, 2, 5, 4])\ns.plot(title='My First Plot')\nplt.show() # Display the plot"
+        },
+        {
+          "description": "Create a basic bar plot using Seaborn.",
+          "code": "import seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Assuming df has 'Category' and 'Sales' columns\nsns.barplot(x='Category', y='Sales', data=df)\nplt.title('Sales by Category')\nplt.show()"
+        }
+      ],
+      "practice_activities": [
+        "Import `matplotlib.pyplot` as `plt` and `seaborn` as `sns`.",
+        "Take a numerical column from your dataset and create a simple line plot using the `.plot()` method.",
+        "Use `plt.title()`, `plt.xlabel()`, and `plt.ylabel()` to add labels to your plot.",
+        "Display your plot using `plt.show()`."
+      ],
+      "summary": "You've taken your first steps into data visualization, understanding the roles of Matplotlib and Seaborn and creating your first plot. Visualizing data is critical for understanding patterns and communicating findings.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 19,
+      "title": "Creating Basic Plots (Bar, Line, Scatter)",
+      "introduction": "Today we'll focus on creating three of the most fundamental and widely used plot types: bar plots for comparing categories, line plots for showing trends over time, and scatter plots for exploring relationships between variables.",
+      "learning_objectives": [
+        "Create and customize bar plots to compare categorical data.",
+        "Create and customize line plots to visualize time series data.",
+        "Create and customize scatter plots to show the relationship between two numerical variables."
+      ],
+      "key_concepts": [
+        "Bar Plot (`sns.barplot`)",
+        "Line Plot (`sns.lineplot`)",
+        "Scatter Plot (`sns.scatterplot`)",
+        "Hue (coloring by category)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Choosing the Right Plot" }]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Bar Plot:" }, { "type": "text", "text": " Use when you have one categorical variable and one numerical variable." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Line Plot:" }, { "type": "text", "text": " Ideal for showing how a numerical variable changes over a continuous variable, usually time." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "marks": [{ "type": "bold" }], "text": "Scatter Plot:" }, { "type": "text", "text": " Use to visualize the relationship between two numerical variables." }] }]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Bar plot of average sales per region.",
+          "code": "sns.barplot(x='Region', y='Sales', data=df)"
+        },
+        {
+          "description": "Line plot of sales over time.",
+          "code": "# Assuming 'Date' is a datetime column and df is sorted by date\nsns.lineplot(x='Date', y='Sales', data=df)"
+        },
+        {
+          "description": "Scatter plot of advertising spend vs. sales.",
+          "code": "sns.scatterplot(x='Ad_Spend', y='Sales', data=df)"
+        }
+      ],
+      "practice_activities": [
+        "Using your cleaned dataset, create a bar plot comparing a numerical value across different categories.",
+        "If you have a date/time column, create a line plot to show a trend over time.",
+        "Choose two numerical columns and create a scatter plot to see if there's a relationship. Use the `hue` parameter to color the points by a third, categorical variable."
+      ],
+      "summary": "You can now create the three most common types of plots to answer fundamental analytical questions about comparisons, trends, and relationships. This is a powerful storytelling tool.",
+      "resources": ["https://youtube.com/watch?v=nUxhQw3cojg&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi7SBwkJ2AkBhyohjO8%3D"]
+    },
+    {
+      "day": 20,
+      "title": "Time Series Analysis with Pandas",
+      "introduction": "Many datasets involve time, from daily sales to stock prices. Pandas has powerful, built-in capabilities specifically for working with time series data. Today, we'll learn how to leverage these features.",
+      "learning_objectives": [
+        "Ensure a column is in the proper datetime format.",
+        "Set a datetime column as the DataFrame index.",
+        "Resample time series data to different frequencies (e.g., from daily to monthly).",
+        "Calculate rolling window statistics (e.g., moving averages)."
+      ],
+      "key_concepts": [
+        "Datetime Index",
+        "Resampling (`.resample()`)",
+        "Rolling Windows (`.rolling()`)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "The Datetime Index" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Setting a datetime column as the index of your DataFrame unlocks a host of time series-specific functionalities, making slicing, dicing, and analyzing by time much easier." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Resampling and Rolling" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".resample()" },
+              { "type": "text", "text": " is like a `groupby()` for time. It allows you to aggregate data to a different time frequency (e.g., from daily to monthly sums). " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": ".rolling()" },
+              { "type": "text", "text": " is used for calculating statistics over a sliding window, perfect for things like moving averages to smooth out data." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Set the 'Date' column as the index.",
+          "code": "df['Date'] = pd.to_datetime(df['Date'])\ndf.set_index('Date', inplace=True)"
+        },
+        {
+          "description": "Resample daily sales data to get monthly total sales.",
+          "code": "monthly_sales = df['Sales'].resample('M').sum()"
+        },
+        {
+          "description": "Calculate the 7-day rolling average of sales.",
+          "code": "df['7_Day_Moving_Avg'] = df['Sales'].rolling(window=7).mean()"
+        }
+      ],
+      "practice_activities": [
+        "Load a dataset with a time component.",
+        "Convert the time column to datetime objects and set it as the index.",
+        "Resample your data to a lower frequency (e.g., weekly or quarterly) and calculate the mean or sum.",
+        "Calculate a 30-day rolling average for a numerical column and plot it alongside the original data."
+      ],
+      "summary": "You've unlocked the specialized time series capabilities of Pandas. You can now effectively analyze trends, aggregate data over time periods, and calculate rolling statistics like moving averages.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 21,
+      "title": "Week 3 Review & Mini-Project",
+      "introduction": "This week was all about analysis and visualization. You learned to group, merge, transform, and plot your data. Today's mini-project will have you perform an end-to-end analysis on a dataset, culminating in key insights and visualizations.",
+      "learning_objectives": [
+        "Reinforce all analysis and visualization concepts from Week 3.",
+        "Perform a exploratory data analysis (EDA) on a clean dataset.",
+        "Generate meaningful aggregations and visualizations to answer business questions.",
+        "Practice communicating findings through plots and annotations."
+      ],
+      "key_concepts": [
+        "Grouping and Aggregation",
+        "Merging DataFrames",
+        "Applying Functions",
+        "Visualization (Bar, Line, Scatter)",
+        "Exploratory Data Analysis (EDA)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Project Goal" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Using the clean dataset from your Week 2 project, perform a full exploratory data analysis. The goal is to uncover interesting patterns and relationships in the data and present them clearly using plots." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Analysis Questions to Consider" }]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Who are the top customers/regions/products?" }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "How have key metrics changed over time?" }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Are there any interesting relationships between numerical variables?" }] }]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Example analysis step: Find top 10 products by sales and plot them.",
+          "code": "top_products = df.groupby('Product_Name')['Sales'].sum().nlargest(10)\nsns.barplot(x=top_products.values, y=top_products.index)\nplt.title('Top 10 Products by Sales')\nplt.show()"
+        }
+      ],
+      "practice_activities": [
+        "Load your cleaned dataset from Week 2.",
+        "Create a new Jupyter Notebook for your analysis.",
+        "Formulate 3-5 business questions you want to answer with the data.",
+        "Use grouping, aggregation, and transformations to prepare the data to answer these questions.",
+        "Create at least one bar plot, one line plot, and one scatter plot to visualize your findings.",
+        "Use markdown cells to explain your plots and summarize your conclusions."
+      ],
+      "summary": "Congratulations on completing a full analysis! You've gone from raw data to clean data to insightful visualizations. This is the core workflow of a data analyst. Next week, we'll learn how to automate this entire process.",
+      "resources": ["https://youtube.com/watch?v=nUxhQw3cojg&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi7SBwkJ2AkBhyohjO8%3D", "https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 22,
+      "title": "Python Scripting for Data Tasks",
+      "introduction": "Jupyter Notebooks are great for exploration, but for repeatable, automated tasks, we need Python scripts (.py files). Today, we'll learn how to convert the logic from a notebook into a reusable script.",
+      "learning_objectives": [
+        "Understand the difference between a Jupyter Notebook and a Python script.",
+        "Convert notebook cells into a logical sequence in a .py file.",
+        "Run a Python script from the command line.",
+        "Encapsulate logic into functions."
+      ],
+      "key_concepts": [
+        "Python Scripts (.py)",
+        "Command Line Execution",
+        "Functions",
+        "Refactoring"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "From Notebook to Script" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "The process involves taking the code from your notebook cells and organizing it into a single .py file. All import statements go at the top. The linear exploration process from the notebook becomes a linear execution flow in the script." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "The Power of Functions" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "To make scripts reusable and easier to read, we encapsulate blocks of logic into functions. For example, you might have a `load_data()` function, a `clean_data()` function, and an `analyze_data()` function. This modular approach is key to building robust pipelines." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "A simple script `process_data.py` with a main function.",
+          "code": "import pandas as pd\n\ndef main():\n    \"\"\"Main function to run the analysis.\"\"\"\n    df = pd.read_csv('raw_data.csv')\n    print('Data loaded successfully.')\n    df_cleaned = df.dropna()\n    print(f'Cleaned data has {len(df_cleaned)} rows.')\n    print('Script finished.')\n\nif __name__ == '__main__':\n    main()"
+        },
+        {
+          "description": "Running the script from the terminal.",
+          "code": "python process_data.py"
+        }
+      ],
+      "practice_activities": [
+        "Create a new file named `my_analysis_script.py` in your code editor.",
+        "Copy the code from your Week 3 mini-project into this file.",
+        "Organize the code into at least two functions: one for loading/cleaning and one for analysis/plotting.",
+        "Add a `if __name__ == '__main__':` block to call your functions.",
+        "Run your script from the command line."
+      ],
+      "summary": "You've made the crucial leap from interactive exploration to reproducible scripting. By converting your notebook logic into a Python script with functions, you've created a reusable asset that is the first step towards automation.",
+      "resources": ["https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 23,
+      "title": "Reading/Writing Files Programmatically",
+      "introduction": "Automated pipelines need to interact with the file system without manual intervention. Today, we'll learn how to use Python's built-in libraries to handle files and directories, making our scripts more dynamic.",
+      "learning_objectives": [
+        "Read and write text files using Python's built-in `open()` function.",
+        "Use the `os` library to check for file existence and create directories.",
+        "Use the `pathlib` library for a modern, object-oriented way to handle file paths."
+      ],
+      "key_concepts": [
+        "`open()` function",
+        "`os` module (`os.path.exists`, `os.makedirs`)",
+        "`pathlib` module (Path objects)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "The `os` and `pathlib` Modules" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The `os` module provides a way of using operating system dependent functionality. The `pathlib` module offers classes representing filesystem paths with semantics appropriate for different operating systems. `pathlib` is generally recommended for new code as it is more modern and intuitive." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Practical Application" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "In a data pipeline, you might check if an 'output' directory exists, create it if it doesn't, and then save your processed DataFrame or plots into that directory. This makes your script robust and organized." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Using pathlib to define input/output paths and ensure output directory exists.",
+          "code": "from pathlib import Path\nimport pandas as pd\n\n# Define paths\ninput_file = Path('data/raw/sales.csv')\noutput_dir = Path('data/processed/')\n\n# Create output directory if it doesn't exist\noutput_dir.mkdir(parents=True, exist_ok=True)\n\n# Process data\ndf = pd.read_csv(input_file)\n# ... cleaning steps ...\n\n# Save cleaned data\noutput_file = output_dir / 'cleaned_sales.csv'\ndf.to_csv(output_file, index=False)"
+        }
+      ],
+      "practice_activities": [
+        "Modify your script from yesterday.",
+        "Use `pathlib` to define variables for your input data file and a new output directory called 'reports'.",
+        "Add code to your script that creates the 'reports' directory if it doesn't already exist.",
+        "At the end of your script, save the final aggregated DataFrame to a CSV file inside the 'reports' directory.",
+        "Also, save one of your plots as a PNG file in the same directory using `plt.savefig()`."
+      ],
+      "summary": "Your scripts can now intelligently interact with the file system. By using `pathlib` to manage paths and directories, you've made your automation pipeline more robust, organized, and portable.",
+      "resources": ["https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 24,
+      "title": "Building a Simple Data Pipeline (Function Chaining)",
+      "introduction": "A data pipeline is a series of data processing steps. Today, we'll formalize the structure of our script into a clear pipeline, where the output of one function becomes the input of the next. This is known as function chaining.",
+      "learning_objectives": [
+        "Structure a script as a sequence of distinct, single-responsibility functions.",
+        "Pass DataFrames between functions.",
+        "Create a main 'orchestrator' function that calls the pipeline steps in order."
+      ],
+      "key_concepts": [
+        "Data Pipeline",
+        "Function Chaining",
+        "Modularity",
+        "Single Responsibility Principle"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Pipeline Structure" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "A typical pipeline structure involves functions for each logical step, such as:" }]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "`load_data()`: Reads the raw data and returns a DataFrame." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "`clean_data(df)`: Takes a DataFrame, performs cleaning, and returns the cleaned DataFrame." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "`analyze_data(df)`: Takes a clean DataFrame, performs analysis/aggregation, and returns the result." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "`save_results(results_df)`: Saves the final output to a file." }] }]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Example of a chained pipeline in a main function.",
+          "code": "def main():\n    \"\"\"Orchestrates the data pipeline.\"\"\"\n    raw_df = load_data('path/to/data.csv')\n    cleaned_df = clean_data(raw_df)\n    analysis_results = analyze_data(cleaned_df)\n    save_results(analysis_results, 'path/to/output.csv')\n    print('Pipeline completed successfully.')\n\nif __name__ == '__main__':\n    main()"
+        }
+      ],
+      "practice_activities": [
+        "Refactor your script from yesterday to follow the function chaining pipeline structure.",
+        "Create separate functions for loading, cleaning, analyzing, and saving.",
+        "Ensure each function has a docstring explaining what it does, its parameters, and what it returns.",
+        "Create a `main()` function that calls these functions in the correct order, passing the DataFrame from one to the next."
+      ],
+      "summary": "You've now structured your code like a professional data engineer. By creating a modular pipeline with chained functions, your code is more readable, maintainable, and easier to debug and extend.",
+      "resources": ["https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 25,
+      "title": "Error Handling & Logging",
+      "introduction": "Automated scripts must be robust. What happens if an input file is missing or the data is in an unexpected format? Today we'll learn how to handle potential errors gracefully and how to log information for debugging.",
+      "learning_objectives": [
+        "Use `try...except` blocks to handle potential errors like `FileNotFoundError`.",
+        "Set up and use the `logging` module to record informational messages and errors.",
+        "Differentiate between printing to the console and logging to a file."
+      ],
+      "key_concepts": [
+        "Exception Handling",
+        "`try...except` block",
+        "`logging` module",
+        "Log Levels (INFO, WARNING, ERROR)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Handling Exceptions" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "A `try...except` block allows you to run code that might fail. The code in the `try` block is executed. If an error occurs, the code in the `except` block is run, preventing your script from crashing." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Logging" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Logging is a way to record the events of your script's execution to a file. This is much better than `print()` statements for an automated script, as it creates a permanent record you can inspect later to see what happened, especially if an error occurred." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Using try...except to handle a missing file and logging the error.",
+          "code": "import logging\n\nlogging.basicConfig(filename='pipeline.log', level=logging.INFO)\n\ntry:\n    logging.info('Attempting to load data...')\n    df = pd.read_csv('non_existent_file.csv')\n    logging.info('Data loaded successfully.')\nexcept FileNotFoundError as e:\n    logging.error(f'Failed to load data. Error: {e}')\n    # Exit the script or handle the error appropriately\n    exit()"
+        }
+      ],
+      "practice_activities": [
+        "In your pipeline script, configure the `logging` module at the top to write to a file named `data_pipeline.log`.",
+        "Replace your `print()` statements with `logging.info()` statements (e.g., 'Starting data cleaning step...').",
+        "Wrap your `load_data` function's core logic in a `try...except FileNotFoundError` block.",
+        "If the file is not found, log a critical error using `logging.error()` and make the script exit gracefully.",
+        "Run your script successfully. Then, rename the input file and run it again to see the error handling and logging in action."
+      ],
+      "summary": "Your pipeline is now significantly more robust. By implementing error handling and logging, you've ensured your script won't crash unexpectedly and that you'll have a detailed log to diagnose any issues that arise during automated runs.",
+      "resources": ["https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 26,
+      "title": "Introduction to Task Scheduling",
+      "introduction": "The final step in automation is to make the script run automatically on a schedule. Today, we'll learn about the tools used to schedule tasks on different operating systems, so your pipeline can run daily or weekly without any manual intervention.",
+      "learning_objectives": [
+        "Understand the concept of a cron job (Linux/macOS).",
+        "Understand the concept of Task Scheduler (Windows).",
+        "Write a basic cron expression to define a schedule.",
+        "Know how to construct the command to run a Python script."
+      ],
+      "key_concepts": [
+        "Task Scheduling",
+        "Cron (Linux/macOS)",
+        "Crontab",
+        "Cron Expression",
+        "Task Scheduler (Windows)"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Cron on Linux and macOS" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "Cron is a time-based job scheduler in Unix-like operating systems. You edit a file called a 'crontab' to add jobs. Each job consists of a cron expression defining the schedule, and the command to be executed." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "A Cron Expression" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "A cron expression has 5 fields: minute, hour, day of month, month, day of week. For example, " },
+              { "type": "text", "marks": [{ "type": "code" }], "text": "0 9 * * 1" },
+              { "type": "text", "text": " means 'at 9:00 AM on every Monday'." }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Task Scheduler on Windows" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Windows uses a graphical tool called Task Scheduler. You create a new task, define triggers (the schedule), and specify the action (running your Python script)." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Example crontab entry to run a script every day at 7 AM.",
+          "code": "# Use `crontab -e` to edit, then add this line:\n0 7 * * * /usr/bin/python3 /path/to/your/project/pipeline.py"
+        },
+        {
+          "description": "Example crontab entry to run a script every Monday at 8:30 AM.",
+          "code": "30 8 * * 1 /path/to/your/venv/bin/python /path/to/your/project/pipeline.py"
+        }
+      ],
+      "practice_activities": [
+        "Open the task scheduler on your OS (search for 'crontab' on Mac/Linux terminal, or 'Task Scheduler' on Windows).",
+        "Create a task that runs your pipeline script.",
+        "Schedule it to run 5 minutes from your current time to test it.",
+        "Make sure your script writes to its log file when it runs.",
+        "Check the log file after the scheduled time to confirm that the script ran automatically."
+      ],
+      "summary": "You have now fully automated your data pipeline! By learning to schedule your script, you've created a system that can provide updated analysis and reports on a regular basis with zero manual effort.",
+      "resources": ["https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 27,
+      "title": "Parameterizing Scripts with Command-Line Arguments",
+      "introduction": "Hardcoding file paths or dates into a script makes it inflexible. To make our pipelines truly reusable, we can pass in parameters from the command line. Today we'll learn to use Python's `argparse` library to do this.",
+      "learning_objectives": [
+        "Understand the need for command-line arguments.",
+        "Use the `argparse` library to define and parse arguments.",
+        "Modify the pipeline to accept input file paths and output directories as arguments."
+      ],
+      "key_concepts": [
+        "Command-Line Arguments",
+        "`argparse` module",
+        "Positional Arguments",
+        "Optional Arguments"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Why Parameterize?" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Imagine you want to run the same analysis on a different dataset, or save the output to a different location. Instead of editing the script each time, you can pass these values as arguments when you run it, making it far more versatile." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Using `argparse`" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              { "type": "text", "text": "The `argparse` module makes it easy to write user-friendly command-line interfaces. You define what arguments your program requires, and `argparse` will figure out how to parse those out of `sys.argv`. It also automatically generates help and usage messages." }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "A script `process.py` that accepts an input and output file path.",
+          "code": "import argparse\n\nparser = argparse.ArgumentParser(description='Process some data.')\nparser.add_argument('--input', required=True, help='Path to the input data file.')\nparser.add_argument('--output', required=True, help='Path to the output directory.')\n\nargs = parser.parse_args()\n\nprint(f'Input file: {args.input}')\nprint(f'Output dir: {args.output}')"
+        },
+        {
+          "description": "How to run the script from the command line.",
+          "code": "python process.py --input data/sales_2023.csv --output reports/2023/"
+        }
+      ],
+      "practice_activities": [
+        "Integrate `argparse` into your main pipeline script.",
+        "Add two required arguments: `--input_file` and `--output_dir`.",
+        "Remove the hardcoded file paths from your script and use the parsed arguments instead.",
+        "Update your main function to accept these paths as parameters.",
+        "Run your script from the command line, providing the paths as arguments."
+      ],
+      "summary": "Your pipeline is now flexible and reusable. By using `argparse` to accept command-line arguments, you can easily adapt your script to different inputs and outputs without changing a single line of code.",
+      "resources": ["https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 28,
+      "title": "Capstone Project - Part 1: Design & Setup",
+      "introduction": "It's time to bring everything together in a final capstone project. Over the next three days, you will build a complete, automated data analytics pipeline from scratch. Today's focus is on planning, design, and setting up the project structure.",
+      "learning_objectives": [
+        "Select a dataset for the capstone project.",
+        "Define a clear analytical objective or business question.",
+        "Design the steps of the data pipeline.",
+        "Set up the project directory structure."
+      ],
+      "key_concepts": [
+        "Project Scoping",
+        "Pipeline Design",
+        "Directory Structure"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "1. Choose Your Data and Objective" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Find a dataset that interests you (e.g., from Kaggle, a public API, or government data portal). Define a clear question you want to answer. For example, 'Analyze NYC 311 service requests to find the busiest boroughs and request types by season.'" }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "2. Design Your Pipeline" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "On paper or in a text file, outline the steps. What data will you load? What cleaning steps are needed? What aggregations will you perform? What will be the final output (a CSV report, a plot)?" }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "3. Set Up Your Project" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Create a new project directory with subdirectories like `data/`, `scripts/`, `reports/`, and `logs/`. This keeps your project organized." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "Example Project Directory Structure",
+          "code": "capstone_project/\n├── data/\n│   └── raw_data.csv\n├── reports/\n├── logs/\n├── scripts/\n│   └── pipeline.py\n└── README.md"
+        }
+      ],
+      "practice_activities": [
+        "Select your dataset and download it into your `data/` directory.",
+        "Write down your primary analytical question.",
+        "Outline the steps your `pipeline.py` script will need to perform.",
+        "Create the full directory structure for your project."
+      ],
+      "summary": "The foundation for your capstone project is laid. With a clear objective, a chosen dataset, and an organized project structure, you are ready to start building the pipeline tomorrow.",
+      "resources": ["https://youtube.com/watch?v=PSNXoAs2FtQ&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D", "https://youtube.com/watch?v=y3CDecuUK_4&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 29,
+      "title": "Capstone Project - Part 2: Build & Test",
+      "introduction": "With the design complete, today is all about implementation. You will write the Python script for your data pipeline, applying all the skills you've learned over the past four weeks.",
+      "learning_objectives": [
+        "Implement the data loading, cleaning, and analysis logic in a Python script.",
+        "Incorporate function chaining, error handling, logging, and argument parsing.",
+        "Thoroughly test the script to ensure it runs correctly and produces the expected output."
+      ],
+      "key_concepts": [
+        "Implementation",
+        "Modular Code",
+        "Testing",
+        "Debugging"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Building the Script" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Work through your pipeline design from yesterday, implementing each step as a function in your `pipeline.py` script. Start with loading, then cleaning, and so on. Test each function as you write it." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Putting It All Together" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Once the individual functions are working, assemble them in your `main()` function. Add logging throughout the process. Implement `argparse` to handle file paths. Add `try...except` blocks for robustness." }]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "A snippet of the main orchestrator in `pipeline.py`.",
+          "code": "def main(args):\n    logging.info('Pipeline started.')\n    try:\n        df = load_data(args.input_file)\n        df_clean = clean_data(df)\n        report = analyze_data(df_clean)\n        save_report(report, args.output_dir)\n        logging.info('Pipeline finished successfully.')\n    except Exception as e:\n        logging.critical(f'Pipeline failed: {e}')"
+        }
+      ],
+      "practice_activities": [
+        "Write the full `pipeline.py` script for your capstone project.",
+        "Implement all the best practices: functions, logging, error handling, and argparse.",
+        "Run the script from your command line, providing the correct arguments.",
+        "Verify that the output (e.g., a CSV file or a plot) is created in your `reports/` directory and that it is correct.",
+        "Check your `logs/` directory to see the log file created by your script."
+      ],
+      "summary": "You have built a complete, robust, and automated data pipeline. This is a significant achievement that showcases your ability to handle a data analytics project from end to end.",
+      "resources": ["https://youtube.com/watch?v=yIV1PQnnSbw&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    },
+    {
+      "day": 30,
+      "title": "Capstone Project - Part 3: Documentation & Next Steps",
+      "introduction": "Your pipeline works, but a project isn't truly complete without documentation. Today, you'll document your project in a `README.md` file and think about your next steps in the world of data.",
+      "learning_objectives": [
+        "Write a clear and comprehensive `README.md` file for your project.",
+        "Schedule your final pipeline to run automatically.",
+        "Reflect on the course and identify areas for future learning."
+      ],
+      "key_concepts": [
+        "Documentation",
+        "README.md",
+        "Markdown Syntax",
+        "Continuous Learning"
+      ],
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "Writing a Good README" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Your README file is the front page of your project. It should explain what the project does, how to set it up (e.g., `pip install -r requirements.txt`), and how to run it. Include a brief summary of your findings." }]
+          },
+          {
+            "type": "heading",
+            "attrs": { "level": 3 },
+            "content": [{ "type": "text", "text": "What's Next?" }]
+          },
+          {
+            "type": "paragraph",
+            "content": [{ "type": "text", "text": "Congratulations on completing this 30-day curriculum! You now have a powerful and in-demand skill set. Possible next steps include:" }]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Learning more advanced visualization libraries like Plotly." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Exploring machine learning with Scikit-learn." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Building more complex pipelines with tools like Airflow." }] }]
+              },
+              {
+                "type": "listItem",
+                "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Creating a portfolio of projects to showcase your skills." }] }]
+              }
+            ]
+          }
+        ]
+      },
+      "examples": [
+        {
+          "description": "An example structure for your README.md file.",
+          "code": "# Project Title\n\nA brief description of the project and its goal.\n\n## Setup\n\nInstructions on how to install dependencies.\n`pip install pandas`\n\n## Usage\n\nHow to run the script.\n`python scripts/pipeline.py --input data/raw_data.csv --output reports/`\n\n## Findings\n\nA summary of your analytical findings."
+        }
+      ],
+      "practice_activities": [
+        "Create and write the `README.md` file for your capstone project.",
+        "Use markdown for formatting (headings, code blocks, lists).",
+        "Schedule your final script to run automatically using cron or Task Scheduler.",
+        "Push your project to a GitHub repository to start building your portfolio.",
+        "Celebrate your accomplishment!"
+      ],
+      "summary": "You have successfully completed the 30-day journey to mastering Python-centered data analytics. You've gone from SQL basics to building a fully automated data pipeline. You now have the skills, the process, and a capstone project to prove it. The world of data is now yours to explore.",
+      "resources": ["https://youtube.com/watch?v=r2tjwuG305E&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi7SBwkJ2AkBhyohjO8%3D", "https://youtube.com/watch?v=QOXFKi9ss8o&pp=ygXiAUdlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gdGl0bGVkICdMZWFybmluZyBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuJyBtZWV0aW5nIHRoaXMgZ29hbDogTWFzdGVyIFB5dGhvbi1jZW50cmVkIGRhdGEgYW5hbHl0aWNzIChTUUwg4oaSIFBhbmRhcyDihpIgYXV0b21hdGlvbiBwaXBlbGluZXMpLi4%3D"]
+    }
+  ]
+}
+```
+--- End of Response ---
+
+--- New Curriculum Generation ---
+Curriculum ID: a5c9ca93-359c-4672-8bcc-103c0c1f5d00
+Timestamp: 2025-07-12T08:10:48.319622
+Raw Response:
+```json
+{
+  "curriculum_title": "Learning Master Python-centred data analytics (SQL → Pandas → automation pipelines).",
+  "curriculum_description": "A 30-day comprehensive curriculum designed for beginners to master data analytics using a powerful combination of SQL for data retrieval, Pandas for data manipulation and analysis, and Python for building automated data pipelines.",
+  "days": [
+    {
+      "day_number": 1,
+      "title": "Introduction to Databases and SQL",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Welcome to your data analytics journey! Today, you'll learn the fundamentals of databases. We'll explore what a relational database is, why it's structured, and how tables, rows, and columns work together to store data efficiently. You will also get a high-level overview of SQL (Structured Query Language) as the standard language for communicating with these databases."
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Key concepts to understand include primary keys, foreign keys, and the basic idea of data normalization. We will also set up a local SQL environment using SQLite for hands-on practice."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "What is SQL? (in 4 minutes for beginners)",
+          "url": "https://www.youtube.com/watch?v=27E5L6-o3_M"
+        },
+        {
+          "title": "SQLBolt - Interactive SQL Tutorials",
+          "url": "https://sqlbolt.com/"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 2,
+      "title": "Querying Data with SELECT and WHERE",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Today focuses on the most fundamental SQL command: `SELECT`. You will learn how to retrieve specific columns from a table and use `WHERE` to filter rows based on specific conditions. We will cover comparison operators (`=`, `>`, `<`, `<>`), logical operators (`AND`, `OR`, `NOT`), and how to sort your results using `ORDER BY`."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "W3Schools SQL SELECT Tutorial",
+          "url": "https://www.w3schools.com/sql/sql_select.asp"
+        },
+        {
+          "title": "W3Schools SQL WHERE Tutorial",
+          "url": "https://www.w3schools.com/sql/sql_where.asp"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 3,
+      "title": "Aggregating Data with GROUP BY",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Data analysis often requires summarizing data. Today, you'll learn about SQL aggregate functions like `COUNT()`, `SUM()`, `AVG()`, `MIN()`, and `MAX()`. You will then learn how to use these functions with the `GROUP BY` clause to perform calculations on subsets of your data, a critical skill for generating summary reports."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "SQL Aggregate Functions - W3Schools",
+          "url": "https://www.w3schools.com/sql/sql_count_avg_sum.asp"
+        },
+        {
+          "title": "SQL GROUP BY Explained",
+          "url": "https://www.sqltutorial.org/sql-group-by/"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 4,
+      "title": "Combining Data with JOINs",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Real-world data is often split across multiple tables. `JOIN`s are the mechanism to combine them. You will learn the difference between `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, and `FULL OUTER JOIN`. The focus will be on understanding how to link tables using primary and foreign keys to create meaningful, unified datasets."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "A Visual Explanation of SQL Joins",
+          "url": "https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/"
+        },
+        {
+          "title": "SQL Joins - W3Schools",
+          "url": "https://www.w3schools.com/sql/sql_join.asp"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 5,
+      "title": "Advanced SQL: Subqueries and CTEs",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Let's level up your SQL. Today we cover subqueries (a query within a query) and Common Table Expressions (CTEs) using the `WITH` clause. These tools are essential for breaking down complex problems into logical, readable steps, making your queries more organized and maintainable."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "SQL Subqueries - GeeksforGeeks",
+          "url": "https://www.geeksforgeeks.org/sql-subquery/"
+        },
+        {
+          "title": "SQL CTEs (Common Table Expressions)",
+          "url": "https://www.sqltutorial.org/sql-cte/"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 6,
+      "title": "Project 1: SQL Database Querying",
+      "is_project_day": true,
+      "project_data": {
+        "title": "SQL Business Questions on a Sample Database",
+        "description": "You will be given a sample database (like Chinook or a custom one with sales data). Your task is to write a series of SQL queries to answer specific business questions, applying all the concepts you've learned this week.",
+        "objectives": [
+          "Demonstrate proficiency with SELECT, WHERE, and ORDER BY.",
+          "Apply aggregate functions and GROUP BY to summarize data.",
+          "Use various JOIN types to combine data from multiple tables.",
+          "Construct at least one query using a subquery or CTE."
+        ],
+        "requirements": [
+          "A working SQL environment (e.g., SQLite, PostgreSQL).",
+          "The provided sample database file.",
+          "A text file or SQL script containing all your queries."
+        ],
+        "deliverables": [
+          "A .sql file containing the queries for each question.",
+          "A brief text file explaining the answer each query provides."
+        ],
+        "evaluation_criteria": [
+          "Correctness: Do the queries run without errors and produce the correct results?",
+          "Completeness: Is every question answered?",
+          "Readability: Are the queries well-formatted and easy to understand?",
+          "Efficiency: Does the query use appropriate joins and clauses?"
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "It's time for your first project! Apply your SQL knowledge from the past week to analyze a real dataset. Download the Chinook sample database (link in resources) and write queries to answer questions like 'Which country has the most invoices?' or 'Who is the best customer?'. This project solidifies your understanding of practical SQL application."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "The Chinook Sample Database",
+          "url": "https://www.sqlitetutorial.net/sqlite-sample-database/"
+        },
+        {
+          "title": "DB Browser for SQLite (Tool to explore the database)",
+          "url": "https://sqlitebrowser.org/"
+        }
+      ],
+      "estimated_hours": 4
+    },
+    {
+      "day_number": 7,
+      "title": "SQL Review and Catch-up",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use today to review the concepts from the past week. Go over your project, try to optimize your queries, or explore alternative ways to get the same results. Solidifying your SQL foundation is crucial before we move on to Python."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "HackerRank SQL Practice",
+          "url": "https://www.hackerrank.com/domains/sql"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 8,
+      "title": "Setting Up Your Python Data Analysis Environment",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type":="text",
+                "text": "Welcome to the Python section! Today is all about getting your environment ready. We will install Anaconda, which bundles Python with essential data science libraries and tools. You'll learn how to launch and use Jupyter Notebooks, the standard interactive environment for data analysis."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Anaconda Distribution",
+          "url": "https://www.anaconda.com/products/distribution"
+        },
+        {
+          "title": "Jupyter Notebook for Beginners Tutorial",
+          "url": "https://www.dataquest.io/blog/jupyter-notebook-tutorial/"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 9,
+      "title": "Python Basics for Data Analysis",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "A quick refresher on Python fundamentals. We'll review essential data types (strings, integers, floats), data structures (lists, dictionaries), control flow (if-else statements, for/while loops), and how to define and use functions. This ensures you have the necessary programming foundation before we dive into data-specific libraries."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python for Everybody (freeCodeCamp course)",
+          "url": "https://www.youtube.com/watch?v=8DvywoWv6fI"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 10,
+      "title": "Introduction to NumPy",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Meet NumPy (Numerical Python), the foundational library for numerical computing in Python. You'll learn about the powerful NumPy array object, which is far more efficient for numerical operations than standard Python lists. We'll cover creating arrays, indexing, slicing, and performing mathematical operations on them."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "NumPy: The Absolute Basics for Beginners",
+          "url": "https://numpy.org/doc/stable/user/absolute_beginners.html"
+        },
+        {
+          "title": "Data Analysis with Python - Full Course for Beginners (Numpy, Pandas, Matplotlib, Seaborn)",
+          "url": "https://youtube.com/watch?v=r-uOLxNrNk8&pp=ygWjA0dlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IExlYXJuaW5nIE1hc3RlciBQeXRob24tY2VudHJlZCBkYXRhIGFuYWx5dGljcyAoU1FMIOKGkiBQYW5kYXMg4oaSIGF1dG9tYXRpb24gcGlwZWxpbmVzKS4KLSBEaWZmaWN1bHR5OiBiZWdpbm5lcgotIER1cmF0aW9uOiAzMCBkYXlzCi0gUHJvamVjdHM6IDQKClJldHVybiBPTkxZIHRoZSBKU09OIG9iamVjdCBpbiB0aGUgZXhhY3Qgc2NoZW1hIGZvcm1hdCBzcGVjaWZpZWQgaW4gdGhlIHN5c3RlbSBwcm9tcHQu"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 11,
+      "title": "Introduction to Pandas: Series and DataFrames",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "This is a key day: we introduce Pandas, the most important library for data analysis in Python. You'll learn about its two core data structures: the 1D `Series` and the 2D `DataFrame`. We will cover how to create them from scratch, inspect their properties (like shape, dtypes), and select specific rows and columns."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "10 Minutes to pandas",
+          "url": "https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html"
+        },
+        {
+          "title": "Data Analysis with Python - Full Course for Beginners (Numpy, Pandas, Matplotlib, Seaborn)",
+          "url": "https://youtube.com/watch?v=r-uOLxNrNk8&pp=ygWjA0dlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IExlYXJuaW5nIE1hc3RlciBQeXRob24tY2VudHJlZCBkYXRhIGFuYWx5dGljcyAoU1FMIOKGkiBQYW5kYXMg4oaSIGF1dG9tYXRpb24gcGlwZWxpbmVzKS4KLSBEaWZmaWN1bHR5OiBiZWdpbm5lcgotIER1cmF0aW9uOiAzMCBkYXlzCi0gUHJvamVjdHM6IDQKClJldHVybiBPTkxZIHRoZSBKU09OIG9iamVjdCBpbiB0aGUgZXhhY3Qgc2NoZW1hIGZvcm1hdCBzcGVjaWZpZWQgaW4gdGhlIHN5c3RlbSBwcm9tcHQu"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 12,
+      "title": "Loading Data into Pandas",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "A DataFrame is useless without data. Today you'll learn the essential skill of loading data from various sources. We'll focus on the most common formats: reading CSV files with `pd.read_csv()`, Excel files with `pd.read_excel()`, and executing a SQL query to load its results directly into a DataFrame using `pd.read_sql()`."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Pandas IO Tools (Reading and Writing Data)",
+          "url": "https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html"
+        },
+        {
+          "title": "Reading a CSV into a Pandas DataFrame",
+          "url": "https://www.datacamp.com/community/tutorials/pandas-read-csv"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 13,
+      "title": "Project 2: Data Loading and Initial Exploration",
+      "is_project_day": true,
+      "project_data": {
+        "title": "Load and Inspect Multiple Datasets",
+        "description": "In this project, you will practice loading data from different sources into Pandas DataFrames and performing initial inspections to understand their structure and content.",
+        "objectives": [
+          "Successfully load a dataset from a CSV file.",
+          "Successfully load data from a SQL database table into a DataFrame.",
+          "Use inspection methods like `.head()`, `.tail()`, `.info()`, and `.describe()` on each DataFrame.",
+          "Document initial observations about each dataset (e.g., number of rows, column types, presence of missing values)."
+        ],
+        "requirements": [
+          "A working Python/Pandas environment (Jupyter Notebook).",
+          "A sample CSV file (e.g., Titanic dataset).",
+          "Access to a sample SQL database (e.g., the Chinook database from Project 1)."
+        ],
+        "deliverables": [
+          "A Jupyter Notebook (.ipynb file) containing the code to load and inspect the data.",
+          "Markdown cells within the notebook that summarize your findings for each dataset."
+        ],
+        "evaluation_criteria": [
+          "Correctness: Is the data loaded correctly without errors?",
+          "Inspection: Are the appropriate inspection methods used?",
+          "Analysis: Are the observations in the markdown cells accurate and insightful?",
+          "Clarity: Is the notebook well-organized and easy to follow?"
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Time to get hands-on with Pandas. For this project, you will take two different datasets—one from a CSV file and one from your SQL database—and load them into separate DataFrames. You will then practice the essential first steps of any analysis: using methods like `.head()`, `.info()`, and `.describe()` to get a first look at your data."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Kaggle: Titanic - Machine Learning from Disaster (for CSV data)",
+          "url": "https://www.kaggle.com/c/titanic/data"
+        },
+        {
+          "title": "pandas.read_sql documentation",
+          "url": "https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html"
+        }
+      ],
+      "estimated_hours": 4
+    },
+    {
+      "day_number": 14,
+      "title": "Python & Pandas Review",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use today to review the concepts from the past week. Go over your project, ensure you understand the difference between a Series and a DataFrame, and practice loading different types of files. A solid grasp of these basics is essential for the data manipulation topics next week."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Pandas Exercises, Practice, Solution - w3resource",
+          "url": "https://www.w3resource.com/python-exercises/pandas/index.php"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 15,
+      "title": "Data Cleaning: Missing Values and Duplicates",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Real-world data is messy. Today's focus is on data cleaning. You'll learn how to identify missing values (`.isnull()`), and different strategies for handling them, such as dropping them (`.dropna()`) or filling them with a specific value (`.fillna()`). We will also cover how to find and remove duplicate rows (`.duplicated()`, `.drop_duplicates()`)."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Working with missing data in pandas",
+          "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html"
+        },
+        {
+          "title": "🔴 Live SQL & Python Data Cleaning for Vietnam Client",
+          "url": "https://youtube.com/watch?v=8lsb_WxmR2I&pp=ygWjA0dlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IExlYXJuaW5nIE1hc3RlciBQeXRob24tY2VudHJlZCBkYXRhIGFuYWx5dGljcyAoU1FMIOKGkiBQYW5kYXMg4oaSIGF1dG9tYXRpb24gcGlwZWxpbmVzKS4KLSBEaWZmaWN1bHR5OiBiZWdpbm5lcgotIER1cmF0aW9uOiAzMCBkYXlzCi0gUHJvamVjdHM6IDQKClJldHVybiBPTkxZIHRoZSBKU09OIG9iamVjdCBpbiB0aGUgZXhhY3Qgc2NoZW1hIGZvcm1hdCBzcGVjaWZpZWQgaW4gdGhlIHN5c3RlbSBwcm9tcHQu"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 16,
+      "title": "Data Selection with .loc and .iloc",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Mastering data selection is crucial for effective analysis. Today we dive deep into `.loc` (label-based indexing) and `.iloc` (integer-position-based indexing) for selecting specific rows and columns. You'll also learn how to use boolean indexing to filter your data based on complex conditions, similar to the `WHERE` clause in SQL."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Indexing and selecting data in Pandas",
+          "url": "https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html"
+        },
+        {
+          "title": "Python Pandas: .loc vs .iloc",
+          "url": "https://www.geeksforgeeks.org/difference-between-loc-and-iloc-in-pandas-dataframe/"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 17,
+      "title": "Grouping and Aggregation in Pandas",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "This is the Pandas equivalent of SQL's `GROUP BY`. You'll learn how to use the powerful `.groupby()` method to split your DataFrame into groups based on some criteria, apply a function (like `sum()`, `mean()`, `count()`) to each group independently, and combine the results into a new DataFrame. This is a cornerstone of data analysis."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Pandas GroupBy: Your Guide to Slicing, Dicing, and Applying Functions to DataFrames",
+          "url": "https://realpython.com/pandas-groupby/"
+        },
+        {
+          "title": "Group by: split-apply-combine - Pandas Documentation",
+          "url": "https://pandas.pydata.org/pandas-docs/stable/user_guide/groupby.html"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 18,
+      "title": "Merging, Joining, and Concatenating DataFrames",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Similar to SQL `JOIN`s, you often need to combine multiple DataFrames. We will cover `pd.concat()` for stacking DataFrames together and `pd.merge()` for database-style joins (inner, outer, left, right) based on common columns. Understanding how to combine datasets is essential for creating a complete analytical view."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Merge, join, concatenate and compare - Pandas Documentation",
+          "url": "https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html"
+        },
+        {
+          "title": "Pandas Concat() and Merge() Explained",
+          "url": "https://www.geeksforgeeks.org/pandas-concat-and-merge/"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 19,
+      "title": "Data Visualization with Matplotlib & Seaborn",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "A picture is worth a thousand rows. Today you'll learn to create basic visualizations directly from your DataFrames. We'll start with Matplotlib for fundamental plotting (line, bar, histogram) and then introduce Seaborn, a library built on top of Matplotlib that provides more aesthetically pleasing and statistically sophisticated plots."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Data Analysis with Python - Full Course for Beginners (Numpy, Pandas, Matplotlib, Seaborn)",
+          "url": "https://youtube.com/watch?v=r-uOLxNrNk8&pp=ygWjA0dlbmVyYXRlIGEgMzAtZGF5IGN1cnJpY3VsdW0gd2l0aCB0aGVzZSBzcGVjaWZpY2F0aW9uczoKCkNVUlJJQ1VMVU0gUEFSQU1FVEVSUzoKLSBMZWFybmluZyBHb2FsOiBNYXN0ZXIgUHl0aG9uLWNlbnRyZWQgZGF0YSBhbmFseXRpY3MgKFNRTCDihpIgUGFuZGFzIOKGkiBhdXRvbWF0aW9uIHBpcGVsaW5lcykuCi0gVGl0bGU6IExlYXJuaW5nIE1hc3RlciBQeXRob24tY2VudHJlZCBkYXRhIGFuYWx5dGljcyAoU1FMIOKGkiBQYW5kYXMg4oaSIGF1dG9tYXRpb24gcGlwZWxpbmVzKS4KLSBEaWZmaWN1bHR5OiBiZWdpbm5lcgotIER1cmF0aW9uOiAzMCBkYXlzCi0gUHJvamVjdHM6IDQKClJldHVybiBPTkxZIHRoZSBKU09OIG9iamVjdCBpbiB0aGUgZXhhY3Qgc2NoZW1hIGZvcm1hdCBzcGVjaWZpZWQgaW4gdGhlIHN5c3RlbSBwcm9tcHQu"
+        },
+        {
+          "title": "Seaborn: statistical data visualization",
+          "url": "https://seaborn.pydata.org/tutorial.html"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 20,
+      "title": "Project 3: Exploratory Data Analysis (EDA)",
+      "is_project_day": true,
+      "project_data": {
+        "title": "Exploratory Data Analysis on a Real-World Dataset",
+        "description": "Choose a dataset of interest (e.g., from Kaggle) and perform a full Exploratory Data Analysis (EDA). This involves loading, cleaning, transforming, and visualizing the data to uncover patterns, spot anomalies, and summarize its main characteristics.",
+        "objectives": [
+          "Practice data cleaning techniques (handling missing values, duplicates).",
+          "Use grouping and aggregation to create summary statistics.",
+          "Apply merging or joining if using multiple data sources.",
+          "Create at least 3-5 meaningful visualizations to communicate findings.",
+          "Summarize key insights discovered during the analysis."
+        ],
+        "requirements": [
+          "A Jupyter Notebook.",
+          "A dataset of your choice (links to suggestions in resources)."
+        ],
+        "deliverables": [
+          "A complete Jupyter Notebook (.ipynb file) that tells a story about the data. It should include code, outputs, visualizations, and markdown cells with explanations."
+        ],
+        "evaluation_criteria": [
+          "Data Cleaning: Is the data appropriately cleaned and prepared for analysis?",
+          "Analysis Depth: Does the analysis go beyond simple descriptions and uncover interesting relationships?",
+          "Visualization Quality: Are the plots clear, well-labeled, and appropriate for the data being presented?",
+          "Communication: Does the notebook effectively communicate the findings and the story of the data?"
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "This project brings everything from the last two weeks together. You'll perform a complete Exploratory Data Analysis (EDA) on a dataset. This is the core workflow of a data analyst: ask questions, manipulate the data to find answers, and create plots to visualize those answers. The goal is to produce a report that tells a story with data."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Kaggle Datasets",
+          "url": "https://www.kaggle.com/datasets"
+        },
+        {
+          "title": "A-Z of Exploratory Data Analysis in Python",
+          "url": "https://www.analyticsvidhya.com/blog/2021/08/a-z-of-exploratory-data-analysis-in-python/"
+        }
+      ],
+      "estimated_hours": 5
+    },
+    {
+      "day_number": 21,
+      "title": "Pandas Manipulation Review",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Take a day to consolidate your Pandas skills. Review your EDA project. Are there more efficient ways to clean the data? Could you use a different type of plot to show an insight more clearly? Practice on a new small dataset to keep the concepts fresh."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Pandas Cookbook",
+          "url": "https://pandas.pydata.org/pandas-docs/stable/user_guide/cookbook.html"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 22,
+      "title": "Introduction to Data Pipelines",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "We now shift from interactive analysis to automation. Today, you'll learn the concept of a data pipeline. What is it? Why is it important? We'll cover the typical stages of a pipeline: Extract, Transform, Load (ETL). This is a conceptual day to understand the 'why' before we get to the 'how'."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "What is a Data Pipeline? - AWS",
+          "url": "https://aws.amazon.com/data-pipeline/"
+        },
+        {
+          "title": "Understanding Data Pipelines: A Beginner's Guide",
+          "url": "https://www.integrate.io/blog/understanding-data-pipelines-a-beginners-guide/"
+        }
+      ],
+      "estimated_hours": 1.5
+    },
+    {
+      "day_number": 23,
+      "title": "Writing Python Scripts for Data Processing",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Time to move out of the Jupyter Notebook and into Python scripts (.py files). You'll learn how to structure your Pandas code within a script that can be run from the command line. We'll cover best practices like using functions to organize your code and using command-line arguments to make your scripts more flexible."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Running Python Scripts - Python Documentation",
+          "url": "https://docs.python.org/3/using/cmdline.html#running-scripts"
+        },
+        {
+          "title": "Refactoring Python: From Script to Production-Ready Code",
+          "url": "https://www.youtube.com/watch?v=y3Xy_G1-a58"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 24,
+      "title": "Connecting Python to SQL Databases",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "To automate data extraction, your script needs to talk to a database. You'll learn how to use libraries like `SQLAlchemy` and `psycopg2` (for PostgreSQL) or `sqlite3` (for SQLite) to establish a connection to a database from within a Python script, execute queries, and fetch results."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "SQLAlchemy 1.4/2.0 Tutorial",
+          "url": "https://docs.sqlalchemy.org/en/14/tutorial/"
+        },
+        {
+          "title": "sqlite3 — DB-API 2.0 interface for SQLite databases",
+          "url": "https://docs.python.org/3/library/sqlite3.html"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 25,
+      "title": "Automating Data Extraction (SQL to DataFrame)",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Let's build the 'E' in ETL. Today you'll combine the last two lessons to write a Python script that automatically connects to a database, runs a pre-defined SQL query, and loads the result directly into a Pandas DataFrame using `pd.read_sql_query()`. This is the first step in your automated pipeline."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "pandas.read_sql_query documentation",
+          "url": "https://pandas.pydata.org/docs/reference/api/pandas.read_sql_query.html"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 26,
+      "title": "Automating Data Transformation and Loading",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Now for the 'T' and 'L'. Once the data is in a DataFrame, you can apply all the transformations you learned (cleaning, creating new columns, aggregating). After transforming the data, you'll learn how to save the result to a new destination, such as a CSV file (`.to_csv()`) or even a new table in the database (`.to_sql()`)."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "DataFrame.to_csv documentation",
+          "url": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html"
+        },
+        {
+          "title": "DataFrame.to_sql documentation",
+          "url": "https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html"
+        }
+      ],
+      "estimated_hours": 2.5
+    },
+    {
+      "day_number": 27,
+      "title": "Scheduling Scripts (Cron & Task Scheduler)",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "A pipeline isn't truly automated until it runs on its own. Today is a conceptual introduction to scheduling. You'll learn about Cron jobs (for Linux/macOS) and Task Scheduler (for Windows), which are system tools that can automatically run your Python script on a schedule (e.g., every day at 3 AM)."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Crontab Guru - An editor for cron schedule expressions",
+          "url": "https://crontab.guru/"
+        },
+        {
+          "title": "How to Schedule Python Scripts with Cron",
+          "url": "https://realpython.com/cron-python/"
+        },
+        {
+          "title": "How to Schedule a Python Script in Windows Task Scheduler",
+          "url": "https://www.jcchouinard.com/python-automation-using-task-scheduler/"
+        }
+      ],
+      "estimated_hours": 2
+    },
+    {
+      "day_number": 28,
+      "title": "Project 4: Build a Simple Automated Data Pipeline",
+      "is_project_day": true,
+      "project_data": {
+        "title": "Automated ETL Script",
+        "description": "Build a complete, runnable Python script that performs a full ETL process: extracts data from a SQL database, performs a data transformation/aggregation in Pandas, and loads the result into a new CSV file.",
+        "objectives": [
+          "Write a Python script (.py file), not a notebook.",
+          "The script must connect to a SQL database.",
+          "Extract data using a SQL query.",
+          "Perform a meaningful transformation (e.g., cleaning, aggregation, creating a new column).",
+          "Save the transformed DataFrame to a new CSV file with a dynamic name (e.g., including the current date)."
+        ],
+        "requirements": [
+          "Python environment with Pandas and a database driver (e.g., SQLAlchemy) installed.",
+          "Access to a sample SQL database (e.g., Chinook)."
+        ],
+        "deliverables": [
+          "A single, well-commented .py file that executes the entire pipeline.",
+          "A requirements.txt file listing the necessary Python libraries."
+        ],
+        "evaluation_criteria": [
+          "Functionality: Does the script run from the command line without errors?",
+          "Correctness: Does it produce the correct output CSV file?",
+          "Code Quality: Is the code organized into functions and easy to read?",
+          "Automation: Is the script self-contained and ready to be scheduled?"
+        ]
+      },
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "This is the final capstone project. You will combine all the skills from this course to build a single Python script that automates a data workflow. Your script will connect to the Chinook database, run a query to get sales data, use Pandas to calculate total sales per genre, and then save that summary report as a new CSV file. This project simulates a real-world data engineering task."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Building a Simple ETL Pipeline with Python",
+          "url": "https://towardsdatascience.com/building-a-simple-etl-pipeline-with-python-206472b43b2e"
+        }
+      ],
+      "estimated_hours": 5
+    },
+    {
+      "day_number": 29,
+      "title": "Project Work and Refinement",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Use today to continue working on your final project. Focus on refining your script. Can you add error handling? Can you make the code more modular by breaking it into more functions? Add comments to explain what each part of your script does. This is also a great day to practice setting up a cron job or task in Task Scheduler to run your script."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Python's Argparse for Command-Line Interfaces",
+          "url": "https://realpython.com/command-line-interfaces-python-argparse/"
+        }
+      ],
+      "estimated_hours": 3
+    },
+    {
+      "day_number": 30,
+      "title": "Course Recap and Next Steps",
+      "is_project_day": false,
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "Congratulations! You've completed the 30-day curriculum. Today, we'll review the entire workflow from SQL to Pandas to automation. We'll also discuss next steps for your learning journey, such as exploring more advanced pipeline tools (like Apache Airflow), learning more complex data visualization, or diving into machine learning."
+              }
+            ]
+          }
+        ]
+      },
+      "resources": [
+        {
+          "title": "Apache Airflow Documentation",
+          "url": "https://airflow.apache.org/docs/"
+        },
+        {
+          "title": "Plotly and Dash for Interactive Visualizations",
+          "url": "https://plotly.com/python/"
+        },
+        {
+          "title": "Scikit-learn: Machine Learning in Python",
+          "url": "https://scikit-learn.org/stable/"
+        }
+      ],
+      "estimated_hours": 1
+    }
+  ]
+}
+```
+--- End of Response ---
+

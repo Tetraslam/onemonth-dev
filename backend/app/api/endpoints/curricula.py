@@ -104,58 +104,46 @@ async def create_curriculum(
     agent_messages = [
         {
             "role": "user",
-            "content": f"""
-            Please generate a detailed curriculum based on the following preferences:
-            Learning Goal: {curriculum_data.learning_goal}
-            Title (optional): {curriculum_data.title}
-            Description (optional): {curriculum_data.description}
-            Difficulty: {curriculum_data.difficulty_level}
-            Total Duration (days): {curriculum_data.estimated_duration_days}
-            Prerequisites: {curriculum_data.prerequisites or 'None specified'}
-            Time per Day (minutes): {curriculum_data.daily_time_commitment_minutes or 'Not specified'}
-            Learning Style: {curriculum_data.learning_style or 'Balanced'}
-            Number of Projects: {curriculum_data.num_projects or 0}
-            
-            The output should be a JSON object with a main 'curriculum_title' and 'curriculum_description', 
-            and a list of 'days'. Each day object in the list should have:
-            - 'day_number' (int)
-            - 'title' (str, concise title for the day)
-            - 'is_project_day' (bool, true if this day is a project day, false otherwise)
-            - 'project_data' (dict, optional, only if is_project_day is true. Should contain 'title', 'description', 'objectives', 'requirements', 'deliverables', and 'evaluation_criteria')
-            - 'content' (dict, TipTap/ProseMirror JSON object for the learning module. This object MUST have a root 'type': 'doc' and a 'content' array. This array should contain a sequence of nodes representing the day's lesson. Structure each day's lesson content with the following sections, using appropriate TipTap/ProseMirror nodes (like 'heading' with levels 1-3, 'paragraph', 'bulletList', 'orderedList', 'listItem', 'codeBlock' where appropriate, and 'text' nodes with marks for 'bold', 'italic', 'link'):
-                1.  "Introduction": (Required) A brief overview of the day's topic (e.g., a 'heading' node with level 2, followed by one or two 'paragraph' nodes).
-                2.  "Learning Objectives": (Required) 2-4 clear, actionable objectives for the day (e.g., a 'heading' node with level 3, followed by a 'bulletList' node, where each 'listItem' contains a 'paragraph' with the objective).
-                3.  "Key Concepts": (Required) Detailed explanations of the core concepts for the day. This should be the most substantial part. Use multiple 'heading' nodes (level 3) for sub-topics if needed, followed by detailed 'paragraph' nodes. Incorporate information from the 'Supporting Research' (which will be provided to you) to make these explanations comprehensive. If code examples or mathematical formulas are relevant and found in research, represent them accurately, perhaps within 'paragraph' nodes or using 'codeBlock' if appropriate.
-                4.  "Examples": (Optional, but highly encouraged) 1-2 worked examples or illustrative scenarios related to the key concepts (e.g., a 'heading' node with level 3, followed by 'paragraph' or 'orderedList' nodes explaining the example step-by-step).
-                5.  "Summary": (Required) A concise recap of the day's main points (e.g., a 'heading' node with level 3, followed by a 'bulletList' node).
-                Ensure all text content is well-written, clear, and engaging.
-            - 'resources' (list of dicts, each with 'title' and 'url')
-            - 'estimated_hours' (float, optional)
-            
-            Focus on creating practical, actionable content for each day.
-            Ensure the curriculum spans the specified number of days.
-            
-            CRITICAL INSTRUCTIONS FOR RESOURCES:
-            1. The Supporting Research section will contain YouTube videos with identifiers like [YT1], [YT2], etc.
-            2. You MUST use these identifiers in the 'url' field when adding YouTube videos to resources
-            3. For example: {{"title": "Introduction to React Hooks", "url": "[YT3]"}}
-            4. Also include non-YouTube resources (articles, documentation) with their full URLs
-            5. Each day should have 2-4 relevant resources mixing YouTube videos and other sources
-            
-            When generating the 'content' for each day, utilize the 'Supporting Research' (which will be provided to you along with these preferences) to make the explanations and concepts as detailed and accurate as possible.
-            
-            IMPORTANT: If num_projects is greater than 0, distribute the projects evenly throughout the curriculum. For example:
-            - If num_projects=1 and duration=30 days, place the project around day 20-25
-            - If num_projects=2 and duration=30 days, place projects around day 10-12 and day 22-25
-            - If num_projects=3 and duration=30 days, place projects around day 8-10, day 16-18, and day 24-26
-            
-            For project days:
-            - Set 'is_project_day' to true
-            - Include a 'project_data' object with comprehensive project details
-            - The project should integrate and apply concepts learned in the preceding days
-            - Projects should be practical, hands-on activities that reinforce learning
-            - Project titles should be descriptive but not overly playful (e.g., "Build a Weather Data Analyzer" not "Weather Wizard 3000")
-            """
+            "content": f"""Generate a {curriculum_data.estimated_duration_days}-day curriculum with these exact specifications:
+
+CURRICULUM PARAMETERS:
+- Learning Goal: {curriculum_data.learning_goal}
+- Title: {curriculum_data.title or f"Learning {curriculum_data.learning_goal}"}
+- Description: {curriculum_data.description or curriculum_data.learning_goal}
+- Difficulty: {curriculum_data.difficulty_level}
+- Duration: {curriculum_data.estimated_duration_days} days
+- Prerequisites: {curriculum_data.prerequisites or 'None'}
+- Daily Time: {curriculum_data.daily_time_commitment_minutes or 60} minutes
+- Learning Style: {curriculum_data.learning_style or 'Balanced'}
+- Projects: {curriculum_data.num_projects or 0}
+
+CONTENT STRUCTURE FOR EACH DAY:
+Create comprehensive TipTap/ProseMirror JSON with these required sections:
+1. Introduction (heading level 2 + 1-2 detailed paragraphs explaining the day's topic)
+2. Learning Objectives (heading level 3 + bullet list with 3-4 specific, actionable objectives)
+3. Key Concepts (heading level 3 + multiple detailed paragraphs explaining core concepts thoroughly. Use research data to make explanations comprehensive. Include sub-headings for different concepts. Add code examples in codeBlock nodes if relevant)
+4. Examples (heading level 3 + 1-2 worked examples with step-by-step explanations in paragraphs or ordered lists)
+5. Summary (heading level 3 + bullet list recapping main points)
+
+Make each day's content substantial and educational - aim for comprehensive learning modules, not brief overviews.
+
+RESOURCES:
+- Use YouTube identifiers [YT1], [YT2] etc. from Supporting Research
+- Include 2-4 resources per day (mix videos + articles)
+- Each resource needs title and url fields
+
+PROJECT DISTRIBUTION:
+- Distribute {curriculum_data.num_projects or 0} projects evenly across {curriculum_data.estimated_duration_days} days
+- Set is_project_day: true for project days
+- Include complete project_data object for project days
+
+CONTENT QUALITY REQUIREMENTS:
+- Utilize Supporting Research data to create detailed, accurate explanations
+- Write clear, engaging content suitable for the specified difficulty level
+- Include practical examples and real-world applications
+- Ensure content is substantial enough for the specified daily time commitment (do not belittle or oversimplify the content. even a beginner user will make progress.)
+
+Return ONLY the JSON object in the exact schema format specified in the system prompt."""
         }
     ]
     
@@ -701,3 +689,86 @@ async def get_generation_status(curriculum_id: str, current_user: AuthenticatedU
     if not response.data:
         raise HTTPException(status_code=404, detail="Curriculum not found")
     return response.data 
+
+# Add retry endpoint --------------------------------------------------
+
+# Reuse CurriculumCreate model
+from app.models.curriculum import CurriculumCreate
+
+
+@router.post("/{curriculum_id}/retry", status_code=status.HTTP_202_ACCEPTED)
+async def retry_curriculum_generation(
+    curriculum_id: str,
+    background_tasks: BackgroundTasks,
+    current_user: AuthenticatedUser = Depends(require_subscription)
+):
+    """Retry generation for a curriculum that is in failed state. Uses the same row ID so the UI updates in place."""
+
+    # Fetch the curriculum row and verify ownership
+    resp = (
+        supabase.table("curricula")
+        .select("*")
+        .eq("id", curriculum_id)
+        .eq("user_id", str(current_user.id))
+        .maybe_single()
+        .execute()
+    )
+
+    if not resp.data:
+        raise HTTPException(status_code=404, detail="Curriculum not found or access denied")
+
+    row = resp.data
+
+    if row.get("generation_status") != "failed":
+        raise HTTPException(status_code=400, detail="Only failed curricula can be retried")
+
+    # Reconstruct CurriculumCreate payload
+    md = row.get("metadata", {}) or {}
+
+    curriculum_payload = CurriculumCreate(
+        title=row.get("title") or "Untitled",
+        description=row.get("description") or "",
+        learning_goal=row.get("topic") or row.get("goal") or row.get("description") or "",
+        difficulty_level=row.get("difficulty_level") or "beginner",
+        estimated_duration_days=row.get("estimated_duration_days") or 30,
+        prerequisites=md.get("prerequisites") or None,
+        daily_time_commitment_minutes=md.get("daily_time_commitment_minutes") or None,
+        learning_style=md.get("learning_style") or None,
+        num_projects=row.get("num_projects") or 0,
+        metadata=md,
+    )
+
+    # Minimal agent message (system + user prompt)
+    agent_messages = [
+        {
+            "role": "user",
+            "content": f"""Generate a {curriculum_payload.estimated_duration_days}-day curriculum with these specifications:
+
+CURRICULUM PARAMETERS:
+- Learning Goal: {curriculum_payload.learning_goal}
+- Title: {curriculum_payload.title}
+- Difficulty: {curriculum_payload.difficulty_level}
+- Duration: {curriculum_payload.estimated_duration_days} days
+- Projects: {curriculum_payload.num_projects or 0}
+
+Return ONLY the JSON object in the exact schema format specified in the system prompt."""
+        },
+    ]
+
+    # Update row to retrying state
+    supabase.table("curricula").update({
+        "generation_status": "generating",
+        "generation_progress": "Retry queued..."
+    }).eq("id", curriculum_id).execute()
+
+    # Queue background generation task with same curriculum_id
+    background_tasks.add_task(
+        generate_and_save_curriculum,
+        curriculum_id,
+        curriculum_payload,
+        agent_messages,
+        {"curriculum_id": curriculum_id, "intent": "retry_curriculum"}
+    )
+
+    return {"message": "Retry started"}
+# -------------------------------------------------------------------- 

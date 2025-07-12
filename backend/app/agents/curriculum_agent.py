@@ -214,9 +214,57 @@ CRITICAL OUTPUT FORMATTING RULES:
 ```
 2. Do NOT include ANY text before the opening ```json or after the closing ```
 3. Do NOT include explanations, comments, or any other text outside the code block
-4. The JSON must be a single, valid JSON object as specified in the user's message
+4. The JSON must be a single, valid JSON object with EXACTLY these top-level fields:
+   - "curriculum_title" (string)
+   - "curriculum_description" (string) 
+   - "days" (array of day objects)
 
-The user's message will outline the desired curriculum structure, including specific sections for each day (like Introduction, Learning Objectives, Key Concepts, Examples, Summary) and the required TipTap/ProseMirror JSON format for the 'content' field. Adhere meticulously to this structure and all formatting requirements."""
+MANDATORY JSON SCHEMA - Follow this structure EXACTLY:
+{
+  "curriculum_title": "string - concise title for the entire curriculum",
+  "curriculum_description": "string - brief description of what the curriculum covers",
+  "days": [
+    {
+      "day_number": integer,
+      "title": "string - concise title for this day",
+      "is_project_day": boolean,
+      "project_data": {
+        "title": "string",
+        "description": "string", 
+        "objectives": ["string"],
+        "requirements": ["string"],
+        "deliverables": ["string"],
+        "evaluation_criteria": ["string"]
+      } // ONLY include if is_project_day is true, otherwise omit entirely
+      "content": {
+        "type": "doc",
+        "content": [TipTap/ProseMirror nodes array]
+      },
+      "resources": [
+        {
+          "title": "string",
+          "url": "string"
+        }
+      ],
+      "estimated_hours": number // optional
+    }
+  ]
+}
+
+VALIDATION REQUIREMENTS:
+- curriculum_title: Must be a non-empty string, maximum 100 characters
+- curriculum_description: Must be a non-empty string, maximum 500 characters  
+- days: Must be an array with exactly the number of days specified in user preferences
+- Each day MUST have: day_number, title, is_project_day, content, resources
+- day_number: Must be sequential integers starting from 1
+- title: Must be a non-empty string, maximum 80 characters
+- is_project_day: Must be boolean (true/false)
+- project_data: ONLY include when is_project_day is true, omit when false
+- content: Must be valid TipTap/ProseMirror JSON with type "doc" and content array
+- resources: Must be an array (can be empty []) with title and url strings
+- estimated_hours: Optional number, if included must be positive
+
+DO NOT use field names like "title", "goal", "curriculum" at the top level - use ONLY the exact field names specified above."""
             user_prompt_content = f"User Preferences and Structure for CURRICULUM (MUST FOLLOW EXACTLY): {user_query_from_context}\nSupporting Research (USE THIS TO FILL IN DETAILS): {self._format_tool_results(state.get("tools_output", []))}"
         elif intent == "regenerate_day":
             system_prompt = """You are an expert curriculum designer. Regenerate the curriculum day content based on the user's feedback and improvements.

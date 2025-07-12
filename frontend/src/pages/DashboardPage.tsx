@@ -164,6 +164,29 @@ export default function DashboardPage() {
                       </div>
                     )}
                   </div>
+                  {curriculum.generation_status === 'failed' && (
+                    <div className="mt-4">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          try {
+                            await api.post(`/api/curricula/${curriculum.id}/retry`)
+                            toast.success('Retry started!')
+                            // Optimistically set status to retrying
+                            setCurricula(prev => prev.map(c => c.id === curriculum.id ? { ...c, generation_status: 'retrying', generation_progress: 'Retry queued...' } : c))
+                          } catch (err) {
+                            console.error('Retry failed', err)
+                            toast.error('Retry failed')
+                          }
+                        }}
+                        className="font-black text-white"
+                      >
+                        Retry
+                      </Button>
+                    </div>
+                  )}
                 </Card>
               ))}
             </div>
